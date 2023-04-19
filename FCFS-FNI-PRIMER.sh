@@ -379,7 +379,7 @@ function presentacionPantallaInforme {
   echo "########################################################################" | tee -a $informeSinColor
   echo "#                                                                      #" | tee -a $informeSinColor
   echo "#          ALGORITMO SRPT CON PARTICIONES FIJAS NO IGUALES             #" | tee -a $informeSinColor
-  echo "#                          Y AJUSTE MEJOR                              #" | tee -a $informeSinColor
+  echo "#                          Y AJUSTE PRIMER                             #" | tee -a $informeSinColor
   echo "#        --------------------------------------------------            #" | tee -a $informeSinColor
   echo "# - NUEVO ALUMNO:       Ignacio Zaldo González                         #" | tee -a $informeSinColor 
   echo "#                                                                      #" | tee -a $informeSinColor
@@ -415,7 +415,7 @@ function presentacionPantallaInforme {
   echo -e "\e[1;33m########################################################################" >> $informeConColor
   echo -e "\e[1;33m#                                                                      #" >> $informeConColor
   echo -e "\e[1;33m#          ALGORITMO SRPT CON PARTICIONES FIJAS NO IGUALES             #" >> $informeConColor
-  echo -e "\e[1;33m#                          Y AJUSTE MEJOR                              #" >> $informeConColor
+  echo -e "\e[1;33m#                          Y AJUSTE PRIMER                             #" >> $informeConColor
   echo -e "\e[1;33m#        --------------------------------------------------            #" >> $informeConColor
   echo -e "\e[1;33m# - NUEVO ALUMNO:       Ignacio Zaldo González                         #" >> $informeConColor 
   echo -e "\e[1;33m#                                                                      #" >> $informeConColor
@@ -2427,7 +2427,7 @@ function tiempoejecucionalgormitmo {
 ######################################################################################################################################
 ######################################################################################################################################
 ######################################################################################################################################
-# Función con Algoritmo FCFS-FNI-Mejor
+# Función con Algoritmo FCFS-FNI-Mejor   //TODO modificar por Primer
 ######################################################################################################################################
 ######################################################################################################################################
 ######################################################################################################################################
@@ -2491,25 +2491,30 @@ function algoritmoSJF_FCFS_AjustePrimer {
                 	fi
                         estado[$i]="En memoria"
                         let restante[$i]=${tiempo[$i]}
-                        #Buscamos el mejor ajuste posible con la minima diff memoria sobrante
+                        #Buscamos el mejor --- cambiar por primer --- ajuste posible con la minima diff memoria sobrante
+                        ##############################################################################################################################
+                        ##############################################################################################################################
+                        ##############################################################################################################################
+                        ##          Algoritmo Primer #########
+                        ##############################################################################################################################
                         diff_mem=100
                         diff=$j
                         for (( dm=1; dm<=${#particiones[@]}; dm++ ))
                           do
-                            if [[ ${particionOcupada[$dm]} -eq 0 && ${particiones[$dm]} -ge ${memoria[$i]} ]]
+                            if [[ ${particionOcupada[$dm]} -eq 0 && ${particiones[$dm]} -ge ${memoria[$i]} ]]  #si la posicion esta vacia y el tamaño de la posicion es mayor o igual a la memoria actual
                               then
-                            auxMem=`expr ${particiones[$dm]} - ${memoria[$i]}`
+                            auxMem=`expr ${particiones[$dm]} - ${memoria[$i]}`   # resta entre el tamaño de la partición y el valor de la memoria correspondiente
                             fi
-                            if [[ $auxMem -lt $diff_mem && ${particionOcupada[$dm]} -eq 0 && ${particiones[$dm]} -ge ${memoria[$i]} ]]
+                            if [[ $auxMem -lt $diff_mem && ${particionOcupada[$dm]} -eq 0 && ${particiones[$dm]} -ge ${memoria[$i]} ]] # 
                               then
                                 diff_mem=$auxMem
                                 diff=$dm                                
                             fi
                           done
-                        ocupadas[$diff]=$i
-                        partConProceso[$i]=$diff                                               
-                        particionOcupada[$diff]=1    #La partición $j está ocupada
-                        j=`expr ${#particiones[@]} + 1`
+                        ocupadas[$diff]=$i     # asigno a diff del array ocupadas el valor de i
+                        partConProceso[$i]=$diff        # asigno el valor diff al indice i del array partConProceso                                       
+                        particionOcupada[$diff]=1    #La partición $j está ocupada    # asigno el valor 1 al indice diff del array particionOcupada
+                        j=`expr ${#particiones[@]} + 1`    # asigno a j la longitud del array particiones +1 
                       else
                         #...si no, si la partición estaba vacía, sigue vacía
                         if [[ ${particionOcupada[$j]} -eq 0 ]]
@@ -2778,9 +2783,9 @@ function algoritmoSJF_FCFS_AjustePrimer {
             then    
               echo "" >> ./informeColortemp.txt
               echo "" >> ./informetemp.txt 
-              echo -e $AMARILLO" SRPT-FNI-Mejor Ajuste"$NORMAL
-              echo -e " SRPT-FNI-Mejor Ajuste" > ./informetemp.txt
-              echo $AMARILLO" SRPT-FNI-Mejor Ajuste"$NORMAL > ./informeColortemp.txt
+              echo -e $AMARILLO" FCFS-FNI-Primer Ajuste"$NORMAL
+              echo -e " FCFS-FNI-Primer Ajuste" > ./informetemp.txt
+              echo $AMARILLO" FCFS-FNI-Primer Ajuste"$NORMAL > ./informeColortemp.txt
               echo -ne " T: $reloj\tTamaño de las particiones:" | tee -a ./informetemp.txt
               echo -ne " T: $reloj\tTamaño de las particiones:" >> ./informeColortemp.txt
               for (( z = 1; z <= $contadorParticiones; z++ ))
