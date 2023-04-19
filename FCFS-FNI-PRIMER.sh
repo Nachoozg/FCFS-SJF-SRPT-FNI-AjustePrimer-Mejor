@@ -2505,11 +2505,11 @@ function algoritmoSJF_FCFS_AjustePrimer {
                               then
                             auxMem=`expr ${particiones[$dm]} - ${memoria[$i]}`   # resta entre el tamaño de la partición y el valor de la memoria correspondiente
                             fi
-                            if [[ $auxMem -lt $diff_mem && ${particionOcupada[$dm]} -eq 0 && ${particiones[$dm]} -ge ${memoria[$i]} ]] 
-                              then
-                                diff_mem=$auxMem
-                                diff=$dm                                
-                            fi
+                            #if [[ $auxMem -lt $diff_mem && ${particionOcupada[$dm]} -eq 0 && ${particiones[$dm]} -ge ${memoria[$i]} ]] 
+                              #then
+                              #  diff_mem=$auxMem
+                             #   diff=$dm                                
+                            #fi
                           done
                         ocupadas[$diff]=$i     # asigno a diff del array ocupadas el valor de i
                         partConProceso[$i]=$diff        # asigno el valor diff al indice i del array partConProceso                                       
