@@ -16,13 +16,20 @@
 # 
 # ----------------------------------------------------------------------------------------------------------
 #
-# NUEVO ALUMNO:  Ismael Manzanera López (2022)
+# NUEVO ALUMNO:  Ignacio Zaldo González (2023)
 #
-# ANTERIORES ALUMNOS: Rodrigo Merino Tovar, Omar Santos Bernabé, Marcos Pena Calvar, David Cacho Saiz, Miguel Ángel Vidal Sevillano, Maria Teresa Quintanal
+# ANTERIORES ALUMNOS: Ismael Manzanera López, Rodrigo Merino Tovar, Omar Santos Bernabé, Marcos Pena Calvar, David Cacho Saiz, Miguel Ángel Vidal Sevillano, Maria Teresa Quintanal
 #
-# FECHA: Marzo de 2022
+# FECHA: Abril de 2023
 #
 # LICENCIA: Creative Commons
+#
+# VERSION 6: 2023 ########################################################################################################################
+########################################################################################################################
+########################################################################################################################
+###########################################COMPLETAR###COMPLETAR##########################################################################
+########################################################################################################################
+########################################################################################################################
 #
 # VERSION 5: 2022 Se ha mejorado todo el código para que sea más legible, para ello, se ha modulado todo el código en diferentes ficheros.
 #                 Se mejoran todos los comentarios del código.
@@ -106,7 +113,9 @@ masparticion=s               #Variable bandera que determina si el usuario desea
 contadorParticiones=1;       #Contador para la introduccion de particiones
 masprocesos=s                #Variable bandera que determina si el usuario desea introducir mas particiones
 
+################################################################################################################################################################################################
 #VARIABLES DEL ALGORITMO Y GESTIÓN DE DATOS 
+################################################################################################################################################################################################
 p=1;                         # contador
 i=1;                         # contador
 j=0;                         # contador
@@ -138,8 +147,9 @@ expulsar=0;          #Variable semaforo para controlar acceso o parada de un pro
 px=0;
 part=0;
 abortar=0;
-
+################################################################################################################################################################################################
 #VARIABLES DE REPRESENTACIÓN DEL MAPA DE MEMORIA 
+################################################################################################################################################################################################
 espaciomemoria=79            # numero de caracteres que ocupara la representacion de la particion mas grande
 representacionparticion=0    # numero de caracteres que ocupara la representacion de la particion que se va a representar
 representacionproceso=0      # numero de caracteres que ocupara la representacion del proceso que ocupa dicha particion
@@ -162,7 +172,9 @@ representacionvacia="---------------" # representacion que se producira cuando n
 particionrepresentada=0;     # numero de particion que se va a representar
 variablepropia=0
 
+################################################################################################################################################################################################
 #VARIABLES PARA DESTACAR TEXTO CON COLOR
+################################################################################################################################################################################################
 esc=$(echo -en "\033")
 ROJO="$esc[1;31m"
 VERDE="$esc[1;32m"
@@ -172,7 +184,9 @@ AMARILLO="$esc[1;33m"
 MORADO="$esc[1;35m"
 NORMAL="$esc[1;m"
 
+################################################################################################################################################################################################
 #VARIABLES PARA DESTACAR TEXTO CON COLOR FONDO
+################################################################################################################################################################################################
 esc=$(echo -en "\033")
 ROJO2="$esc[41m"
 VERDE2="$esc[42m"
@@ -200,7 +214,9 @@ procesoejecutado=();         # vector donde se almacenan los procesos ejecutados
 bloqueo=();                  # vector que almacena (0/1) para bloquear un reset de tiemp ejec inicial
 sale=();                     # vector que indica si un Px ha salido o no
 
+################################################################################################################################################################################################
 #VECTORES TEMPORALES PARA ALMACENAR ANTES DE COMPROBACIÓN PREVIA
+################################################################################################################################################################################################
 proceso2=();                 # nombre del proceso
 llegada2=();                 # tiempo de llegada
 tiempo2=();                  # tiempo de ejecucion
@@ -208,7 +224,9 @@ memoria2=();                 # espacio en memoria
 profich=();                  # vector auxiliar para entrada de procesos por fichero
 proficheroentrada=();
 
+################################################################################################################################################################################################
 #VECTORES DE COLORES
+################################################################################################################################################################################################
 colores[0]=$ROJO
 colores[1]=$VERDE
 colores[2]=$CYAN
@@ -216,7 +234,9 @@ colores[3]=$AZUL
 colores[4]=$AMARILLO
 colores[5]=$MORADO
 
+################################################################################################################################################################################################
 #VECTORES DE COLORES2
+################################################################################################################################################################################################
 colores2[0]=$ROJO2
 colores2[1]=$VERDE2
 colores2[2]=$CYAN2
@@ -224,16 +244,20 @@ colores2[3]=$AZUL2
 colores2[4]=$AMARILLO2
 colores2[5]=$MORADO2
 
+################################################################################################################################################################################################
 # Ficheros de salida.
+################################################################################################################################################################################################
 informeSinColor="./Informes_Salida/informeBN.txt"
 informeConColor="./Informes_Salida/informeCOLOR.txt"
 ficheroanteriorejecucion="./Datos/datos.txt"
 ficherodatosaleatorios="./Rangos/datosrangos.txt"
-
+################################################################################################################################################################################################
 ############################################################################################################
 #             FUNCIONES
 ############################################################################################################
+################################################################################################################################################################################################
 # Sinopsis:   Menú de elección de opciones del programa
+
 function menueleccion {
 
   clear
@@ -269,7 +293,9 @@ function menueleccion {
   echo -n -e "\n--> $seleccion" >> $informeSinColor
 
 
+################################################################################################################################################################################################
   #Comprobación de que el número introducido por el usuario esta entre el 1 y el 7
+################################################################################################################################################################################################
   while [[ 1 -lt $seleccion || $seleccion -lt 7 ]]
   do
     case "$seleccion" in 
@@ -332,7 +358,10 @@ function menueleccion {
     esac
   done
 }
+################################################################################################################################################################################################
 # Sinopsis:   cabecera para mostrar por pantalla al inicio del programa y enviar a informe
+################################################################################################################################################################################################
+
 function presentacionPantallaInforme {
 
 
@@ -352,13 +381,13 @@ function presentacionPantallaInforme {
   echo "#          ALGORITMO SRPT CON PARTICIONES FIJAS NO IGUALES             #" | tee -a $informeSinColor
   echo "#                          Y AJUSTE MEJOR                              #" | tee -a $informeSinColor
   echo "#        --------------------------------------------------            #" | tee -a $informeSinColor
-  echo "# - NUEVO ALUMNO:       Ismael Manzanera López                         #" | tee -a $informeSinColor 
+  echo "# - NUEVO ALUMNO:       Ignacio Zaldo González                         #" | tee -a $informeSinColor 
   echo "#                                                                      #" | tee -a $informeSinColor
-  echo "# - ALUMNO ANTERIOR:    María Teresa Quintanal Dieste                  #" | tee -a $informeSinColor
+  echo "# - ALUMNO ANTERIOR:    Ismael Manzanera López                         #" | tee -a $informeSinColor
   echo "#                                                                      #" | tee -a $informeSinColor
   echo "# - ASIGNATURA:         Sistemas Operativos                            #" | tee -a $informeSinColor
   echo "#                                                                      #" | tee -a $informeSinColor
-  echo "# - GRADO:              Ingeniería informática - 2022                  #" | tee -a $informeSinColor
+  echo "# - GRADO:              Ingeniería informática - 2023                  #" | tee -a $informeSinColor
   echo "#                                                                      #" | tee -a $informeSinColor
   echo "########################################################################" | tee -a $informeSinColor
   echo "$NORMAL"
@@ -369,7 +398,10 @@ function presentacionPantallaInforme {
   echo "$DIA - $HORA" >> $informeSinColor
   echo "" >> $informeSinColor
   
+################################################################################################################################################################################################  
   #Salida para informe a color:
+################################################################################################################################################################################################
+  
   echo -e "\e[1;33m########################################################################" > $informeConColor
   echo -e "\e[1;33m#                                                                      #" >> $informeConColor
   echo -e "\e[1;33m#                           CREATIVE COMMONS                           #" >> $informeConColor
@@ -385,13 +417,13 @@ function presentacionPantallaInforme {
   echo -e "\e[1;33m#          ALGORITMO SRPT CON PARTICIONES FIJAS NO IGUALES             #" >> $informeConColor
   echo -e "\e[1;33m#                          Y AJUSTE MEJOR                              #" >> $informeConColor
   echo -e "\e[1;33m#        --------------------------------------------------            #" >> $informeConColor
-  echo -e "\e[1;33m# - NUEVO ALUMNO:       Ismael Manzanera López                         #" >> $informeConColor 
+  echo -e "\e[1;33m# - NUEVO ALUMNO:       Ignacio Zaldo González                         #" >> $informeConColor 
   echo -e "\e[1;33m#                                                                      #" >> $informeConColor
-  echo -e "\e[1;33m# - ALUMNO ANTERIOR:    María Teresa Quintanal Dieste                  #" >> $informeConColor
+  echo -e "\e[1;33m# - ALUMNO ANTERIOR:    Ismael Manzanera López                         #" >> $informeConColor
   echo -e "\e[1;33m#                                                                      #" >> $informeConColor
   echo -e "\e[1;33m# - ASIGNATURA:         Sistemas Operativos                            #" >> $informeConColor
   echo -e "\e[1;33m#                                                                      #" >> $informeConColor
-  echo -e "\e[1;33m# - GRADO:              Ingeniería informática - 2022                  #" >> $informeConColor
+  echo -e "\e[1;33m# - GRADO:              Ingeniería informática - 2023                  #" >> $informeConColor
   echo -e "\e[1;33m#                                                                      #" >> $informeConColor
   echo -e "\e[1;33m########################################################################" >> $informeConColor
   
@@ -407,7 +439,11 @@ function presentacionPantallaInforme {
   echo -ne $ROJO"\nPulsa ENTER para comenzar "$NORMAL
   read enterContinuar
 }
+
+################################################################################################################################################################################################
 # Sinopsis:   breve menú inicial con opción de mostrar manual de usuario
+################################################################################################################################################################################################
+
 function menuInicio {
   clear
   echo -e $AMARILLO"\nMENÚ INICIO"$NORMAL
@@ -433,7 +469,10 @@ function menuInicio {
   echo "$numero" >> $informeSinColor
   echo "" >> $informeSinColor
 
+################################################################################################################################################################################################
   #Comprobación de que el número introducido por el usuario es 1, 2 ó 3
+################################################################################################################################################################################################
+
   while [[ 1 -lt $numero || $numero -lt 3 ]]
   do
     case "$numero" in 
@@ -477,28 +516,44 @@ function menuInicio {
     esac
   done
 }
+
+################################################################################################################################################################################################
 # Sinopsis:   breve explicación sobre cómo funciona el script y lo que podemos hacer con él
+################################################################################################################################################################################################
+
 function manualDeUsuario {
   clear
   evince ./ManualDeUsuario.pdf
   menuInicio
 }
+
+################################################################################################################################################################################################
 # Sinopsis:   cuando el usuario no necesita consultar el manual, porque conoce el funcionamiento, 
 #       se le permite continuar usando esta función (opción 2 del menú)
+################################################################################################################################################################################################
+
 function continuarProgramaPrincipal {
   clear
   menueleccion
 
 }
+################################################################################################################################################################################################
 # Sinopsis:   elimina los archivos que había anteriormente creados y nos direcciona a la entrada de 
 #       particiones y procesos
+################################################################################################################################################################################################
+
 function nuevaEjecucion {
   clear
   rm $ficheroanteriorejecucion
 }
+################################################################################################################################################################################################
 # Sinopsis:   permite utilizar los datos de particiones y procesos que se usaron en la última ejecución
+################################################################################################################################################################################################
+
 function anteriorEjecucion {
+##############################################################################################
    #Salida del resultado de la entrada de las particiones
+##############################################################################################   
     lineaspart=(`cat $ficheroanteriorejecucion | grep "Particion" | cut -f 1 -d " " | wc -l`)
     for (( i = 0; i < $lineaspart; i++ ))
       do
@@ -513,7 +568,9 @@ function anteriorEjecucion {
      memoria2=(`cat $ficheroanteriorejecucion | grep "Llegada" | cut -f 6 -d" "`)
      profich=(`cat $ficheroanteriorejecucion | grep "Llegada" | cut -f 1 -d " " | wc -l`)
      
+##############################################################################################
      #Ordenacion de procesos por llegada
+##############################################################################################
     for ((j=$profich;j > 0;j--))   
       do
       for ((i=0;i < j;i++))
@@ -553,7 +610,10 @@ function anteriorEjecucion {
      done
 
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que permite introducir particiones por teclado
+################################################################################################################################################################################################
+
 function entradaParticionesTeclado {
   while [[ "$masparticion" = "s" ]]
     do
@@ -587,7 +647,10 @@ function entradaParticionesTeclado {
       let contadorParticiones=$contadorParticiones+1
     done
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que se encarga de realizar las preguntar para guardarlas.
+################################################################################################################################################################################################
+
 function Guardado {
     opcion=1 #opcion por defecto
     while [ $opcion -ne 2 ]
@@ -669,7 +732,10 @@ function Guardado {
     echo -ne $ROJO"\nPulsa ENTER para continuar "$NORMAL
     read enterContinuar
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que permite introducir las particiones indicando un rango en el fichero
+################################################################################################################################################################################################
+
 function entradaParticionesRangoManual {
    clear
 
@@ -677,7 +743,10 @@ function entradaParticionesRangoManual {
    
 
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que permite  introducir los procesos por teclado
+################################################################################################################################################################################################
+
 function entradaProcesosRangoManual {
     
     
@@ -760,7 +829,10 @@ function entradaProcesosRangoManual {
       read enterContinuar
 
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que permite  introducir los procesos por teclado
+################################################################################################################################################################################################
+
 function entradaProcesosRangoManual_pruebas {
   clear
   echo "¿Dónde quieres guardar los valores?"
@@ -1029,7 +1101,10 @@ function entradaProcesosRangoManual_pruebas {
   #guardado
 
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que permite  introducir los procesos por teclado
+################################################################################################################################################################################################
+
 function entradaProcesosRangoManual_op_cuatro {
   clear
   echo "¿Dónde quieres guardar los rangos?"
@@ -1346,8 +1421,9 @@ function entradaProcesosRangoManual_op_cuatro {
           fi
       }
     }
-
+##################
   #guardado
+##################
   case $option_guardado in
     1)
       echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango" > $ficherodatosaleatorios
@@ -1360,7 +1436,10 @@ function entradaProcesosRangoManual_op_cuatro {
   esac
 
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que permite introducir las particiones indicando un rango en el fichero
+################################################################################################################################################################################################
+
 function entradaParticionesRangoFichero {
   clear
 
@@ -1391,11 +1470,16 @@ function entradaParticionesRangoFichero {
     echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem"
 
     clear
-    #Menu con case 3 opciones, la primera opcion indica si queremos guardar los rangos en datosrangos.txt, la segunda opcion si queremos guardar los valores aleatorios en datos.txt y la tercera si queremos salir
+################################################################################################################################################################################################
+    #Menu con case 3 opciones, la primera opcion indica si queremos guardar los rangos en datosrangos.txt, la segunda opcion si queremos guardar los valores aleatorios en datos.txt y la tercera si  queremos salir
+################################################################################################################################################################################################
     #Guardado
 
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que permite introducir las particiones indicando un rango en el fichero
+################################################################################################################################################################################################
+
 function entradaParticionesRangoFichero_predefinido {
   clear
 
@@ -1423,7 +1507,10 @@ function entradaParticionesRangoFichero_predefinido {
     #Guardado
 
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que permite  introducir los procesos por teclado
+################################################################################################################################################################################################
+
 function entradaProcesosRangoManual_op_cinco {
  
   clear
@@ -1690,7 +1777,10 @@ function entradaProcesosRangoManual_op_cinco {
     }
 
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que permite inrtoducir las particiones desde fichero (predefinido)
+################################################################################################################################################################################################
+
 function entradaParticionesFichero {
   clear
   echo -ne $ROJO"El formato del fichero deberá ser el siguiente: "$NORMAL
@@ -1720,7 +1810,10 @@ function entradaParticionesFichero {
   read enterContinuar
  
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que permite  introducir los procesos por teclado
+################################################################################################################################################################################################
+
 function entradaProcesosTeclado {
   while [ $masprocesos == "s" ] # mientras que contador sea menor que cantidad de procesos
   do
@@ -2207,7 +2300,10 @@ function entradaProcesosTeclado {
   p=`expr $p + 1` #incremento el contador
   done
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que permite introducir los procesos desde fichero (predefinido)
+################################################################################################################################################################################################
+
 function entradaProcesosFichero {
     clear
 
@@ -2263,7 +2359,10 @@ function entradaProcesosFichero {
         fi
       done
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que inicializa los vectores que usarremos en el algoritmo SRPT_FNI_AjusteMejor
+################################################################################################################################################################################################
+
 function inicializaVectores {
   for (( i = 1; i <= ${#particiones[@]}; i++ ))
   do
@@ -2322,12 +2421,24 @@ function tiempoejecucionalgormitmo {
       break;;
   esac
 }
-############################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
 # Función con Algoritmo FCFS-FNI-Mejor
-############################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
 # Sinopsis:   función que establece los estados de cada proceso según el estado de las particiones. 
 #       Además, asigna los tiempos adecuados por proceso y permite mostrar una salida a pantalla/informe
-function algoritmoSJF_SRPT_AjusteMejor {
+################################################################################################################################################################################################
+
+function algoritmoSJF_FCFS_AjustePrimer {
   clear
   
   let "poreventos=0" #kkkk Para conocer cuando se dispara el volcado. (Si vale 1 se ha disparado)
@@ -2651,8 +2762,11 @@ function algoritmoSJF_SRPT_AjusteMejor {
   ############################################################################
   # Impresion por cada ciclo de iteraciones
   ############################################################################
+  ################################################################################################################################################################################################
   # Se añade el siguiente if que contiene toda la parte de impresión para ejecutarla sólo cuando 
   # haya algún cambio de estado.
+  ################################################################################################################################################################################################
+  
   if [[ ($poreventos -eq 1) || ($reloj -eq 0) ]]
   then 
         for (( i=1; i <= ${#llegada[@]}; i++ ))
@@ -2914,7 +3028,10 @@ function algoritmoSJF_SRPT_AjusteMejor {
     
   done  #Final del 'while'
 }
+################################################################################################################################################################################################
 # Sinopsis:   función muestra, en pantalla/informe, el estado de cada partición según el instante de tiempo
+################################################################################################################################################################################################
+
 function representacionParticionesEnTabla {
 
   #################################################################
@@ -3461,8 +3578,11 @@ function representacionParticionesEnTabla {
 
 
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que permite mostrar el orden de ejecución de los procesos. Se usan colores para 
 #       mejor interacción con el usuario. En esta función es donde se pasan los instante de reloj
+################################################################################################################################################################################################
+
 function representacionLineaTemporal {
   #echo "" 
 
@@ -3878,8 +3998,12 @@ function representacionLineaTemporal {
 evento1=0
 evento2=0
 evento3=0
-# Sinopsis:   muestra en pantalla/informe una tabla con el resultado final tras la ejecución de todos los
-#       procesos
+
+################################################################################################################################################################################################
+# Sinopsis:   muestra en pantalla/informe una tabla con el resultado final tras la ejecución de todos los procesos
+#       
+################################################################################################################################################################################################
+
 function resultadoFinalDeLaEjecucion {
   echo "" | tee -a $informeConColor
   echo "" >> $informeSinColor
@@ -3963,7 +4087,10 @@ function resultadoFinalDeLaEjecucion {
   echo -ne $ROJO"\n\nPulsa ENTER para continuar "$NORMAL
   read enterContinuar
 }
+################################################################################################################################################################################################
 # Sinopsis:   función que calcula de los promedios de espera y de respuesta
+################################################################################################################################################################################################
+
 function calcularPromediosEsperaRespuesta {
   suma_espera=0
   suma_respuesta=0
@@ -3995,7 +4122,10 @@ function calcularPromediosEsperaRespuesta {
         echo "" >> ./informetemp.txt 
   fi
 }
+################################################################################################################################################################################################
 # Sinopsis:   permite al usuario ver, o no, un informe (que se ha creado de todas maneras)
+################################################################################################################################################################################################
+
 function mostrarInforme {
   clear
   echo -e $AMARILLO"\nSE HA GENERADO UN INFORME"$NORMAL
@@ -4041,6 +4171,6 @@ function mostrarInforme {
 presentacionPantallaInforme
 menuInicio
 inicializaVectores
-algoritmoSJF_SRPT_AjusteMejor
+algoritmoSJF_FCFS_AjustePrimer
 resultadoFinalDeLaEjecucion
 mostrarInforme
