@@ -5,7 +5,7 @@
 ############################################################################################################
 #
 # Script que permite simular la secuencia de entrada/salida en memoria de una serie de procesos. El 
-# algoritmo que se sigue para la entrada/salida en memoria es SRPT y se consideran particiones fijas
+# algoritmo que se sigue para la entrada/salida en memoria es FCFS-SJF y se consideran particiones fijas
 # no iguales. 
 #
 # Además, la asignación se hace con ajuste mejor (donde menos memoria se desperdicie es donde entra el
@@ -378,7 +378,7 @@ function presentacionPantallaInforme {
   echo "" | tee -a $informeSinColor
   echo "########################################################################" | tee -a $informeSinColor
   echo "#                                                                      #" | tee -a $informeSinColor
-  echo "#          ALGORITMO SRPT CON PARTICIONES FIJAS NO IGUALES             #" | tee -a $informeSinColor
+  echo "#          ALGORITMO FCFS CON PARTICIONES FIJAS NO IGUALES             #" | tee -a $informeSinColor
   echo "#                          Y AJUSTE PRIMER                             #" | tee -a $informeSinColor
   echo "#        --------------------------------------------------            #" | tee -a $informeSinColor
   echo "# - NUEVO ALUMNO:       Ignacio Zaldo González                         #" | tee -a $informeSinColor 
@@ -414,7 +414,7 @@ function presentacionPantallaInforme {
   echo "" >> $informeConColor
   echo -e "\e[1;33m########################################################################" >> $informeConColor
   echo -e "\e[1;33m#                                                                      #" >> $informeConColor
-  echo -e "\e[1;33m#          ALGORITMO SRPT CON PARTICIONES FIJAS NO IGUALES             #" >> $informeConColor
+  echo -e "\e[1;33m#          ALGORITMO FCFS CON PARTICIONES FIJAS NO IGUALES             #" >> $informeConColor
   echo -e "\e[1;33m#                          Y AJUSTE PRIMER                             #" >> $informeConColor
   echo -e "\e[1;33m#        --------------------------------------------------            #" >> $informeConColor
   echo -e "\e[1;33m# - NUEVO ALUMNO:       Ignacio Zaldo González                         #" >> $informeConColor 
@@ -569,7 +569,9 @@ function anteriorEjecucion {
      profich=(`cat $ficheroanteriorejecucion | grep "Llegada" | cut -f 1 -d " " | wc -l`)
      
 ##############################################################################################
+##############################################################################################
      #Ordenacion de procesos por llegada
+##############################################################################################
 ##############################################################################################
     for ((j=$profich;j > 0;j--))   
       do
@@ -1471,7 +1473,8 @@ function entradaParticionesRangoFichero {
 
     clear
 ################################################################################################################################################################################################
-    #Menu con case 3 opciones, la primera opcion indica si queremos guardar los rangos en datosrangos.txt, la segunda opcion si queremos guardar los valores aleatorios en datos.txt y la tercera si  queremos salir
+    #Menu con case 3 opciones, la primera opcion indica si queremos guardar los rangos en datosrangos.txt, la segunda opcion si queremos guardar los valores aleatorios en datos.txt y la tercera 
+    #si  queremos salir
 ################################################################################################################################################################################################
     #Guardado
 
@@ -2360,7 +2363,7 @@ function entradaProcesosFichero {
       done
 }
 ################################################################################################################################################################################################
-# Sinopsis:   función que inicializa los vectores que usarremos en el algoritmo SRPT_FNI_AjusteMejor
+# Sinopsis:   función que inicializa los vectores que usaremos en el algoritmo SRPT_FNI_AjusteMejor -- ahora cambiado a FCFS-SJF_FNI_AjustePrimer
 ################################################################################################################################################################################################
 
 function inicializaVectores {
@@ -2373,7 +2376,7 @@ function inicializaVectores {
   
   for (( p = 0; p <= ${#memoria[@]}; p++ ))
   do
-    espera[$p]=0
+    espera[$p]=0      #inicializo varios vectores con unos valores determinados
     entrada[$p]=0
     tiempoEsperaProceso[$p]=0
     restante[$p]=0
@@ -2387,7 +2390,7 @@ function inicializaVectores {
   done
   procesoYaHaEntrado[0]=1
   
-  for (( k = 0 ; k <= 100 ; k++ ))
+  for (( k = 0 ; k <= 100 ; k++ ))    
   do
     gantt[$k]=99
     gantt2[$k]=99
@@ -2427,7 +2430,10 @@ function tiempoejecucionalgormitmo {
 ######################################################################################################################################
 ######################################################################################################################################
 ######################################################################################################################################
-# Función con Algoritmo FCFS-FNI-Mejor   //TODO modificar por Primer
+###################################                                                                ###################################
+###################################         Función con Algoritmo FCFS-FNI-Primer                  ###################################
+###################################             Que antes era SRPT-FNI-Mejor                       ###################################
+###################################                                                                ###################################
 ######################################################################################################################################
 ######################################################################################################################################
 ######################################################################################################################################
@@ -2456,7 +2462,7 @@ function algoritmoSJF_FCFS_AjustePrimer {
     # Se ejecuta siempre
     ############################################################################
 
-  #Comienzo del algoritmo de SRPT con particiones distintas y ajuste mejor
+  #Comienzo del algoritmo de SRPT (ahora FCFS-SJF) con particiones distintas y ajuste mejor
   while [[ $salida != "s" ]]
   do
     
@@ -2505,7 +2511,7 @@ function algoritmoSJF_FCFS_AjustePrimer {
                               then
                             auxMem=`expr ${particiones[$dm]} - ${memoria[$i]}`   # resta entre el tamaño de la partición y el valor de la memoria correspondiente
                             fi
-                            #if [[ $auxMem -lt $diff_mem && ${particionOcupada[$dm]} -eq 0 && ${particiones[$dm]} -ge ${memoria[$i]} ]] 
+                            #if [[ $auxMem -lt $diff_mem && ${particionOcupada[$dm]} -eq 0 && ${particiones[$dm]} -ge ${memoria[$i]} ]]  #quitando estas lineas comentadas cambio de primer a mejor
                               #then
                               #  diff_mem=$auxMem
                              #   diff=$dm                                
