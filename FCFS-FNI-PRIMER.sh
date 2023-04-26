@@ -8,8 +8,7 @@
 # algoritmo que se sigue para la entrada/salida en memoria es FCFS-SJF y se consideran particiones fijas
 # no iguales. 
 #
-# Además, la asignación se hace con ajuste mejor (donde menos memoria se desperdicie es donde entra el
-# proceso).
+# Además, la asignación se hace con ajuste primer (el primer sitio donde haya hueco es donde entra).
 #
 # Se permite interacción con el ususario para selección de procesos y particiones. Y se genera un informe
 # con la secuencia de ejecuciones realizadas.
@@ -24,10 +23,12 @@
 #
 # LICENCIA: Creative Commons
 #
-# VERSION 6: 2023 ########################################################################################################################
+# VERSION 6: 2023 Se ha cambiado de ajuste mejor a primer
 ########################################################################################################################
 ########################################################################################################################
-###########################################COMPLETAR###COMPLETAR##########################################################################
+####################################                                       ###################################################################
+####################################            COMPLETAR                  ###################################################################
+####################################                                       ###################################################################
 ########################################################################################################################
 ########################################################################################################################
 #
@@ -103,7 +104,7 @@
 
      
 ############################################################################################################
-#             VARIABLES
+#                                         VARIABLES
 ############################################################################################################
 
 #OPCIONES DE INTRODUCCIÓN DE DATOS POR PARTE DEL USUARIO
@@ -114,7 +115,7 @@ contadorParticiones=1;       #Contador para la introduccion de particiones
 masprocesos=s                #Variable bandera que determina si el usuario desea introducir mas particiones
 
 ################################################################################################################################################################################################
-#VARIABLES DEL ALGORITMO Y GESTIÓN DE DATOS 
+#                                VARIABLES DEL ALGORITMO Y GESTIÓN DE DATOS 
 ################################################################################################################################################################################################
 p=1;                         # contador
 i=1;                         # contador
@@ -516,6 +517,97 @@ function menuInicio {
     esac
   done
 }
+################################################################################################################################################################################################
+################################################################################################################################################################################################
+################################################################################################################################################################################################
+################################################################################################################################################################################################
+################################################################################################################################################################################################
+################################################################################################################################################################################################
+#  Sinopsis:   menú de elección de algoritmo a usar (FCFS o SJF)
+################################################################################################################################################################################################
+
+function menuAlgoritmo {
+  clear
+  echo -e $AMARILLO"\nMENÚ DE ELECCIÓN DE ALGORITMO"$NORMAL
+  echo -e "\n1. FCFS"
+  echo -e "\n2. SJF"
+  echo -e "\n3. Salir"
+  echo -n -e "\n--> "
+  read numero
+
+  echo -e $AMARILLO"\nMENÚ INICIO"$NORMAL >> $informeConColor
+  echo -e "\n1. FCFS" >> $informeConColor
+  echo -e "\n2. SJF" >> $informeConColor
+  echo -e "\n3. Salir" >> $informeConColor
+  echo -n -e "\n--> " >> $informeConColor
+  echo "$numero" >> $informeConColor
+  echo "" >> $informeConColor
+
+  echo -e "\nMENÚ INICIO" >> $informeSinColor
+  echo -e "\n1. FCFS" >> $informeSinColor
+  echo -e "\n2. SJF" >> $informeSinColor
+  echo -e "\n3. Salir" >> $informeSinColor
+  echo -n -e "\n--> " >> $informeSinColor
+  echo "$numero" >> $informeSinColor
+  echo "" >> $informeSinColor
+}
+
+################################################################################################################################################################################################
+  #Comprobación de que el número introducido por el usuario es 1, 2 ó 3
+################################################################################################################################################################################################
+
+  while [[ 1 -lt $numero || $numero -lt 3 ]]
+  do
+    case "$numero" in 
+      '1') 
+      manualDeUsuario  ## cambiar por el algoritmo FCFS
+      break;;
+  
+      '2')
+      continuarProgramaPrincipal   ## cambiar por el algoritmo SJF
+      break;;
+  
+      '3')
+      echo -e $ROJO"\nSE HA SALIDO DEL PROGRAMA"$NORMAL
+      exit 0 
+      break;;
+ 
+      *)
+      clear
+      echo -e $AMARILLO"\nMENÚ DE ELECCIÓN DE ALGORITMO"$NORMAL
+  echo -e "\n1. FCFS"
+  echo -e "\n2. SJF"
+  echo -e "\n3. Salir"
+  echo -n -e "\n--> "
+  read numero
+
+  echo -e $AMARILLO"\nMENÚ DE ELECCIÓN DE ALGORITMO"$NORMAL >> $informeConColor
+  echo -e "\n1. FCFS" >> $informeConColor
+  echo -e "\n2. SJF" >> $informeConColor
+  echo -e "\n3. Salir" >> $informeConColor
+  echo -n -e "\n--> " >> $informeConColor
+  echo "$numero" >> $informeConColor
+  echo "" >> $informeConColor
+
+  echo -e "\nMENÚ DE ELECCIÓN DE ALGORITMO" >> $informeSinColor
+  echo -e "\n1. FCFS" >> $informeSinColor
+  echo -e "\n2. SJF" >> $informeSinColor
+  echo -e "\n3. Salir" >> $informeSinColor
+  echo -n -e "\n--> " >> $informeSinColor
+  echo "$numero" >> $informeSinColor
+  echo "" >> $informeSinColor
+    esac
+  done
+}
+
+################################################################################################################################################################################################
+################################################################################################################################################################################################
+################################################################################################################################################################################################
+################################################################################################################################################################################################
+################################################################################################################################################################################################
+################################################################################################################################################################################################
+
+
 
 ################################################################################################################################################################################################
 # Sinopsis:   breve explicación sobre cómo funciona el script y lo que podemos hacer con él
@@ -2440,9 +2532,11 @@ function tiempoejecucionalgormitmo {
 ######################################################################################################################################
 ######################################################################################################################################
 ######################################################################################################################################
-# Sinopsis:   función que establece los estados de cada proceso según el estado de las particiones. 
-#       Además, asigna los tiempos adecuados por proceso y permite mostrar una salida a pantalla/informe
-################################################################################################################################################################################################
+#     Sinopsis:   función que establece los estados de cada proceso según el estado de las particiones.             ##################
+#       Además, asigna los tiempos adecuados por proceso y permite mostrar una salida a pantalla/informe            ##################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
 
 function algoritmoSJF_FCFS_AjustePrimer {
   clear
@@ -2462,7 +2556,7 @@ function algoritmoSJF_FCFS_AjustePrimer {
     # Se ejecuta siempre
     ############################################################################
 
-  #Comienzo del algoritmo de SRPT (ahora FCFS-SJF) con particiones distintas y ajuste mejor
+  #Comienzo del algoritmo de SRPT (ahora FCFS) con particiones distintas y ajuste mejor
   while [[ $salida != "s" ]]
   do
     
@@ -2482,7 +2576,7 @@ function algoritmoSJF_FCFS_AjustePrimer {
                 for (( j=1; j <= ${#particiones[@]}; j++ ))
                   do
                     #Si el tamaño en memoria del proceso es menor que alguna partición y ésta no está ocupada...
-                    if [[ ${memoria[$i]} -le ${particiones[$j]} && ${particionOcupada[$j]} -eq 0 ]]
+                    if [[ ${memoria[$i]} -le ${particiones[$j]} && ${particionOcupada[$j]} -eq 0 ]]                              
                       then
                         #...metemos al proceso en esa partición
                         
@@ -2497,12 +2591,12 @@ function algoritmoSJF_FCFS_AjustePrimer {
                 	fi
                         estado[$i]="En memoria"
                         let restante[$i]=${tiempo[$i]}
-                        #Buscamos el mejor --- cambiar por primer --- ajuste posible con la minima diff memoria sobrante
+                        #Buscamos el primer (antes mejor) ajuste posible con la minima diff memoria sobrante
                         ##############################################################################################################################
                         ##############################################################################################################################
                         ##############################################################################################################################
                         ############################                                                                      ############################ 
-                        ############################                        Algoritmo Primer                              ############################
+                        ############################                        Algoritmo Primer  (ANTES MEJOR)               ############################
                         ############################                                                                      ############################ 
                         ##############################################################################################################################
                         ##############################################################################################################################
@@ -2691,7 +2785,10 @@ function algoritmoSJF_FCFS_AjustePrimer {
                                         estado[${ocupadas[$m]}]="En pausa"
                                         bandera[${ocupadas[$m]}]=0
 
-                            #Px invasor                                        
+############################################################################
+                            #Px invasor                 
+############################################################################    
+
                                         inicioEjecucion[$e]=$reloj
               		if [[ ${estado[$e]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
 									# producido una modificación en el Estado del 
@@ -2765,7 +2862,7 @@ function algoritmoSJF_FCFS_AjustePrimer {
             salida=s
         fi
                         
-      #Recalculod e tiempos en funcion de la espera y la respuesta de un Px
+      #Recalculo de tiempos en funcion de la espera y la respuesta de un Px
         for ((k=1;k<=${#tiempoEsperaProceso[@]};k++)){
           if [[ ${tiempoEsperaProceso[$k]} -lt 0 ]]
             then
