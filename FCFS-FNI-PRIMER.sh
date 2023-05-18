@@ -412,7 +412,7 @@ function menuAlgoritmo {
   
       '2')
       
-      continuarProgramaPrincipal   ## cambiar por el algoritmo SJF
+      continuarProgramaPrincipal   ## cambiar por el algoritmo SJF # esta continuarProgramaPrincipal
       break;;
   
       '3')
@@ -2569,10 +2569,17 @@ function tiempoejecucionalgormitmo {
 #   evento3=0
 #   fi
 
+#     ############################################################################
+#     # Se ejecuta siempre
+#     ############################################################################
+
+#   #Comienzo del algoritmo de SRPT (ahora FCFS) con particiones distintas y ajuste mejor
 #   while [[ $salida != "s" ]]
 #   do
     
-    
+#     ############################################################################
+#     # Control de Particiones y Estados de los Procesos
+#     ############################################################################
 
 #     for (( i=1; i <= ${#llegada[@]}; i++ ))
 #       do    
@@ -2601,7 +2608,16 @@ function tiempoejecucionalgormitmo {
 #                 	fi
 #                         estado[$i]="En memoria"
 #                         let restante[$i]=${tiempo[$i]}
-                        
+#                         #Buscamos el primer (antes mejor) ajuste posible con la minima diff memoria sobrante
+#                         ##############################################################################################################################
+#                         ##############################################################################################################################
+#                         ##############################################################################################################################
+#                         ############################                                                                      ############################ 
+#                         ############################                        Algoritmo Primer  (ANTES MEJOR)               ############################
+#                         ############################                                                                      ############################ 
+#                         ##############################################################################################################################
+#                         ##############################################################################################################################
+#                         ##############################################################################################################################
 #                         diff_mem=100
 #                         diff=$j
 #                         for (( dm=1; dm<=${#particiones[@]}; dm++ ))
@@ -2636,16 +2652,16 @@ function tiempoejecucionalgormitmo {
 #         if [[ ${tiempoEsperaProceso[$i]} -lt 0 && ${llegada[$i]} -ge $reloj && ${sale[$i]} -eq 0 ]]
 #           then
 #           estado[$i]="Fuera del sistema"
-#           else
-#         if [[ ${procesoEnParticionOcupada[$i]} -ne 1 && ${llegada[$i]} -le $reloj && ${estado[$i]} != "Finalizado" && ${sale[$i]} -eq 0 ]]
-#           then
-#         if [[ ${estado[$i]} != "En espera" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
-#           then                                  # producido una modificación en el Estado del proceso.
-#           let "poreventos=1"
-#         #echo -ne "kkkk ssssssssssssssssssssss En espera 2060\n"
-#         fi
-#         estado[$i]="En espera"
-#         fi                                
+#         else
+#           if [[ ${procesoEnParticionOcupada[$i]} -ne 1 && ${llegada[$i]} -le $reloj && ${estado[$i]} != "Finalizado" && ${sale[$i]} -eq 0 ]]
+#             then
+#             if [[ ${estado[$i]} != "En espera" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
+#             then                                  # producido una modificación en el Estado del proceso.
+#               let "poreventos=1"
+#               #echo -ne "kkkk ssssssssssssssssssssss En espera 2060\n"
+#             fi
+#             estado[$i]="En espera"
+#           fi                                
 #         fi
 
         
@@ -2680,7 +2696,7 @@ function tiempoejecucionalgormitmo {
 #         # 4)Ajustamos el tiempo restante de ejecución decrementando para el estado "En ejecución"
 #         if [[ ${estado[$i]} == "En ejecución" && ${sale[$i]} -eq 0 ]]
 #           then
-#           let restante[$i]=${restante[$i]}-1  
+#             let restante[$i]=${restante[$i]}-1  
 #         fi
 
 #         #En caso de que sea el primer proceso
@@ -2736,10 +2752,7 @@ function tiempoejecucionalgormitmo {
      
               
 #         semaforo=0
-        
-        
 
-          
 #       #Si un proceso su tiempo restante es 0 finaliza
 #       if [[ ${restante[$i]} -le 0 && ${procesoEnParticionOcupada[$i]} -eq 1 && ${sale[$i]} -eq 0 ]]
 #       then
@@ -2761,42 +2774,42 @@ function tiempoejecucionalgormitmo {
  
 #       #Comprobamos si hay algun Px en ejecucion, en caso contrario lanzamos el siguiente.
 #       semaforo=0
-#       # for ((a=1; a<=${#llegada[@]}; a++ ))
-#       # do
-#       #   if [[ ${bandera[$a]} -eq 1 ]]
-#       #   then
-#       #       semaforo=1
-#       #   fi
-#       # done
+#       for ((a=1; a<=${#llegada[@]}; a++ ))
+#       do
+#         if [[ ${bandera[$a]} -eq 1 ]]
+#         then
+#             semaforo=1
+#         fi
+#       done
               
 #       if [[ $semaforo -eq 0 ]]
-#         then
+#       then
 #         shortestJob=0
 #         shortestTime=${restante[1]}
 #         for (( h=2; h<=${#llegada[@]}; h++ ))
-#           do
+#         do
 #           if [[ ${estado[$h]} == "En memoria" || ${estado[$h]} == "En pausa" ]]
-#             then
+#           then
 #             if [[ ${restante[$h]} -lt $shortestTime ]]
-#               then
+#             then
 #               shortestJob=$h
 #               shortestTime=${restante[$h]}
 #             fi
 #           fi
-#       done
+#         done
 
-#       if [[ $shortestJob -ne 0 ]]
+#         if [[ $shortestJob -ne 0 ]]
 #         then
-#         if [[ ${estado[$shortestJob]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
+#           if [[ ${estado[$shortestJob]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
 #           then                                                # producido una modificación en el Estado del proceso.
 #             let "poreventos=1"
 #             #echo -ne "kkkk ssssssssssssssssssssss En ejecución 2244\n"
+#           fi
+#           estado[$shortestJob]="En ejecución"
+#           inicioEjecucion[$shortestJob]=$reloj
+#           bandera[$shortestJob]=1
 #         fi
-#         estado[$shortestJob]="En ejecución"
-#         inicioEjecucion[$shortestJob]=$reloj
-#         bandera[$shortestJob]=1
 #       fi
-#     fi
 
 #         #Salida 
 #         if [[ $hasalido -ge ${#memoria[@]} ]]
@@ -2826,7 +2839,13 @@ function tiempoejecucionalgormitmo {
 #       done
 
 
-
+#   ############################################################################
+#   # Impresion por cada ciclo de iteraciones
+#   ############################################################################
+#   ################################################################################################################################################################################################
+#   # Se añade el siguiente if que contiene toda la parte de impresión para ejecutarla sólo cuando 
+#   # haya algún cambio de estado.
+#   ################################################################################################################################################################################################
   
 #   if [[ ($poreventos -eq 1) || ($reloj -eq 0) ]]
 #   then 
@@ -3083,7 +3102,9 @@ function tiempoejecucionalgormitmo {
 #         # siguiente 
 
 
-
+#   ############################################################################
+#   #Final del if+for de Impresion por cada ciclo de iteraciones
+#   ############################################################################
     
 #   done  #Final del 'while'
 # }
