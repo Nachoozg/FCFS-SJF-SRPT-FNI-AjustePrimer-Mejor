@@ -3772,7 +3772,16 @@ function representacionParticionesEnTabla {
   b=$(( $i + 5 ))
   c=$(( $i + 6 ))
 
-  echo -ne $NORMAL"\033[$a;1H    |" 
+
+  #############################################################################
+  #############################################################################
+  #############################################################################
+  ##########                    PRIMER INSTANTE                      ##########
+  #############################################################################
+  #############################################################################
+  #############################################################################
+  
+  echo -ne $NORMAL"\033[$a;1H    |"   #linea de encima de BM
   echo -ne "    |" >> ./informeColortemp.txt
   echo -ne "    |" >> ./informetemp.txt
   for (( j = 1; j <= ${#particiones[@]}; j++))
@@ -3795,7 +3804,7 @@ function representacionParticionesEnTabla {
                     if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                       a=$(( $a + 3 ))
                       echo -e "\033[2B"
-                      echo -ne "    |"
+                      echo -ne "    |"                       #nada
                       echo -ne "    |" >> informetemp.txt
                       echo -ne "    |" >> informeColortemp.txt
                       cuentacolumnas=0
@@ -3811,9 +3820,9 @@ function representacionParticionesEnTabla {
                   if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                     a=$(( $a + 3 ))
                     echo -e "\033[2B"
-                    echo -ne "    |"
-                    echo -ne "    |" >> informetemp.txt
-                    echo -ne "    |" >> informeColortemp.txt
+                    echo -ne "     "  # primera de las 3 | de la barra bajo BM en tercer - cuarto paso
+                    echo -ne "     " >> informetemp.txt
+                    echo -ne "     " >> informeColortemp.txt
                     cuentacolumnas=0
                   fi
                 done
@@ -3833,9 +3842,9 @@ function representacionParticionesEnTabla {
           if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
             a=$(( $a + 3 ))
             echo -e "\033[2B"
-            echo -ne "    |"
-            echo -ne "    |" >> informetemp.txt
-            echo -ne "    |" >> informeColortemp.txt
+            echo -ne "     "             #primera de las 3 de debajo de BM en primer - segundo paso
+            echo -ne "     " >> informetemp.txt
+            echo -ne "     " >> informeColortemp.txt
             cuentacolumnas=0
           fi
         done
@@ -3903,9 +3912,9 @@ function representacionParticionesEnTabla {
                     if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                       b=$(( $b + 3 ))
                       echo -e "\033[2B"
-                      echo -ne "    |"
-                      echo -ne "    |" >> informetemp.txt
-                      echo -ne "    |" >> informeColortemp.txt
+                      echo -ne "     " # barra del medio de las 3 de abajo cuarto paso
+                      echo -ne "     " >> informetemp.txt
+                      echo -ne "     " >> informeColortemp.txt
                       cuentacolumnas=0
                     fi
                   done
@@ -3919,7 +3928,7 @@ function representacionParticionesEnTabla {
                   if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                     b=$(( $b + 3 ))
                     echo -e "\033[2B"
-                    echo -ne "    |"
+                    echo -ne "    |"                        #nada
                     echo -ne "    |" >> informetemp.txt
                     echo -ne "    |" >> informeColortemp.txt
                     cuentacolumnas=0
@@ -3941,16 +3950,16 @@ function representacionParticionesEnTabla {
           if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
             b=$(( $b + 3 ))
             echo -e "\033[2B"
-            echo -ne "    |"
-            echo -ne "    |" >> informetemp.txt
-            echo -ne "    |" >> informeColortemp.txt
+            echo -ne "     " # barra 2 del medio primer-segundo paso
+            echo -ne "     " >> informetemp.txt
+            echo -ne "     " >> informeColortemp.txt
             cuentacolumnas=0
           fi
         done
         
   fi 
   echo -ne "|" >> ./informeColortemp.txt
-  echo -ne "|"
+  echo -ne "|"                            #espacio entre lineas de procesos
   echo -ne "|" >> ./informetemp.txt
   if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
     b=$(( $b + 3 ))
@@ -4011,9 +4020,9 @@ function representacionParticionesEnTabla {
 
                   if [[ ${partConProceso[$i]} -eq 1 ]];then
                     let sumabm=0
-                    echo -ne "  $sumabm" >> ./informeColortemp.txt
-                    echo -ne "  $sumabm"
-                    echo -ne "  $sumabm" >> ./informetemp.txt
+                    echo -ne " $sumabm" >> ./informeColortemp.txt
+                    echo -ne " $sumabm" #cambio Hugo 2  ## deja el numero pegado pero no aparece la barra
+                    echo -ne " $sumabm" >> ./informetemp.txt
                     cuentacolumnas=$(($cuentacolumnas + 1))
                     cuentacolumnas=$(($cuentacolumnas + 1))
                     cuentacolumnas=$(($cuentacolumnas + 1))
@@ -4021,7 +4030,7 @@ function representacionParticionesEnTabla {
                     if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                       c=$(( $c + 3 ))
                       echo -e "\033[2B"
-                      echo -ne "    |"
+                      echo -ne "    |"                          #nada
                       echo -ne "    |" >> informetemp.txt
                       echo -ne "    |" >> informeColortemp.txt
                       cuentacolumnas=0
@@ -4039,7 +4048,7 @@ function representacionParticionesEnTabla {
                       if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                         c=$(( $c + 3 ))
                         echo -e "\033[2B"
-                        echo -ne "    |"
+                        echo -ne "    |"                     #nada
                         echo -ne "    |" >> informetemp.txt
                         echo -ne "    |" >> informeColortemp.txt
                         cuentacolumnas=0
@@ -4055,7 +4064,7 @@ function representacionParticionesEnTabla {
                       if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                         c=$(( $c + 3 ))
                         echo -e "\033[2B"
-                        echo -ne "    |"
+                        echo -ne "    |"                       #nada
                         echo -ne "    |" >> informetemp.txt
                         echo -ne "    |" >> informeColortemp.txt
                         cuentacolumnas=0
@@ -4072,7 +4081,7 @@ function representacionParticionesEnTabla {
                   for (( k = 0 ; k < $espacios2 ; k++ ))
                     do
                       echo -ne " " >> ./informeColortemp.txt
-                      echo -ne " " 
+                      echo -ne " "                            #espacio entre numeros de debajo de la barra 
                       echo -ne " " >> ./informetemp.txt
                       cuentacolumnas=$(($cuentacolumnas + 1))
                       
@@ -4095,7 +4104,7 @@ function representacionParticionesEnTabla {
                     for (( r = 0 ; r < $expresion ; r++ ))
                     do
                       echo -ne "   " >> ./informeColortemp.txt
-                      echo -ne "   " 
+                      echo -ne "   "                            #se quita la barra
                       echo -ne "   " >> ./informetemp.txt
                       cuentacolumnas=$(($cuentacolumnas + 1))
                       cuentacolumnas=$(($cuentacolumnas + 1))
@@ -4105,7 +4114,7 @@ function representacionParticionesEnTabla {
                       
                         c=$(( $c + 3 ))
                         echo -e "\033[2B"
-                        echo -ne "    |"
+                        echo -ne "    |"                          #nada
                         echo -ne "    |" >> informetemp.txt
                         echo -ne "    |" >> informeColortemp.txt
                         cuentacolumnas=0
@@ -4117,16 +4126,16 @@ function representacionParticionesEnTabla {
 	            for (( k = 1 ; k < $espacios2 ; k++ ))
                     do
                       echo -ne " " >> ./informeColortemp.txt
-                      echo -ne " "
+                      echo -ne " "                             #se quita la barra
                       echo -ne " " >> ./informetemp.txt
                       cuentacolumnas=$(($cuentacolumnas + 1))
                       
                       if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                         c=$(( $c + 3 ))
                         echo -e "\033[2B"
-                        echo -ne "    |"
-                        echo -ne "    |" >> informetemp.txt
-                        echo -ne "    |" >> informeColortemp.txt
+                        echo -ne "     "      #tercera barra de debajo de BM, cuarta interaccion
+                        echo -ne "     " >> informetemp.txt
+                        echo -ne "     " >> informeColortemp.txt
                         cuentacolumnas=0
                     fi
 
@@ -4145,7 +4154,7 @@ function representacionParticionesEnTabla {
                     for (( r = 0 ; r < $expresion ; r++ ))
                     do
                       echo -ne "   " >> ./informeColortemp.txt
-                      echo -ne "   " 
+                      echo -ne "   "                                 #se quita la barra
                       echo -ne "   " >> ./informetemp.txt
                       cuentacolumnas=$(($cuentacolumnas + 1))
                       cuentacolumnas=$(($cuentacolumnas + 1))
@@ -4154,7 +4163,7 @@ function representacionParticionesEnTabla {
                       if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                         c=$(( $c + 3 ))
                         echo -e "\033[2B"
-                        echo -ne "    |"
+                        echo -ne "    |"   #nada
                         echo -ne "    |" >> informetemp.txt
                         echo -ne "    |" >> informeColortemp.txt
                         cuentacolumnas=0
@@ -4233,7 +4242,7 @@ function representacionParticionesEnTabla {
     else
       let sumabm=0
       echo -ne "  $sumabm" >> ./informeColortemp.txt
-      echo -ne "  $sumabm"
+      echo -ne "  $sumabm" #cambio Hugo1
       echo -ne "  $sumabm" >> ./informetemp.txt
       cuentacolumnas=$(($cuentacolumnas + 1))
       cuentacolumnas=$(($cuentacolumnas + 1))
@@ -4242,7 +4251,7 @@ function representacionParticionesEnTabla {
                       if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                         c=$(( $c + 3 ))
                         echo -e "\033[2B"
-                        echo -ne "    |"
+                        echo -ne "    |"                               #nada
                         echo -ne "    |" >> informetemp.txt
                         echo -ne "    |" >> informeColortemp.txt
                         cuentacolumnas=0
@@ -4254,16 +4263,16 @@ function representacionParticionesEnTabla {
       for (( v = 0 ; v < $espacios2 ; v++ ))
       do
         echo -ne " " >> ./informeColortemp.txt
-        echo -ne " "
+        echo -ne " "                             #con este junta los numeros y no muestra la barra 
         echo -ne " " >> ./informetemp.txt
         cuentacolumnas=$(($cuentacolumnas + 1))
         
                       if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                         c=$(( $c + 3 ))
                         echo -e "\033[2B"
-                        echo -ne "    |"
-                        echo -ne "    |" >> informetemp.txt
-                        echo -ne "    |" >> informeColortemp.txt
+                        echo -ne "     " # barra de abajo del todo de las 3 rayas
+                        echo -ne "     " >> informetemp.txt
+                        echo -ne "     " >> informeColortemp.txt
                         cuentacolumnas=0
                     fi
         
@@ -4272,7 +4281,7 @@ function representacionParticionesEnTabla {
 
   if [[ $nseparadores -lt $separadores ]];then
       echo -ne "" >> ./informeColortemp.txt
-      echo -ne " "
+      echo -ne " "                               # espacio delante de los numeros, si borro deja sin ver la barra
       echo -ne "" >> ./informetemp.txt
       nseparadores=$(($nseparadores + 1))
     fi
@@ -4280,7 +4289,7 @@ function representacionParticionesEnTabla {
   if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
       c=$(( $c + 3 ))
       echo -e "\033[2B"
-      echo -ne "    |"
+      echo -ne "    |"                           #nada
       echo -ne "    |" >> informetemp.txt
       echo -ne "    |" >> informeColortemp.txt
       cuentacolumnas=0
@@ -4289,7 +4298,7 @@ function representacionParticionesEnTabla {
   done
 
     echo -ne "|" >> ./informeColortemp.txt
-    echo -ne "|"
+    echo -ne "|"  #barra debajo de la M
     echo -ne "|" >> ./informetemp.txt
 
 
@@ -4435,7 +4444,7 @@ function representacionLineaTemporal {
     fi
   }
     #PRUEBAPRUEBAPRUEBAPRUEBAPRUEBA
-    echo -ne "|"
+    echo -ne "|"   ## primero de la T
 
   ##LÍNEA DE COLORES
   echo -ne $NORMAL"\033[$e;1H BT |"
@@ -4500,7 +4509,7 @@ function representacionLineaTemporal {
    terminal=$(($(tput cols)))
    columnasporfila=$(($terminal))
    caracteresPorLinea=$(($columnasporfila - 9))
-   echo -ne "\033[$f;1H    |"
+   echo -ne "\033[$f;1H    |"  #primera de abajo de BT - primer bucle
 
   # # # POR CADA UPDATE LO IMPRIME, AQUI ESTA EL FOR CAUSANTE. # # # 
   for (( k = 0 ; k <= $reloj ; k++ )){
