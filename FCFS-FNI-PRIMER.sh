@@ -252,8 +252,8 @@ colores2[5]=$MORADO2
 ################################################################################################################################################################################################
 informeSinColor="./Informes_Salida/informeBN.txt"
 informeConColor="./Informes_Salida/informeCOLOR.txt"
-ficheroanteriorejecucion="./Datos/datos.txt"
-ficherodatosaleatorios="./Rangos/datosrangos.txt"
+ficheroanteriorejecucion="./Datos/Datos.txt"
+ficherodatosaleatorios="./Rangos/DatosRangos.txt"
 ################################################################################################################################################################################################
 ################################################################################################################################################################################################
 #             FUNCIONES
@@ -266,10 +266,10 @@ function menueleccion {
   clear
   echo -e $AMARILLO"\nMENÚ INICIO"$NORMAL
   echo -e "\n1. Introducción de datos manual"
-  echo -e "\n2. Fichero de datos de última ejecución (datos.txt)"
+  echo -e "\n2. Fichero de datos de última ejecución (Datos.txt)"
   echo -e "\n3. Otros ficheros de datos"
   echo -e "\n4. Aleatorio manual (Indica rango)"
-  echo -e "\n5. Fichero de rangos de última ejecución (datosrangos.txt)"
+  echo -e "\n5. Fichero de rangos de última ejecución (DatosRangos.txt)"
   echo -e "\n6. Otros ficheros de rangos"
   echo -e "\n7. Salir"
   echo -n -e "\n--> "
@@ -277,20 +277,20 @@ function menueleccion {
 
   echo -e $AMARILLO"\nMENÚ INICIO"$NORMAL >> $informeConColor
   echo -e "\n1. Introducción de datos manual" >> $informeConColor
-  echo -e "\n2. Fichero de datos de última ejecución (datos.txt)" >> $informeConColor
+  echo -e "\n2. Fichero de datos de última ejecución (Datos.txt)" >> $informeConColor
   echo -e "\n3. Otros ficheros de datos" >> $informeConColor
   echo -e "\n4. Aleatorio manual (Indica rango)" >> $informeConColor
-  echo -e "\n5. Fichero de rangos de última ejecución (datosrangos.txt)" >> $informeConColor
+  echo -e "\n5. Fichero de rangos de última ejecución (DatosRangos.txt)" >> $informeConColor
   echo -e "\n6. Otros ficheros de rangos" >> $informeConColor
   echo -e "\n7. Salir" >> $informeConColor
   echo -n -e "\n--> $seleccion" >> $informeConColor
 
   echo -e "\nMENÚ INICIO" >> $informeSinColor
   echo -e "\n1. Introducción de datos manual" >> $informeSinColor
-  echo -e "\n2. Fichero de datos de última ejecución (datos.txt)" >> $informeSinColor
+  echo -e "\n2. Fichero de datos de última ejecución (Datos.txt)" >> $informeSinColor
   echo -e "\n3. Otros ficheros de datos" >> $informeSinColor
   echo -e "\n4. Aleatorio manual (Indica rango)" >> $informeSinColor
-  echo -e "\n5. Fichero de rangos de última ejecución (datosrangos.txt)" >> $informeSinColor
+  echo -e "\n5. Fichero de rangos de última ejecución (DatosRangos.txt)" >> $informeSinColor
   echo -e "\n6. Otros ficheros de rangos" >> $informeSinColor
   echo -e "\n7. Salir" >> $informeSinColor
   echo -n -e "\n--> $seleccion" >> $informeSinColor
@@ -350,10 +350,10 @@ function menueleccion {
       clear
       echo -e $AMARILLO"\nMENÚ INICIO"$NORMAL
       echo -e "\n1. Introducción de datos manual"
-      echo -e "\n2. Fichero de datos de última ejecución (datos.txt)"
+      echo -e "\n2. Fichero de datos de última ejecución (Datos.txt)"
       echo -e "\n3. Otros ficheros de datos"
       echo -e "\n4. Aleatorio manual (Indica rango)"
-      echo -e "\n5. Fichero de rangos de última ejecución (datosrangos.txt)"
+      echo -e "\n5. Fichero de rangos de última ejecución (DatosRangos.txt)"
       echo -e "\n6. Otros ficheros de rangos"
       echo -e "\n7. Salir"
       echo -n -e "\n--> "
@@ -381,7 +381,7 @@ function menuAlgoritmo {
   echo -e "\n2. SJF"
   echo -e "\n3. Salir"
   echo -n -e "\n--> "
-  read algortitmoE
+  read algoritmoE
 
   echo -e $AMARILLO"\nMENÚ INICIO"$NORMAL >> $informeConColor
   echo -e "\n1. FCFS" >> $informeConColor
@@ -404,9 +404,9 @@ function menuAlgoritmo {
   #Comprobación de que el número introducido por el usuario es 1, 2 ó 3
 ################################################################################################################################################################################################
 
-  while [[ 1 -lt $numero || $numero -lt 3 ]]
+  while [[ 1 -lt $algoritmoE || $algoritmoE -lt 3 ]]
    do
-    case "$numero" in 
+    case "$algoritmoE" in 
       '1')
       
       menueleccion ## cambiar por el algoritmo FCFS
@@ -429,14 +429,14 @@ function menuAlgoritmo {
   echo -e "\n2. SJF"
   echo -e "\n3. Salir"
   echo -n -e "\n--> "
-  read numero
+  read algoritmoE
 
   echo -e $AMARILLO"\nMENÚ DE ELECCIÓN DE ALGORITMO"$NORMAL >> $informeConColor
   echo -e "\n1. FCFS" >> $informeConColor
   echo -e "\n2. SJF" >> $informeConColor
   echo -e "\n3. Salir" >> $informeConColor
   echo -n -e "\n--> " >> $informeConColor
-  echo "$numero" >> $informeConColor
+  echo "$algoritmoE" >> $informeConColor
   echo "" >> $informeConColor
 
   echo -e "\nMENÚ DE ELECCIÓN DE ALGORITMO" >> $informeSinColor
@@ -444,7 +444,7 @@ function menuAlgoritmo {
   echo -e "\n2. SJF" >> $informeSinColor
   echo -e "\n3. Salir" >> $informeSinColor
   echo -n -e "\n--> " >> $informeSinColor
-  echo "$numero" >> $informeSinColor
+  echo "$algoritmoE" >> $informeSinColor
   echo "" >> $informeSinColor
     esac
   done
@@ -841,7 +841,7 @@ function Guardado {
 function entradaParticionesRangoManual {
    clear
 
-    #Menu con case 3 opciones, la primera opcion indica si queremos guardar los rangos en datosrangos.txt, la segunda opcion si queremos guardar los valores aleatorios en datos.txt y la tercera si queremos salir
+    #Menu con case 3 opciones, la primera opcion indica si queremos guardar los rangos en datosrangos.txt, la segunda opcion si queremos guardar los valores aleatorios en Datos.txt y la tercera si queremos salir
    
 
 }
@@ -1573,7 +1573,7 @@ function entradaParticionesRangoFichero {
 
     clear
 ################################################################################################################################################################################################
-    #Menu con case 3 opciones, la primera opcion indica si queremos guardar los rangos en datosrangos.txt, la segunda opcion si queremos guardar los valores aleatorios en datos.txt y la tercera 
+    #Menu con case 3 opciones, la primera opcion indica si queremos guardar los rangos en datosrangos.txt, la segunda opcion si queremos guardar los valores aleatorios en Datos.txt y la tercera 
     #si  queremos salir
 ################################################################################################################################################################################################
     #Guardado
@@ -1606,7 +1606,7 @@ function entradaParticionesRangoFichero_predefinido {
     echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem"
 
     clear
-    #Menu con case 3 opciones, la primera opcion indica si queremos guardar los rangos en datosrangos.txt, la segunda opcion si queremos guardar los valores aleatorios en datos.txt y la tercera si queremos salir
+    #Menu con case 3 opciones, la primera opcion indica si queremos guardar los rangos en datosrangos.txt, la segunda opcion si queremos guardar los valores aleatorios en Datos.txt y la tercera si queremos salir
     #Guardado
 
 }
@@ -2556,7 +2556,6 @@ function tiempoejecucionalgormitmo {
 ############################################################################################################################################################
 ############################################################################################################################################################
 
-
 function algoritmoSJF_AjustePrimer {
   clear
   
@@ -2653,17 +2652,18 @@ function algoritmoSJF_AjustePrimer {
       # 1) Ajustamos los estados
         if [[ ${tiempoEsperaProceso[$i]} -lt 0 && ${llegada[$i]} -ge $reloj && ${sale[$i]} -eq 0 ]]
           then
-          estado[$i]="Fuera del sistema"
-        else
-          if [[ ${procesoEnParticionOcupada[$i]} -ne 1 && ${llegada[$i]} -le $reloj && ${estado[$i]} != "Finalizado" && ${sale[$i]} -eq 0 ]]
-            then
-            if [[ ${estado[$i]} != "En espera" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
-            then                                  # producido una modificación en el Estado del proceso.
-              let "poreventos=1"
-              #echo -ne "kkkk ssssssssssssssssssssss En espera 2060\n"
-            fi
-            estado[$i]="En espera"
-          fi                                
+            estado[$i]="Fuera del sistema"
+          else
+            if [[ ${procesoEnParticionOcupada[$i]} -ne 1 && ${llegada[$i]} -le $reloj && ${estado[$i]} != "Finalizado" && ${sale[$i]} -eq 0 ]]
+              then
+              	if [[ ${estado[$i]} != "En espera" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
+							# producido una modificación en el Estado del proceso.
+              	then
+                	let "poreventos=1"
+                	#echo -ne "kkkk ssssssssssssssssssssss En espera 2060\n"
+                fi
+                estado[$i]="En espera"
+            fi                                
         fi
 
         
@@ -2746,7 +2746,7 @@ function algoritmoSJF_AjustePrimer {
                 		#echo -ne "kkkk ssssssssssssssssssssss En memoria 2141\n"
                 	fi
                           estado[$i]="En memoria"
-                          let restante[$i]=${tiempo[$i]}+1
+                          let restante[$i]=${tiempo[$i]}
                   fi
                 done
         fi
@@ -2754,7 +2754,86 @@ function algoritmoSJF_AjustePrimer {
      
               
         semaforo=0
+        
+        
+      
 
+        ##############################################################################################################################
+        ##############################################################################################################################
+        ##############################################################################################################################
+        ############################                                                                      ############################ 
+        ############################                                                                      ############################ 
+        ############################                         Algoritmo SJF                                ############################ 
+        ############################                                                                      ############################ 
+        ############################                                                                      ############################ 
+        ##############################################################################################################################
+        ##############################################################################################################################
+        ##############################################################################################################################  
+
+
+###################################################################################################################################################################
+###################################################################################################################################################################
+###################################################################################################################################################################
+
+        for ((e=1; e<=${#llegada[@]}; e++))
+          do
+            for ((ex=1; ex<=${#llegada[@]}; ex++ ))
+              do
+                if [[ ${bandera[$ex]} -eq 1 ]]
+                  then
+                    if [[ ${restante[$ex]} -lt ${restante[$e]} ]]
+                      then
+                      abortar=1                
+                    fi
+                fi
+
+              done
+                if [[ ${estado[$e]} == "En memoria" || ${estado[$e]} == "En pausa" && $semaforo -eq 0 && ${sale[$e]} -eq 0  ]] #&& $abortar -eq 0
+                  then
+                    #Semaforo de control de una unica expulsion (1 a 1), por cada Px
+                    expulsar=0
+                    for ((m=1; m<=${#particiones[@]}; m++))
+                      do
+                        
+                        if [[ $expulsar -eq 0 && ${restante[${ocupadas[$m]}]} -gt ${restante[$e]} && ${estado[${ocupadas[$m]}]} == "En ejecución" ]]
+                          then
+
+                           # Px expulsado
+
+                            expulsar=1                                      
+              		if [[ ${estado[$m]} != "En pausa" ]]
+              		then
+                		let "poreventos=1" 	# Sólo se cambia la variable "poreventos" si se ha  
+							#producido una modificación en el Estado del proceso.
+                		#echo -ne "kkkk ssssssssssssssssssssss En pausa 2182\n"
+                	fi
+                                        estado[${ocupadas[$m]}]="En pausa"
+                                        bandera[${ocupadas[$m]}]=0
+                  
+
+############################################################################
+                            #Px invasor                 
+############################################################################    
+
+                                        inicioEjecucion[$e]=$reloj
+              		if [[ ${estado[$e]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
+									#producido una modificación en el Estado del 
+									#proceso.
+              		then
+                		let "poreventos=1"
+                	# 	                                     # No quitar #echo -ne "kkkk ssssssssssssssssssssss En ejecución 2192\n"
+                	fi
+                                        estado[$e]="En ejecución"
+                                        bandera[$e]=1
+                        fi
+                    done
+                    
+                  fi
+          done
+###################################################################################################################################################################
+###################################################################################################################################################################
+###################################################################################################################################################################
+          
       #Si un proceso su tiempo restante es 0 finaliza
       if [[ ${restante[$i]} -le 0 && ${procesoEnParticionOcupada[$i]} -eq 1 && ${sale[$i]} -eq 0 ]]
       then
@@ -2785,33 +2864,25 @@ function algoritmoSJF_AjustePrimer {
       done
               
       if [[ $semaforo -eq 0 ]]
-      then
-        shortestJob=0
-        shortestTime=${restante[1]}
-        for (( h=2; h<=${#llegada[@]}; h++ ))
-        do
-          if [[ ${estado[$h]} == "En memoria" || ${estado[$h]} == "En pausa" ]]
           then
-            if [[ ${restante[$h]} -lt $shortestTime ]]
-            then
-              shortestJob=$h
-              shortestTime=${restante[$h]}
-            fi
-          fi
-        done
-
-        if [[ $shortestJob -ne 0 ]]
-        then
-          if [[ ${estado[$shortestJob]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
-          then                                                # producido una modificación en el Estado del proceso.
-            let "poreventos=1"
-            #echo -ne "kkkk ssssssssssssssssssssss En ejecución 2244\n"
-          fi
-          estado[$shortestJob]="En ejecución"
-          inicioEjecucion[$shortestJob]=$reloj
-          bandera[$shortestJob]=1
+            for (( h=1; h<=${#llegada[@]};h++ ))
+            do
+                if [[ ${estado[$h]} == "En memoria" || ${estado[$h]} == "En pausa" ]]
+                  then
+              		if [[ ${estado[$h]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
+									# producido una modificación en el Estado del 
+									# proceso.
+              		then
+                		let "poreventos=1"
+                		#echo -ne "kkkk ssssssssssssssssssssss En ejecución 2244\n"
+                	fi
+                    estado[$h]="En ejecución"
+                    inicioEjecucion[$h]=$reloj
+                    bandera[$h]=1                    
+                    h=`expr ${#llegada[@]} + 1`
+                fi
+            done
         fi
-      fi
 
         #Salida 
         if [[ $hasalido -ge ${#memoria[@]} ]]
@@ -2860,9 +2931,9 @@ function algoritmoSJF_AjustePrimer {
             then    
               echo "" >> ./informeColortemp.txt
               echo "" >> ./informetemp.txt 
-              echo -e $AMARILLO" FCFS-SJF-FNI-Primer Ajuste"$NORMAL
-              echo -e " FCFS-SJF-FNI-Primer Ajuste" > ./informetemp.txt
-              echo $AMARILLO" FCFS-SJF-FNI-Primer Ajuste"$NORMAL > ./informeColortemp.txt
+              echo -e $AMARILLO" SJF-FNI-Primer Ajuste"$NORMAL
+              echo -e " SJF-FNI-Primer Ajuste" > ./informetemp.txt
+              echo $AMARILLO" SJF-FNI-Primer Ajuste"$NORMAL > ./informeColortemp.txt
               echo -ne " T: $reloj\tTamaño de las particiones:" | tee -a ./informetemp.txt
               echo -ne " T: $reloj\tTamaño de las particiones:" >> ./informeColortemp.txt
               for (( z = 1; z <= $contadorParticiones; z++ ))
@@ -3110,6 +3181,7 @@ function algoritmoSJF_AjustePrimer {
     
   done  #Final del 'while'
 }
+
 
 ######################################################################################################################################
 ######################################################################################################################################
@@ -3517,9 +3589,9 @@ function algoritmoFCFS_AjustePrimer {
             then    
               echo "" >> ./informeColortemp.txt
               echo "" >> ./informetemp.txt 
-              echo -e $AMARILLO" FCFS-SJF-FNI-Primer Ajuste"$NORMAL
-              echo -e " FCFS-SJF-FNI-Primer Ajuste" > ./informetemp.txt
-              echo $AMARILLO" FCFS-SJF-FNI-Primer Ajuste"$NORMAL > ./informeColortemp.txt
+              echo -e $AMARILLO" FCFS-FNI-Primer Ajuste"$NORMAL
+              echo -e " FCFS-FNI-Primer Ajuste" > ./informetemp.txt
+              echo $AMARILLO" FCFS-FNI-Primer Ajuste"$NORMAL > ./informeColortemp.txt
               echo -ne " T: $reloj\tTamaño de las particiones:" | tee -a ./informetemp.txt
               echo -ne " T: $reloj\tTamaño de las particiones:" >> ./informeColortemp.txt
               for (( z = 1; z <= $contadorParticiones; z++ ))
@@ -3767,6 +3839,7 @@ function algoritmoFCFS_AjustePrimer {
     
   done  #Final del 'while'
 }
+
 ################################################################################################################################################################################################
 # Sinopsis:   función muestra, en pantalla/informe, el estado de cada partición según el instante de tiempo
 ################################################################################################################################################################################################
@@ -4919,12 +4992,12 @@ function mostrarInforme {
 presentacionPantallaInforme
 menuInicio
 inicializaVectores
-algoritmoFCFS_AjustePrimer
-algoritmoSJF_AjustePrimer
-# if [ $numero -eq 1 ] ; then
-#   algoritmoSJF_AjustePrimer
-# else 
-#   algoritmoFCFS_AjustePrimer
-# fi
+# algoritmoFCFS_AjustePrimer
+# algoritmoSJF_AjustePrimer
+if [ "$algoritmoE" -eq 1 ]; then
+  algoritmoFCFS_AjustePrimer
+else
+  algoritmoSJF_AjustePrimer
+fi
 resultadoFinalDeLaEjecucion
 mostrarInforme
