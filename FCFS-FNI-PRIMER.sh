@@ -378,23 +378,26 @@ function menuAlgoritmo {
   clear
   echo -e $AMARILLO"\nMENÚ DE ELECCIÓN DE ALGORITMO"$NORMAL
   echo -e "\n1. FCFS"
-  echo -e "\n2. SJF"
-  echo -e "\n3. Salir"
+  echo -e "\n2. SRPT"
+  echo -e "\n3. SJF"
+  echo -e "\n4. Salir"
   echo -n -e "\n--> "
   read algoritmoE
 
   echo -e $AMARILLO"\nMENÚ INICIO"$NORMAL >> $informeConColor
   echo -e "\n1. FCFS" >> $informeConColor
-  echo -e "\n2. SJF" >> $informeConColor
-  echo -e "\n3. Salir" >> $informeConColor
+  echo -e "\n2. SRPT" >> $informeConColor
+  echo -e "\n3. SJF" >> $informeConColor
+  echo -e "\n4. Salir" >> $informeConColor
   echo -n -e "\n--> " >> $informeConColor
   echo "$algoritmoE" >> $informeConColor
   echo "" >> $informeConColor
 
   echo -e "\nMENÚ INICIO" >> $informeSinColor
   echo -e "\n1. FCFS" >> $informeSinColor
-  echo -e "\n2. SJF" >> $informeSinColor
-  echo -e "\n3. Salir" >> $informeSinColor
+  echo -e "\n2. SRPT" >> $informeSinColor
+  echo -e "\n3. SJF" >> $informeSinColor
+  echo -e "\n4. Salir" >> $informeSinColor
   echo -n -e "\n--> " >> $informeSinColor
   echo "$algoritmoE" >> $informeSinColor
   echo "" >> $informeSinColor
@@ -409,15 +412,20 @@ function menuAlgoritmo {
     case "$algoritmoE" in 
       '1')
       
-      menueleccion ## cambiar por el algoritmo FCFS
+      menueleccion 
       break;;
-  
+
       '2')
       
-      continuarProgramaPrincipal   ## cambiar por el algoritmo SJF # esta continuarProgramaPrincipal
+      menueleccion 
       break;;
   
       '3')
+      
+      continuarProgramaPrincipal   
+      break;;
+  
+      '4')
       echo -e $ROJO"\nSE HA SALIDO DEL PROGRAMA"$NORMAL
       exit 0 
       break;;
@@ -426,23 +434,26 @@ function menuAlgoritmo {
       clear
       echo -e $AMARILLO"\nMENÚ DE ELECCIÓN DE ALGORITMO"$NORMAL
   echo -e "\n1. FCFS"
-  echo -e "\n2. SJF"
-  echo -e "\n3. Salir"
+  echo -e "\n2. SRPT"
+  echo -e "\n3. SJF"
+  echo -e "\n4. Salir"
   echo -n -e "\n--> "
   read algoritmoE
 
   echo -e $AMARILLO"\nMENÚ DE ELECCIÓN DE ALGORITMO"$NORMAL >> $informeConColor
   echo -e "\n1. FCFS" >> $informeConColor
-  echo -e "\n2. SJF" >> $informeConColor
-  echo -e "\n3. Salir" >> $informeConColor
+  echo -e "\n2. SRPT" >> $informeConColor
+  echo -e "\n3. SJF" >> $informeConColor
+  echo -e "\n4. Salir" >> $informeConColor
   echo -n -e "\n--> " >> $informeConColor
   echo "$algoritmoE" >> $informeConColor
   echo "" >> $informeConColor
 
   echo -e "\nMENÚ DE ELECCIÓN DE ALGORITMO" >> $informeSinColor
   echo -e "\n1. FCFS" >> $informeSinColor
-  echo -e "\n2. SJF" >> $informeSinColor
-  echo -e "\n3. Salir" >> $informeSinColor
+  echo -e "\n2. SRPT" >> $informeSinColor
+  echo -e "\n3. SJF" >> $informeSinColor
+  echo -e "\n4. Salir" >> $informeSinColor
   echo -n -e "\n--> " >> $informeSinColor
   echo "$algoritmoE" >> $informeSinColor
   echo "" >> $informeSinColor
@@ -3182,6 +3193,657 @@ function algoritmoSJF_AjustePrimer {
   done  #Final del 'while'
 }
 
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################                                                                                                  ##############
+######################                                   ALGORITMO SRPT                                                 ##############
+######################                                                                                                  ##############
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+######################################################################################################################################
+
+function algoritmoSRPT_AjustePrimer {
+  clear
+  
+  let "poreventos=0" #kkkk Para conocer cuando se dispara el volcado. (Si vale 1 se ha disparado)
+  evento1=0
+  evento2=0
+  evento3=0
+
+  if [[ $reloj -eq 0 ]];then
+    evento3=1
+   else 
+  evento3=0
+  fi
+
+    ############################################################################
+    # Se ejecuta siempre
+    ############################################################################
+
+  #Comienzo del algoritmo de SRPT (ahora FCFS) con particiones distintas y ajuste mejor
+  while [[ $salida != "s" ]]
+  do
+    
+    ############################################################################
+    # Control de Particiones y Estados de los Procesos
+    ############################################################################
+
+    for (( i=1; i <= ${#llegada[@]}; i++ ))
+      do    
+        #Si el proceso no ha salido, no ocupa ninguna partición y proceso anterior ha entrado ya
+        if [[ "sale[$i]" -ne 1 && "procesoEnParticionOcupada[$i]" -ne 1 ]]
+          then
+            contador=0
+            if [[ ${llegada[$i]} -le $reloj ]]
+              then
+                #'for' para particiones
+                for (( j=1; j <= ${#particiones[@]}; j++ ))
+                  do
+                    #Si el tamaño en memoria del proceso es menor que alguna partición y ésta no está ocupada...
+                    if [[ ${memoria[$i]} -le ${particiones[$j]} && ${particionOcupada[$j]} -eq 0 ]]                              
+                      then
+                        #...metemos al proceso en esa partición
+                        
+                        procesoEnParticionOcupada[$i]=1 #El proceso $i está en una partición ocupada
+                        procesoYaHaEntrado[$i]=1  #El proceso $i ha entrado en memoria                           
+                        entrada[$i]=$reloj                        
+              		if [[ ${estado[$i]} != "En memoria" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
+								# producido una modificación en el Estado del proceso.
+              		then
+                		let "poreventos=1"
+                		#echo -ne "kkkk ssssssssssssssssssssss En memoria 2015\n"
+                	fi
+                        estado[$i]="En memoria"
+                        let restante[$i]=${tiempo[$i]}
+                        #Buscamos el primer (antes mejor) ajuste posible con la minima diff memoria sobrante
+                        ##############################################################################################################################
+                        ##############################################################################################################################
+                        ##############################################################################################################################
+                        ############################                                                                      ############################ 
+                        ############################                        Algoritmo Primer  (ANTES MEJOR)               ############################
+                        ############################                                                                      ############################ 
+                        ##############################################################################################################################
+                        ##############################################################################################################################
+                        ##############################################################################################################################
+                        diff_mem=100
+                        diff=$j
+                        for (( dm=1; dm<=${#particiones[@]}; dm++ ))
+                          do
+                            if [[ ${particionOcupada[$dm]} -eq 0 && ${particiones[$dm]} -ge ${memoria[$i]} ]]  #si la posicion esta vacia y el tamaño de la posicion es mayor o igual a la memoria actual
+                              then
+                            auxMem=`expr ${particiones[$dm]} - ${memoria[$i]}`   # resta entre el tamaño de la partición y el valor de la memoria correspondiente
+                            fi
+                            #if [[ $auxMem -lt $diff_mem && ${particionOcupada[$dm]} -eq 0 && ${particiones[$dm]} -ge ${memoria[$i]} ]]  #quitando estas lineas comentadas cambio de primer a mejor
+                              #then
+                              #  diff_mem=$auxMem
+                             #   diff=$dm                                
+                            #fi
+                          done
+                        ocupadas[$diff]=$i     # asigno a diff del array ocupadas el valor de i
+                        partConProceso[$i]=$diff        # asigno el valor diff al indice i del array partConProceso                                       
+                        particionOcupada[$diff]=1    #La partición $j está ocupada    # asigno el valor 1 al indice diff del array particionOcupada
+                        j=`expr ${#particiones[@]} + 1`    # asigno a j la longitud del array particiones +1 
+                      else
+                        #...si no, si la partición estaba vacía, sigue vacía
+                        if [[ ${particionOcupada[$j]} -eq 0 ]]
+                          then
+                            ((contador++))
+                        fi
+                      fi
+                  done
+            fi
+        fi
+       
+
+      # 1) Ajustamos los estados
+        if [[ ${tiempoEsperaProceso[$i]} -lt 0 && ${llegada[$i]} -ge $reloj && ${sale[$i]} -eq 0 ]]
+          then
+            estado[$i]="Fuera del sistema"
+          else
+            if [[ ${procesoEnParticionOcupada[$i]} -ne 1 && ${llegada[$i]} -le $reloj && ${estado[$i]} != "Finalizado" && ${sale[$i]} -eq 0 ]]
+              then
+              	if [[ ${estado[$i]} != "En espera" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
+							# producido una modificación en el Estado del proceso.
+              	then
+                	let "poreventos=1"
+                	#echo -ne "kkkk ssssssssssssssssssssss En espera 2060\n"
+                fi
+                estado[$i]="En espera"
+            fi                                
+        fi
+
+        
+        # 2)Ajustamos tiempos de respuesta segun el estado en el que nos encontramos
+        if [[ ${estado[$i]} != "Finalizado" ]]
+          then
+            let tiempoRespuestaProceso[$i]=$reloj-${llegada[$i]}
+            if [[ ${tiempoRespuestaProceso[$i]} -lt 0 ]]
+              then
+                tiempoRespuestaProceso[$i]=0
+            fi
+        fi
+
+        # 3)Si estamos en ejecución/no ejecución: ajustamos el tiempo de Espera
+        if [[ ${bandera[$i]} -eq 0  && ${sale[$i]} -eq 0 ]]
+          then
+            if [[ ${estado[$i]} != "En pausa" ]]
+              then
+                let tiempoEsperaProceso[$i]=${tiempoRespuestaProceso[$i]}
+              else
+                let tiempoEsperaProceso[$i]=${tiempoEsperaProceso[$i]}+1
+            fi
+          else
+            if [[ ${bandera[$i]} -eq 1 && ${sale[$i]} -eq 0 && ${bloqueo[$i]} -eq 0 ]]
+              then
+                let tiempoEsperaProceso[$i]=${tiempoRespuestaProceso[$i]}-$reloj+${inicioEjecucion[$i]}
+
+            fi
+        fi
+
+    
+        # 4)Ajustamos el tiempo restante de ejecución decrementando para el estado "En ejecución"
+        if [[ ${estado[$i]} == "En ejecución" && ${sale[$i]} -eq 0 ]]
+          then
+            let restante[$i]=${restante[$i]}-1  
+        fi
+
+        #En caso de que sea el primer proceso
+        if [[ $i -eq 1 && ${sale[$i]} -eq 0 && ${bloqueo[$i]} -eq 0 ]]
+          then
+
+            if [[ $reloj -lt ${llegada[$i]} ]]; then
+              estado[$i]="Fuera del sistema"
+              if [[ $reloj -eq 0 ]]; then
+              evento3=1
+              else
+              evento3=0
+              fi
+            else
+              		if [[ ${estado[$i]} != "En ejecución" ]] # Sólo se cambia la variable "poreventos" si se ha  
+								# producido una modificación en el Estado del proceso.
+              		then
+                		let "poreventos=1"
+                		#echo -ne "kkkk ssssssssssssssssssssss En ejecución 2116\n"
+                	fi
+              estado[$i]="En ejecución"
+              inicioEjecucion[$i]=$reloj
+              bandera[$i]=1
+              bloqueo[$i]=1
+              let restante[$i]=${tiempo[$i]}
+         
+            fi
+
+
+            else
+              for (( ct=1; ct<=${#particiones[@]} ; ct++ ))
+                do
+                  if [[ ${particionOcupada[$ct]} -eq 0 && ${llegada[$i]} -le $reloj && ${memoria[$i]} -le ${particiones[$ct]} && ${procesoEnParticionOcupada[$i]} -eq 0 && ${sale[$i]} -eq 0 ]]
+                    then
+                          particionOcupada[$ct]=1    #La partición $j está ocupada
+                          procesoEnParticionOcupada[$i]=1 #El proceso $i está en una partición ocupada
+                          procesoYaHaEntrado[$i]=1  #El proceso $i ha entrado en memoria
+                          ocupadas[$ct]=$i     
+                          entrada[$i]=$reloj
+                          partConProceso[$i]=$ct                                      
+              		if [[ ${estado[$i]} != "En memoria" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
+								# producido una modificación en el Estado del proceso.
+              		then
+                		let "poreventos=1"
+                		#echo -ne "kkkk ssssssssssssssssssssss En memoria 2141\n"
+                	fi
+                          estado[$i]="En memoria"
+                          let restante[$i]=${tiempo[$i]}+1
+                  fi
+                done
+        fi
+    
+     
+              
+        semaforo=0
+        
+        
+      
+        ##############################################################################################################################
+        ##############################################################################################################################
+        ##############################################################################################################################
+        ############################                                                                      ############################ 
+        ############################    SRPT Expropiacion ante un Px que tiene menor tiempo de            ############################
+        ############################      ejecución que el que esta ejecutandose                          ############################
+        ############################                                                                      ############################ 
+        ##############################################################################################################################
+        ##############################################################################################################################
+        ##############################################################################################################################   
+
+        ##############################################################################################################################
+        ##############################################################################################################################
+        ##############################################################################################################################
+        ############################                                                                      ############################ 
+        ############################                                                                      ############################ 
+        ############################                         Algoritmo SRPT                               ############################ 
+        ############################                                                                      ############################ 
+        ############################                                                                      ############################ 
+        ##############################################################################################################################
+        ##############################################################################################################################
+        ##############################################################################################################################  
+
+
+###################################################################################################################################################################
+###################################################################################################################################################################
+###################################################################################################################################################################
+
+        for ((e=1; e<=${#llegada[@]}; e++))
+          do
+            for ((ex=1; ex<=${#llegada[@]}; ex++ ))
+              do
+                if [[ ${bandera[$ex]} -eq 1 ]]
+                  then
+                    if [[ ${restante[$ex]} -lt ${restante[$e]} ]]
+                      then
+                      abortar=1                
+                    fi
+                fi
+
+              done
+                if [[ ${estado[$e]} == "En memoria" || ${estado[$e]} == "En pausa" && $semaforo -eq 0 && ${sale[$e]} -eq 0  ]] #&& $abortar -eq 0
+                  then
+                    #Semaforo de control de una unica expulsion (1 a 1), por cada Px
+                    expulsar=0
+                    for ((m=1; m<=${#particiones[@]}; m++))
+                      do
+                        
+                        if [[ $expulsar -eq 0 && ${restante[${ocupadas[$m]}]} -gt ${restante[$e]} && ${estado[${ocupadas[$m]}]} == "En ejecución" ]]
+                          then
+
+                            #Px expulsado
+
+                            expulsar=1                                      
+              		if [[ ${estado[$m]} != "En pausa" ]]
+              		then
+                		let "poreventos=1" 	# Sólo se cambia la variable "poreventos" si se ha  
+							#producido una modificación en el Estado del proceso.
+                		#echo -ne "kkkk ssssssssssssssssssssss En pausa 2182\n"
+                	fi
+                                        estado[${ocupadas[$m]}]="En pausa"
+                                        bandera[${ocupadas[$m]}]=0
+
+###########################################################################
+#                            Px invasor                 
+###########################################################################    
+
+                                        inicioEjecucion[$e]=$reloj
+              		if [[ ${estado[$e]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
+									#producido una modificación en el Estado del 
+									#proceso.
+              		then
+                		let "poreventos=1"
+                		                                     #No quitar #echo -ne "kkkk ssssssssssssssssssssss En ejecución 2192\n"
+                	fi
+                                        estado[$e]="En ejecución"
+                                        bandera[$e]=1
+                        fi
+                      done
+                    
+                fi
+          done
+###################################################################################################################################################################
+###################################################################################################################################################################
+###################################################################################################################################################################
+          
+      #Si un proceso su tiempo restante es 0 finaliza
+      if [[ ${restante[$i]} -le 0 && ${procesoEnParticionOcupada[$i]} -eq 1 && ${sale[$i]} -eq 0 ]]
+      then
+              		if [[ ${estado[$i]} != "Finalizado" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
+								# producido una modificación en el Estado del proceso.
+              		then
+                		let "poreventos=1"
+                		#echo -ne "kkkk ssssssssssssssssssssss Finalizado 2213\n"
+                	fi
+              estado[$i]="Finalizado"
+              procesoEnParticionOcupada[$i]=0 #El proceso $i está en una partición ocupada
+              particionOcupada[${partConProceso[$i]}]=0
+              bandera[$i]=0
+              ocupadas[${partConProceso[$i]}]=0
+              partConProceso[$i]=0
+              sale[$i]=1
+              ((hasalido++))
+      fi  
+ 
+      #Comprobamos si hay algun Px en ejecucion, en caso contrario lanzamos el siguiente.
+      semaforo=0
+      for ((a=1; a<=${#llegada[@]}; a++ ))
+      do
+        if [[ ${bandera[$a]} -eq 1 ]]
+        then
+            semaforo=1
+        fi
+      done
+              
+      if [[ $semaforo -eq 0 ]]
+          then
+            for (( h=1; h<=${#llegada[@]};h++ ))
+            do
+                if [[ ${estado[$h]} == "En memoria" || ${estado[$h]} == "En pausa" ]]
+                  then
+              		if [[ ${estado[$h]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
+									# producido una modificación en el Estado del 
+									# proceso.
+              		then
+                		let "poreventos=1"
+                		#echo -ne "kkkk ssssssssssssssssssssss En ejecución 2244\n"
+                	fi
+                    estado[$h]="En ejecución"
+                    inicioEjecucion[$h]=$reloj
+                    bandera[$h]=1                    
+                    h=`expr ${#llegada[@]} + 1`
+                fi
+            done
+        fi
+
+        #Salida 
+        if [[ $hasalido -ge ${#memoria[@]} ]]
+          then
+            salida=s
+        fi
+                        
+      #Recalculo de tiempos en funcion de la espera y la respuesta de un Px
+        for ((k=1;k<=${#tiempoEsperaProceso[@]};k++)){
+          if [[ ${tiempoEsperaProceso[$k]} -lt 0 ]]
+            then
+              tiempNEsperaProceso[$k]=0
+            else
+              tiempNEsperaProceso[$k]=${tiempoEsperaProceso[$k]}
+          fi
+        }
+        for ((k=1;k<=${#tiempoRespuestaProceso[@]};k++)){
+          if [[ ${tiempoRespuestaProceso[$k]} -lt 0 ]]
+            then
+              tiempoNRespuProceso[$k]=0 
+            else
+              tiempoNRespuProceso[$k]=${tiempoRespuestaProceso[$k]} 
+          fi
+        }
+
+        
+      done
+
+
+  ############################################################################
+  # Impresion por cada ciclo de iteraciones
+  ############################################################################
+  ################################################################################################################################################################################################
+  # Se añade el siguiente if que contiene toda la parte de impresión para ejecutarla sólo cuando 
+  # haya algún cambio de estado.
+  ################################################################################################################################################################################################
+  
+  if [[ ($poreventos -eq 1) || ($reloj -eq 0) ]]
+  then 
+        for (( i=1; i <= ${#llegada[@]}; i++ ))
+          do
+
+          #Llamada a la función que comprueba si ha habido cambios
+          #Salidas por pantalla y salidas a informe
+          if [[ $i -eq 1 ]]
+            then    
+              echo "" >> ./informeColortemp.txt
+              echo "" >> ./informetemp.txt 
+              echo -e $AMARILLO" FCFS-FNI-Primer Ajuste"$NORMAL
+              echo -e " FCFS-FNI-Primer Ajuste" > ./informetemp.txt
+              echo $AMARILLO" FCFS-FNI-Primer Ajuste"$NORMAL > ./informeColortemp.txt
+              echo -ne " T: $reloj\tTamaño de las particiones:" | tee -a ./informetemp.txt
+              echo -ne " T: $reloj\tTamaño de las particiones:" >> ./informeColortemp.txt
+              for (( z = 1; z <= $contadorParticiones; z++ ))
+              do  
+                echo -en " ${particiones[$z]} " | tee -a ./informetemp.txt
+                echo -en " ${particiones[$z]} " >> ./informeColortemp.txt
+              done
+              echo "" | tee -a ./informetemp.txt
+              echo ""  >> ./informeColortemp.txt
+              echo -e " Ref Tll Tej Mem Tesp Tret Trej Part Estado"  | tee -a ./informetemp.txt
+              echo -ne $NORMAL
+              #Cabecera par informe a color
+              echo -e " Ref Tll Tej Mem Tesp Tret Trej Part Estado"  >> ./informeColortemp.txt
+              restante[$i]=$((${tiempo[$i]}+${tiempNEsperaProceso[$i]}-${tiempoNRespuProceso[$i]})) 
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  
+              echo -ne " ${proceso[$i]}"  >> ./informetemp.txt
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  >> ./informeColortemp.txt
+              if [[ ${llegada[$i]} -gt 99 ]]; then #Si es mayor que 99
+                echo -ne " ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne " ${llegada[$i]}" >> ./informetemp.txt   
+              elif [[ ${llegada[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "   ${llegada[$i]}" >> ./informetemp.txt   
+                else echo -ne "  ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "  ${llegada[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempo[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne " ${tiempo[$i]}" >> ./informetemp.txt
+              elif [[ ${tiempo[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "   ${tiempo[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "  ${tiempo[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${memoria[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne " ${memoria[$i]}" >> ./informetemp.txt
+                                          elif [[ ${memoria[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "   ${memoria[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "  ${memoria[$i]}" >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "    ${colores[$i % 6]}-" | tee -a ./informeColortemp.txt
+                echo -ne "    -" >> ./informetemp.txt 
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "  ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColortemp.txt
+                  echo -ne "    ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 99 && ${tiempNEsperaProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColortemp.txt
+                  echo -ne "   ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                  echo -ne "    ${colores[$i % 6]}- " | tee -a ./informeColortemp.txt
+                  echo -ne "    - " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColortemp.txt
+                echo -ne "  ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]}  -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColortemp.txt
+                  echo -ne "    ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -le 99 && ${tiempoNRespuProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColortemp.txt
+                  echo -ne "   ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "   ${colores[$i % 6]}- " | tee -a ./informeColortemp.txt
+                echo -ne "   - " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne " ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColortemp.txt
+                echo -ne " ${restante[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${restante[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "   ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColortemp.txt
+                echo -ne "   ${restante[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -le 99 && ${restante[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                echo -ne "  ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColortemp.txt
+                echo -ne "  ${restante[$i]} " >> ./informetemp.txt
+              fi
+            
+              if [[ ( "${estado[$i]}" == "Fuera del sistema" || "${estado[$i]}" == "Finalizado" || "${estado[$i]}" == "En espera") ]]; then
+                echo -ne "   - "| tee -a ./informeColortemp.txt
+                echo -ne "   - " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                echo -ne " ${partConProceso[$i]} " | tee -a ./informeColortemp.txt
+                echo -ne " ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                  echo -ne "   ${partConProceso[$i]} " | tee -a ./informeColortemp.txt
+                  echo -ne "   ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 99 && ${partConProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then 
+                  echo -ne "  ${partConProceso[$i]} " | tee -a ./informeColortemp.txt
+                  echo -ne "  ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+
+              echo -ne "${estado[$i]} " | tee -a ./informeColortemp.txt
+              echo -ne "${estado[$i]} " >> ./informetemp.txt   
+              echo "" | tee -a ./informeColortemp.txt
+              echo "" >> ./informetemp.txt  
+            
+
+            else
+            
+            
+              restante[$i]=$((${tiempo[$i]}+${tiempNEsperaProceso[$i]}-${tiempoNRespuProceso[$i]}))
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  
+              echo -ne " ${proceso[$i]}"  >> ./informetemp.txt
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  >> ./informeColortemp.txt
+              if [[ ${llegada[$i]} -gt 99 ]]; then #Si es menor o igual que 9
+                echo -ne " ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne " ${llegada[$i]}" >> ./informetemp.txt   
+              elif [[ ${llegada[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "   ${llegada[$i]}" >> ./informetemp.txt   
+                else echo -ne "  ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "  ${llegada[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempo[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne " ${tiempo[$i]}" >> ./informetemp.txt
+              elif [[ ${tiempo[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "   ${tiempo[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "  ${tiempo[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${memoria[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne " ${memoria[$i]}" >> ./informetemp.txt
+                                elif [[ ${memoria[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "   ${memoria[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "  ${memoria[$i]}" >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "    ${colores[$i % 6]}-" | tee -a ./informeColortemp.txt
+                echo -ne "    -" >> ./informetemp.txt 
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColortemp.txt
+                echo -ne "  ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColortemp.txt
+                  echo -ne "    ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 99 && ${tiempNEsperaProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColortemp.txt
+                  echo -ne "   ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                  echo -ne "    ${colores[$i % 6]}- " | tee -a ./informeColortemp.txt
+                  echo -ne "    - " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColortemp.txt
+                echo -ne "  ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]}  -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColortemp.txt
+                  echo -ne "    ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -le 99 && ${tiempoNRespuProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColortemp.txt
+                  echo -ne "   ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "   ${colores[$i % 6]}- " | tee -a ./informeColortemp.txt
+                echo -ne "   - " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne " ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColortemp.txt
+                echo -ne " ${restante[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${restante[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColortemp.txt
+                echo -ne "   ${restante[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -le 99 && ${restante[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                echo -ne "  ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColortemp.txt
+                echo -ne "  ${restante[$i]} " >> ./informetemp.txt
+              fi
+            
+              if [[ ( "${estado[$i]}" == "Fuera del sistema" || "${estado[$i]}" == "Finalizado" || "${estado[$i]}" == "En espera") ]]; then
+                echo -ne "   - "| tee -a ./informeColortemp.txt
+                echo -ne "   - " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                echo -ne " ${partConProceso[$i]} " | tee -a ./informeColortemp.txt
+                echo -ne " ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                  echo -ne "   ${partConProceso[$i]} " | tee -a ./informeColortemp.txt
+                  echo -ne "   ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 99 && ${partConProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then 
+                  echo -ne "  ${partConProceso[$i]} " | tee -a ./informeColortemp.txt
+                  echo -ne "  ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              echo -ne "${estado[$i]} " | tee -a ./informeColortemp.txt
+              echo -ne "${estado[$i]} " >> ./informetemp.txt   
+              echo "" | tee -a ./informeColortemp.txt
+              echo "" >> ./informetemp.txt    
+
+          fi
+
+          done # Fin del for
+
+            calcularPromediosEsperaRespuesta
+            representacionParticionesEnTabla
+            representacionLineaTemporal
+            let "poreventos=0"
+
+  fi
+  let reloj=$reloj+1 	# Esta línea estaba en la función representacionLineaTemporal pero no se 
+        # ejecutaba correctamente desde la función porque no se ejecutaba cuando 
+        # no se producía ninguna modificación del estado si no había llegado 
+        # ningún proceso inicialmente.
+        # También dará problemas cuando no haya cambios de estado entre la 
+        # finalización del último proceso existente en memoria y la llegada del 
+        # siguiente 
+
+
+  ############################################################################
+  #Final del if+for de Impresion por cada ciclo de iteraciones
+  ############################################################################
+    
+  done  #Final del 'while'
+}
 
 ######################################################################################################################################
 ######################################################################################################################################
@@ -4024,9 +4686,9 @@ function representacionParticionesEnTabla {
                   if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                     b=$(( $b + 3 ))
                     echo -e "\033[2B"
-                    echo -ne "    |"                        #nada
-                    echo -ne "    |" >> informetemp.txt
-                    echo -ne "    |" >> informeColortemp.txt
+                    echo -ne "     "                        #barra del medio de las 3 de abajo
+                    echo -ne "     " >> informetemp.txt
+                    echo -ne "     " >> informeColortemp.txt
                     cuentacolumnas=0
                   fi
                 done
@@ -4259,9 +4921,9 @@ function representacionParticionesEnTabla {
                       if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                         c=$(( $c + 3 ))
                         echo -e "\033[2B"
-                        echo -ne "    |"   #nada
-                        echo -ne "    |" >> informetemp.txt
-                        echo -ne "    |" >> informeColortemp.txt
+                        echo -ne "     "   #barra de abajo de las 3
+                        echo -ne "     " >> informetemp.txt
+                        echo -ne "     " >> informeColortemp.txt
                         cuentacolumnas=0
                     fi
                     done 
@@ -4908,6 +5570,7 @@ function resultadoFinalDeLaEjecucion {
   echo -ne $ROJO"\n\nPulsa ENTER para continuar "$NORMAL
   read enterContinuar
 }
+
 ################################################################################################################################################################################################
 # Sinopsis:   función que calcula de los promedios de espera y de respuesta
 ################################################################################################################################################################################################
@@ -4943,6 +5606,8 @@ function calcularPromediosEsperaRespuesta {
         echo "" >> ./informetemp.txt 
   fi
 }
+
+
 ################################################################################################################################################################################################
 # Sinopsis:   permite al usuario ver, o no, un informe (que se ha creado de todas maneras)
 ################################################################################################################################################################################################
@@ -4996,7 +5661,9 @@ inicializaVectores
 # algoritmoSJF_AjustePrimer
 if [ "$algoritmoE" -eq 1 ]; then
   algoritmoFCFS_AjustePrimer
-else
+elif [ "$algoritmoE" -eq 2 ]; then
+  algoritmoSRPT_AjustePrimer
+elif [ "$algoritmoE" -eq 3 ]; then
   algoritmoSJF_AjustePrimer
 fi
 resultadoFinalDeLaEjecucion
