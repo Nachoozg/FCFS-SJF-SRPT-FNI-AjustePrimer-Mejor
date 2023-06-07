@@ -254,6 +254,7 @@ informeSinColor="./Informes_Salida/informeBN.txt"
 informeConColor="./Informes_Salida/informeCOLOR.txt"
 ficheroanteriorejecucion="./Datos/Datos.txt"
 ficherodatosaleatorios="./Rangos/DatosRangos.txt"
+ficherodatosaleatorios_totales="./FRangosAleT/FRangosAleTotal.txt"
 ################################################################################################################################################################################################
 ################################################################################################################################################################################################
 #             FUNCIONES
@@ -271,7 +272,8 @@ function menueleccion {
   echo -e "\n4. Aleatorio manual (Indica rango)"
   echo -e "\n5. Fichero de rangos de última ejecución (DatosRangos.txt)"
   echo -e "\n6. Otros ficheros de rangos"
-  echo -e "\n7. Salir"
+  echo -e "\n7. Rangos aleatorios"
+  echo -e "\n8. Salir"
   echo -n -e "\n--> "
   read seleccion
 
@@ -282,7 +284,8 @@ function menueleccion {
   echo -e "\n4. Aleatorio manual (Indica rango)" >> $informeConColor
   echo -e "\n5. Fichero de rangos de última ejecución (DatosRangos.txt)" >> $informeConColor
   echo -e "\n6. Otros ficheros de rangos" >> $informeConColor
-  echo -e "\n7. Salir" >> $informeConColor
+  echo -e "\n7. Rangos aleatorios" >> $informeConColor
+  echo -e "\n8. Salir" >> $informeConColor
   echo -n -e "\n--> $seleccion" >> $informeConColor
 
   echo -e "\nMENÚ INICIO" >> $informeSinColor
@@ -292,14 +295,15 @@ function menueleccion {
   echo -e "\n4. Aleatorio manual (Indica rango)" >> $informeSinColor
   echo -e "\n5. Fichero de rangos de última ejecución (DatosRangos.txt)" >> $informeSinColor
   echo -e "\n6. Otros ficheros de rangos" >> $informeSinColor
-  echo -e "\n7. Salir" >> $informeSinColor
+  echo -e "\n7. Rangos aleatorios" >> $informeSinColor
+  echo -e "\n8. Salir" >> $informeSinColor
   echo -n -e "\n--> $seleccion" >> $informeSinColor
 
 
 ################################################################################################################################################################################################
-  #Comprobación de que el número introducido por el usuario esta entre el 1 y el 7
+  #Comprobación de que el número introducido por el usuario esta entre el 1 y el 8
 ################################################################################################################################################################################################
-  while [[ 1 -lt $seleccion || $seleccion -lt 7 ]]
+  while [[ 1 -lt $seleccion || $seleccion -lt 8 ]]
   do
     case "$seleccion" in 
       '1') 
@@ -339,9 +343,14 @@ function menueleccion {
       entradaProcesosRangoManual_pruebas
       tiempoejecucionalgormitmo
       break;;
+
+      '7')
+      entradaProcesosRangoManual_op_siete               ## rangos MAX
+      tiempoejecucionalgormitmo
+      break;;
       
   
-      '7')
+      '8')
       echo -e $ROJO"\nSE HA SALIDO DEL PROGRAMA"$NORMAL
       exit 0 
       break;;
@@ -378,16 +387,16 @@ function menuAlgoritmo {
   clear
   echo -e $AMARILLO"\nMENÚ DE ELECCIÓN DE ALGORITMO"$NORMAL
   echo -e "\n1. FCFS"
-  echo -e "\n2. SRPT"
-  echo -e "\n3. SJF"
+  echo -e "\n2. SJF"
+  echo -e "\n3. SRPT"
   echo -e "\n4. Salir"
   echo -n -e "\n--> "
   read algoritmoE
 
   echo -e $AMARILLO"\nMENÚ INICIO"$NORMAL >> $informeConColor
   echo -e "\n1. FCFS" >> $informeConColor
-  echo -e "\n2. SRPT" >> $informeConColor
-  echo -e "\n3. SJF" >> $informeConColor
+  echo -e "\n2. SJF" >> $informeConColor
+  echo -e "\n3. SRPT" >> $informeConColor
   echo -e "\n4. Salir" >> $informeConColor
   echo -n -e "\n--> " >> $informeConColor
   echo "$algoritmoE" >> $informeConColor
@@ -395,8 +404,8 @@ function menuAlgoritmo {
 
   echo -e "\nMENÚ INICIO" >> $informeSinColor
   echo -e "\n1. FCFS" >> $informeSinColor
-  echo -e "\n2. SRPT" >> $informeSinColor
-  echo -e "\n3. SJF" >> $informeSinColor
+  echo -e "\n2. SJF" >> $informeSinColor
+  echo -e "\n3. SRPT" >> $informeSinColor
   echo -e "\n4. Salir" >> $informeSinColor
   echo -n -e "\n--> " >> $informeSinColor
   echo "$algoritmoE" >> $informeSinColor
@@ -434,16 +443,16 @@ function menuAlgoritmo {
       clear
       echo -e $AMARILLO"\nMENÚ DE ELECCIÓN DE ALGORITMO"$NORMAL
   echo -e "\n1. FCFS"
-  echo -e "\n2. SRPT"
-  echo -e "\n3. SJF"
+  echo -e "\n2. SJF"
+  echo -e "\n3. SRPT"
   echo -e "\n4. Salir"
   echo -n -e "\n--> "
   read algoritmoE
 
   echo -e $AMARILLO"\nMENÚ DE ELECCIÓN DE ALGORITMO"$NORMAL >> $informeConColor
   echo -e "\n1. FCFS" >> $informeConColor
-  echo -e "\n2. SRPT" >> $informeConColor
-  echo -e "\n3. SJF" >> $informeConColor
+  echo -e "\n2. SJF" >> $informeConColor
+  echo -e "\n3. SRPT" >> $informeConColor
   echo -e "\n4. Salir" >> $informeConColor
   echo -n -e "\n--> " >> $informeConColor
   echo "$algoritmoE" >> $informeConColor
@@ -451,8 +460,8 @@ function menuAlgoritmo {
 
   echo -e "\nMENÚ DE ELECCIÓN DE ALGORITMO" >> $informeSinColor
   echo -e "\n1. FCFS" >> $informeSinColor
-  echo -e "\n2. SRPT" >> $informeSinColor
-  echo -e "\n3. SJF" >> $informeSinColor
+  echo -e "\n2. SJF" >> $informeSinColor
+  echo -e "\n3. SRPT" >> $informeSinColor
   echo -e "\n4. Salir" >> $informeSinColor
   echo -n -e "\n--> " >> $informeSinColor
   echo "$algoritmoE" >> $informeSinColor
@@ -1549,6 +1558,345 @@ function entradaProcesosRangoManual_op_cuatro {
   esac
 
 }
+
+###############################################################
+###############################################################
+## Funcion rangos aleatorios maximos
+####################################################
+######################################################
+##########################################################
+
+function entradaProcesosRangoManual_op_siete {
+  clear
+  echo "¿Dónde quieres guardar los rangos?"
+  echo "1. Guardar los rangos en el fichero de última ejecución ($ficherodatosaleatorios_totales)"
+  echo "2. Guardar en otro fichero de rangos"
+  read option_guardado
+  if [ $option_guardado == '2' ]
+    then
+      echo "Introduce el nombre del fichero de rangos sin extensión (Será TXT): "
+      read nuevaruta
+    fi
+  echo "¿Dónde quieres guardar los valores?"
+  echo "1. Guardar los valores en el fichero de última ejecución ($ficheroanteriorejecucion)"
+  echo "2. Guardar en otro fichero de valores"
+  read option_guardado2
+  if [ $option_guardado2 == '2' ]
+    then
+      echo "Introduce el nombre del fichero de valores sin extensión (Será TXT): "
+      read nuevaruta2
+    else
+      nuevaruta2="datos"
+    fi
+  clear
+  echo -ne "Número de particiones [#-#]: 0"
+  echo -ne "\nTamaño de las particiones [#-#]: 0"
+  echo -ne "\nNúmero de procesos procesos [#-#]: 0 "
+  echo -ne "\nTiempos de llegadas de los procesos [#-#]: 0 "
+  echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
+  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  
+  echo -ne "\nInformación de la particiones"
+  echo -ne $AMARILLO"\nMínimo del rango del número de particiones: "$NORMAL
+  read cantidad_rango_minima
+  echo -ne $AMARILLO"Máximo del rango del número de particiones: "$NORMAL
+  read cantidad_rango_maxima
+  cantidad_particiones=$(shuf -i $cantidad_rango_minima-$cantidad_rango_maxima -n 1)
+  
+  clear
+  echo -ne "Número de particiones [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
+  echo -ne "\nTamaño de las particiones [#-#]: 0"
+  echo -ne "\nNúmero de procesos procesos [#-#]: 0 "
+  echo -ne "\nTiempos de llegadas de los procesos [#-#]: 0 "
+  echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
+  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+
+  echo -ne "\nInformación de la particiones"
+  echo -ne $AMARILLO"\nMínimo del rango del número de particiones:$NORMAL $cantidad_rango_minima"
+  echo -ne $AMARILLO"\nMáximo del rango del número de particiones:$NORMAL $cantidad_rango_maxima"
+  echo -ne $AMARILLO"\nMínimo del rango de unidades de memoria de las particiones: "$NORMAL
+  read minimo_rango
+  echo -ne $AMARILLO"\nMáximo del rango de unidades de memoria de las particiones (Tiene que ser mayor a $minimo_rango): "$NORMAL
+  read maximo_rango
+
+  clear
+  echo -ne "Número de particiones [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
+  echo -ne "\nTamaño de las particiones [$minimo_rango-$maximo_rango]: "
+  for (( i = 0;i < $cantidad_particiones;i++ )){
+      particiones[$contadorParticiones]=$(shuf -i $minimo_rango-$maximo_rango -n 1)
+      echo -ne "${particiones[$contadorParticiones]} "
+      echo "Particion $contadorParticiones ${particiones[$contadorParticiones]}" >> $ficheroanteriorejecucion
+      let contadorParticiones=$contadorParticiones+1
+  }
+  echo -ne "\nNúmero de procesos procesos [#-#]: 0 "
+  echo -ne "\nTiempos de llegadas de los procesos [#-#]: 0 "
+  echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
+  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  
+
+  echo -ne "\nInformación de la particiones"
+  echo -ne $AMARILLO"\nMínimo del rango del número de particiones:$NORMAL $cantidad_rango_minima"
+  echo -ne $AMARILLO"\nMáximo del rango del número de particiones:$NORMAL $cantidad_rango_maxima"
+  echo -ne $AMARILLO"\nMínimo del rango de unidades de memoria de las particiones: $NORMAL $minimo_rango"
+  echo -ne $AMARILLO"\nMáximo del rango de unidades de memoria de las particiones (Tiene que ser mayor a $minimo_rango):$NORMAL $maximo_rango"
+  echo -ne "\n\nInformación de los procesos"
+  echo -ne $AMARILLO"\nMínimo del rango del número de procesos: "$NORMAL
+  read cantidad_rango_procesos_minima
+  echo -ne $AMARILLO"Máximo del rango del número de procesos: "$NORMAL
+  read cantidad_rango_procesos_maxima
+
+  clear
+  contadorParticiones=1
+  echo -ne "Número de particiones [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
+  echo -ne "\nTamaño de las particiones [$minimo_rango-$maximo_rango]: "
+  for (( i = 0;i < $cantidad_particiones;i++ )){
+      echo -ne "${particiones[$contadorParticiones]} "
+      let contadorParticiones=$contadorParticiones+1
+  }
+  cantidad_rango_procesos=$(shuf -i $cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima -n 1)
+  procesitos=$cantidad_rango_procesos
+  echo -ne "\nNúmero de procesos procesos [$cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima]: $procesitos"
+  echo -ne "\nTiempos de llegadas de los procesos [#-#]: 0 "
+  echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
+  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  
+  echo -ne "\nInformación de la particiones"
+  echo -ne $AMARILLO"\nMínimo del rango del número de particiones:$NORMAL $cantidad_rango_minima"
+  echo -ne $AMARILLO"\nMáximo del rango del número de particiones:$NORMAL $cantidad_rango_maxima"
+  echo -ne $AMARILLO"\nMínimo del rango de unidades de memoria de las particiones: $NORMAL $minimo_rango"
+  echo -ne $AMARILLO"\nMáximo del rango de unidades de memoria de las particiones (Tiene que ser mayor a $minimo_rango):$NORMAL $maximo_rango"
+  echo -ne "\n\nInformación de los procesos"
+  echo -ne $AMARILLO"\nMínimo del rango del número de procesos:$NORMAL $cantidad_rango_procesos_minima"
+  echo -ne $AMARILLO"\nMáximo del rango del número de procesos:$NORMAL $cantidad_rango_procesos_maxima"
+  echo -ne $AMARILLO"\nMínimo del rango del tiempo de llegada de los procesos: "$NORMAL
+  read minimo_rango_ttl
+  echo -ne $AMARILLO"Máximo del rango del tiempo de llegada de los procesos: "$NORMAL
+  read maximo_rango_ttl
+
+  clear
+  contadorParticiones=1
+  for (( i=1;i<=$procesitos;i++))
+    do
+      llegada[$i]=$(shuf -i $minimo_rango_ttl-$maximo_rango_ttl -n 1)
+    done
+  echo -ne "Número de particiones [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
+  echo -ne "\nTamaño de las particiones [$minimo_rango-$maximo_rango]: "
+  for (( i = 0;i < $cantidad_particiones;i++ )){
+      echo -ne "${particiones[$contadorParticiones]} "
+      let contadorParticiones=$contadorParticiones+1
+  }
+  echo -ne "\nNúmero de procesos procesos [$cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima]: $procesitos"
+  echo -ne "\nTiempos de llegadas de los procesos [$minimo_rango_ttl-$maximo_rango_ttl]: "
+  for (( i = 1;i <= $procesitos;i++ )){
+      echo -ne "${llegada[$i]} "
+  }
+  echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
+  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  
+  echo -ne "\nInformación de la particiones"
+  echo -ne $AMARILLO"\nMínimo del rango del número de particiones:$NORMAL $cantidad_rango_minima"
+  echo -ne $AMARILLO"\nMáximo del rango del número de particiones:$NORMAL $cantidad_rango_maxima"
+  echo -ne $AMARILLO"\nMínimo del rango de unidades de memoria de las particiones: $NORMAL $minimo_rango"
+  echo -ne $AMARILLO"\nMáximo del rango de unidades de memoria de las particiones (Tiene que ser mayor a $minimo_rango):$NORMAL $maximo_rango"
+  echo -ne "\n\nInformación de los procesos"
+  echo -ne $AMARILLO"\nMínimo del rango del número de procesos:$NORMAL $cantidad_rango_procesos_minima"
+  echo -ne $AMARILLO"\nMáximo del rango del número de procesos:$NORMAL $cantidad_rango_procesos_maxima"
+  echo -ne $AMARILLO"\nMínimo del rango del tiempo de llegada de los procesos: $NORMAL $minimo_rango_ttl"
+  echo -ne $AMARILLO"\nMáximo del rango del tiempo de llegada de los procesos: $NORMAL $maximo_rango_ttl"
+  echo -ne $AMARILLO"\nMínimo del rango del tiempo de ejecución de los procesos: "$NORMAL
+  read minimo_rango_eje
+  echo -ne $AMARILLO"Máximo del rango del tiempo de ejecución de los procesos: "$NORMAL
+  read maximo_rango_eje
+
+  clear
+  contadorParticiones=1
+  
+  echo -ne "Número de particiones [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
+  echo -ne "\nTamaño de las particiones [$minimo_rango-$maximo_rango]: "
+  for (( i = 0;i < $cantidad_particiones;i++ )){
+      echo -ne "${particiones[$contadorParticiones]} "
+      let contadorParticiones=$contadorParticiones+1
+  }
+  echo -ne "\nNúmero de procesos procesos [$cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima]: $procesitos"
+ for (( i=1;i<=$procesitos;i++))
+    do
+      tiempo[$i]=$(shuf -i $minimo_rango_eje-$maximo_rango_eje -n 1)
+    until [ ${tiempo[$i]} -ge 0 ];
+      do
+        tiempo[$i]=$(shuf -i $minimo_rango_eje-$maximo_rango_eje -n 1)
+      done
+    done
+
+  echo -ne "\nTiempos de llegadas de los procesos [$minimo_rango_ttl-$maximo_rango_ttl]: "
+  for (( i = 1;i <= $procesitos;i++ )){
+      echo -ne "${llegada[$i]} "
+  }
+  echo -ne "\nTiempos de ejecución de los procesos [$minimo_rango_eje-$maximo_rango_eje]: "
+  for (( i = 1;i <= $procesitos;i++ )){
+      echo -ne "${tiempo[$i]} "
+  }
+  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  
+  echo -ne "\nInformación de la particiones"
+  echo -ne $AMARILLO"\nMínimo del rango del número de particiones:$NORMAL $cantidad_rango_minima"
+  echo -ne $AMARILLO"\nMáximo del rango del número de particiones:$NORMAL $cantidad_rango_maxima"
+  echo -ne $AMARILLO"\nMínimo del rango de unidades de memoria de las particiones: $NORMAL $minimo_rango"
+  echo -ne $AMARILLO"\nMáximo del rango de unidades de memoria de las particiones (Tiene que ser mayor a $minimo_rango):$NORMAL $maximo_rango"
+  echo -ne "\n\nInformación de los procesos"
+  echo -ne $AMARILLO"\nMínimo del rango del número de procesos:$NORMAL $cantidad_rango_procesos_minima"
+  echo -ne $AMARILLO"\nMáximo del rango del número de procesos:$NORMAL $cantidad_rango_procesos_maxima"
+  echo -ne $AMARILLO"\nMínimo del rango del tiempo de llegada de los procesos:$NORMAL $minimo_rango_ttl"
+  echo -ne $AMARILLO"\nMáximo del rango del tiempo de llegada de los procesos:$NORMAL $maximo_rango_ttl"
+  echo -ne $AMARILLO"\nMínimo del rango del tiempo de ejecución de los procesos:$NORMAL $minimo_rango_eje"
+  echo -ne $AMARILLO"\nMáximo del rango del tiempo de ejecución de los procesos:$NORMAL $maximo_rango_eje"
+  echo -ne $AMARILLO"\nMinimo del rango de unidades de memoria de los procesos: "$NORMAL
+  read minimo_rango_mem
+  echo -ne $AMARILLO"Máximo del rango de unidades de memoria de los procesos (Tiene que ser menor a $maximo_rango): "$NORMAL
+  read maximo_rango_mem
+  
+  cantidad_procesos_rango=$cantidad_rango_procesos
+
+ while [ $masprocesos == "s" ] # mientras que contador sea menor que cantidad de procesos
+  do
+    clear
+    if [ $p -gt 9 ] ; then
+      echo -ne "\n${colores[($i % 6)]}PROCESO P$(($p))\e[0m"
+      proceso[$p]=$(echo P$(($p))); 
+    else
+      echo -ne "\n${colores[($i % 6)]}PROCESO P0$(($p))\e[0m"
+      proceso[$p]=$(echo P0$(($p)));
+    fi 
+    # bloque para introduccion del resto de datos del proceso
+
+    memoria[$p]=$(shuf -i $minimo_rango_mem-$maximo_rango_mem -n 1)
+    
+     #Seleccionamos la particion mayor
+      memMax=0
+      for (( mm=1;mm<=${#particiones[@]};mm++ ))
+        do
+          if [[ ${particiones[$mm]} -gt $memMax ]]
+            then
+              memMax=${particiones[$mm]}
+              aux=$mm
+          fi
+      done
+    
+    while [ ${memoria[$p]} -le 0 -o ${memoria[$p]} -gt ${particiones[$aux]} ]
+      do
+        memoria[$p]=$(shuf -i $minimo_rango_mem-$maximo_rango_mem -n 1)
+      done
+    clear
+
+    #restar -1 a cantidad_rango_procesos
+    cantidad_rango_procesos=$(($cantidad_rango_procesos-1))
+
+    if [ $cantidad_rango_procesos -gt 0 ]
+      then
+       masprocesos='s'
+      else
+        masprocesos='n'
+    fi
+    p=$(expr $p + 1) #incremento el contador
+  done
+  clear
+  contadorParticiones=1
+  echo "" > ./Datos/$nuevaruta2.txt
+  echo -ne "Número de particiones [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
+  echo -ne "\nTamaño de las particiones [$minimo_rango-$maximo_rango]: "
+  for (( i = 0;i < $cantidad_particiones;i++ )){
+      echo -ne "${particiones[$contadorParticiones]} "
+      # Particion 1 30
+      
+      let contadorParticiones=$contadorParticiones+1
+  } 
+
+  # Llegada 4 Ejecución 30 Memoria 8
+  echo -ne "\nNúmero de procesos procesos [$cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima]: $procesitos"
+  echo -ne "\nTiempos de llegadas de los procesos [$minimo_rango_ttl-$maximo_rango_ttl]: "
+  for (( i = 0;i <= $procesitos;i++ )){
+      echo -ne "${llegada[$i]} "
+  }
+  echo -ne "\nTiempos de ejecución de los procesos [$minimo_rango_eje-$maximo_rango_eje]: "
+  for (( i = 0;i <= $procesitos;i++ )){
+      echo -ne "${tiempo[$i]} "
+  }
+  echo -ne "\nUnidades de memoria de los procesos [$minimo_rango_mem-$maximo_rango_mem]: "
+  for (( i = 0;i <= $procesitos;i++ )){
+      echo -ne "${memoria[$i]} "
+  }
+  
+  echo -ne "\nInformación de la particiones"
+  echo -ne $AMARILLO"\nMínimo del rango del número de particiones:$NORMAL $cantidad_rango_minima"
+  echo -ne $AMARILLO"\nMáximo del rango del número de particiones:$NORMAL $cantidad_rango_maxima"
+  echo -ne $AMARILLO"\nMínimo del rango de unidades de memoria de las particiones: $NORMAL $minimo_rango"
+  echo -ne $AMARILLO"\nMáximo del rango de unidades de memoria de las particiones (Tiene que ser mayor a $minimo_rango):$NORMAL $maximo_rango"
+  echo -ne "\n\nInformación de los procesos"
+  echo -ne $AMARILLO"\nMínimo del rango del número de procesos:$NORMAL $cantidad_rango_procesos_minima"
+  echo -ne $AMARILLO"\nMáximo del rango del número de procesos:$NORMAL $cantidad_rango_procesos_maxima"
+  echo -ne $AMARILLO"\nMínimo del rango del tiempo de llegada de los procesos:$NORMAL $minimo_rango_ttl"
+  echo -ne $AMARILLO"\nMáximo del rango del tiempo de llegada de los procesos:$NORMAL $maximo_rango_ttl"
+  echo -ne $AMARILLO"\nMínimo del rango del tiempo de ejecución de los procesos:$NORMAL $minimo_rango_eje"
+  echo -ne $AMARILLO"\nMáximo del rango del tiempo de ejecución de los procesos:$NORMAL $maximo_rango_eje"
+  echo -ne $AMARILLO"\nMinimo del rango de unidades de memoria de los procesos:$NORMAL $minimo_rango_mem"
+  echo -ne $AMARILLO"\nMáximo del rango de unidades de memoria de los procesos (Tiene que ser menor a $maximo_rango):$NORMAL $maximo_rango_mem"
+
+  contadorParticiones=1
+  echo "" > ./Datos/$nuevaruta2.txt
+  for (( i = 0;i < $cantidad_particiones;i++ )){
+      echo -ne "Particion $contadorParticiones ${particiones[$contadorParticiones]}\n" >> ./Datos/$nuevaruta2.txt
+      let contadorParticiones=$contadorParticiones+1
+  }
+  for (( i = 1;i <= $procesitos;i++ )){
+      echo -ne "Llegada ${llegada[$i]} " >> ./Datos/$nuevaruta2.txt
+      echo -ne "Ejecución ${tiempo[$i]} " >> ./Datos/$nuevaruta2.txt
+      echo -ne "Memoria ${memoria[$i]}\n" >> ./Datos/$nuevaruta2.txt
+  }
+  
+    for ((j=${#llegada[@]};j > 0;j--)){   
+      for ((i=0;i < j;i++)){
+        if [[ ${llegada[$i]} -gt ${llegada[$(($i+1))]} ]]
+          then
+            aux=${llegada[$(($i+1))]};
+            llegada[$(($i+1))]=${llegada[$i]};   
+            llegada[$i]=$aux;
+            
+            aux=${tiempo[$(($i+1))]};
+            tiempo[$(($i+1))]=${tiempo[$i]};  #para ordenar los tiempos de ejecucion con sus tiempos de respuesta
+            tiempo[$i]=$aux;
+            
+            aux=${proceso[$(($i+1))]};
+            proceso[$(($i+1))]=${proceso[$i]};  #para ordenar los nombres con sus mismos valores
+            proceso[$i]=$aux;
+            
+   #         aux=${memoria[$(($i+1))]};
+   #         memoria[$(($i+1))]=${memoria[$i]};  #para ordenar la memoria con sus mismos valores
+   #         memoria[$i]=$aux;
+
+            #aux=${colores[($(($i+1)) % 6)]};
+            #colores[$(($i+1))]=${colores[($i % 6)]}
+            #colores[$i]=$aux;
+
+            #aux=${colores2[($(($i+1)) % 6)]};
+            #colores2[$(($i+1))]=${colores2[($i % 6)]}
+            #colores2[$i]=$aux;
+          fi
+      }
+    }
+##################
+  #guardado
+##################
+  case $option_guardado in
+    1)
+      echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango" > $ficherodatosaleatorios_totales
+      echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem\n" >> $ficherodatosaleatorios_totales
+      break;;
+      
+    2)
+      echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango" > ./Rangos/$nuevaruta.txt
+      echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem\n" >> ./Rangos/$nuevaruta.txt
+  esac
+
+}
 ################################################################################################################################################################################################
 # Sinopsis:   función que permite introducir las particiones indicando un rango en el fichero
 ################################################################################################################################################################################################
@@ -2568,68 +2916,50 @@ function tiempoejecucionalgormitmo {
 ############################################################################################################################################################
 
 function algoritmoSJF_AjustePrimer {
+
   clear
-  
-  let "poreventos=0" #kkkk Para conocer cuando se dispara el volcado. (Si vale 1 se ha disparado)
+
+  let "poreventos=0" # Para conocer cuando se dispara el volcado. (Si vale 1 se ha disparado)
   evento1=0
   evento2=0
   evento3=0
 
-  if [[ $reloj -eq 0 ]];then
+  if [[ $reloj -eq 0 ]]; then
     evento3=1
-   else 
-  evento3=0
+  else
+    evento3=0
   fi
 
-    ############################################################################
-    # Se ejecuta siempre
-    ############################################################################
+  ############################################################################
+  # Se ejecuta siempre
+  ############################################################################
 
-  #Comienzo del algoritmo de SRPT (ahora FCFS) con particiones distintas y ajuste mejor
-  while [[ $salida != "s" ]]
-  do
-    
+  # Comienzo del algoritmo de SJF con particiones distintas y ajuste mejor
+  while [[ $salida != "s" ]]; do
     ############################################################################
     # Control de Particiones y Estados de los Procesos
     ############################################################################
 
-    for (( i=1; i <= ${#llegada[@]}; i++ ))
-      do    
-        #Si el proceso no ha salido, no ocupa ninguna partición y proceso anterior ha entrado ya
-        if [[ "sale[$i]" -ne 1 && "procesoEnParticionOcupada[$i]" -ne 1 ]]
-          then
-            contador=0
-            if [[ ${llegada[$i]} -le $reloj ]]
-              then
-                #'for' para particiones
-                for (( j=1; j <= ${#particiones[@]}; j++ ))
-                  do
-                    #Si el tamaño en memoria del proceso es menor que alguna partición y ésta no está ocupada...
-                    if [[ ${memoria[$i]} -le ${particiones[$j]} && ${particionOcupada[$j]} -eq 0 ]]                              
-                      then
-                        #...metemos al proceso en esa partición
-                        
-                        procesoEnParticionOcupada[$i]=1 #El proceso $i está en una partición ocupada
-                        procesoYaHaEntrado[$i]=1  #El proceso $i ha entrado en memoria                           
-                        entrada[$i]=$reloj                        
-              		if [[ ${estado[$i]} != "En memoria" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
-								# producido una modificación en el Estado del proceso.
-              		then
-                		let "poreventos=1"
-                		#echo -ne "kkkk ssssssssssssssssssssss En memoria 2015\n"
-                	fi
-                        estado[$i]="En memoria"
-                        let restante[$i]=${tiempo[$i]}
+    for ((i=1; i <= ${#llegada[@]}; i++)); do    
+      # Si el proceso no ha salido, no ocupa ninguna partición y proceso anterior ha entrado ya
+      if [[ "${sale[$i]}" -ne 1 && "${procesoEnParticionOcupada[$i]}" -ne 1 ]]; then
+        contador=0
+        if [[ ${llegada[$i]} -le $reloj ]]; then
+          # 'for' para particiones
+          for ((j=1; j <= ${#particiones[@]}; j++)); do
+            # Si el tamaño en memoria del proceso es menor que alguna partición y ésta no está ocupada...
+            if [[ ${memoria[$i]} -le ${particiones[$j]} && ${particionOcupada[$j]} -eq 0 ]]; then
+              # ...metemos al proceso en esa partición
+              procesoEnParticionOcupada[$i]=1 # El proceso $i está en una partición ocupada
+              procesoYaHaEntrado[$i]=1  # El proceso $i ha entrado en memoria                           
+              entrada[$i]=$reloj                        
+              if [[ ${estado[$i]} != "En memoria" ]]; then  # Sólo se cambia la variable "poreventos" si se ha producido una modificación en el Estado del proceso.
+                let "poreventos=1"
+              fi
+              estado[$i]="En memoria"
+              let restante[$i]=${tiempo[$i]}
                         #Buscamos el primer (antes mejor) ajuste posible con la minima diff memoria sobrante
-                        ##############################################################################################################################
-                        ##############################################################################################################################
-                        ##############################################################################################################################
-                        ############################                                                                      ############################ 
-                        ############################                        Algoritmo Primer  (ANTES MEJOR)               ############################
-                        ############################                                                                      ############################ 
-                        ##############################################################################################################################
-                        ##############################################################################################################################
-                        ##############################################################################################################################
+                        
                         diff_mem=100
                         diff=$j
                         for (( dm=1; dm<=${#particiones[@]}; dm++ ))
@@ -2760,33 +3090,13 @@ function algoritmoSJF_AjustePrimer {
                           let restante[$i]=${tiempo[$i]}
                   fi
                 done
-        fi
-    
-     
-              
-        semaforo=0
-        
-        
-      
-
-        ##############################################################################################################################
-        ##############################################################################################################################
-        ##############################################################################################################################
-        ############################                                                                      ############################ 
-        ############################                                                                      ############################ 
-        ############################                         Algoritmo SJF                                ############################ 
-        ############################                                                                      ############################ 
-        ############################                                                                      ############################ 
-        ##############################################################################################################################
-        ##############################################################################################################################
-        ##############################################################################################################################  
+        fi             
+        semaforo=0       
 
 
-###################################################################################################################################################################
-###################################################################################################################################################################
-###################################################################################################################################################################
+#############################################################################################################################################################
 
-        for ((e=1; e<=${#llegada[@]}; e++))
+for ((e=1; e<=${#llegada[@]}; e++))
           do
             for ((ex=1; ex<=${#llegada[@]}; ex++ ))
               do
@@ -2809,7 +3119,7 @@ function algoritmoSJF_AjustePrimer {
                         if [[ $expulsar -eq 0 && ${restante[${ocupadas[$m]}]} -gt ${restante[$e]} && ${estado[${ocupadas[$m]}]} == "En ejecución" ]]
                           then
 
-                           # Px expulsado
+                            #Px expulsado
 
                             expulsar=1                                      
               		if [[ ${estado[$m]} != "En pausa" ]]
@@ -2820,11 +3130,10 @@ function algoritmoSJF_AjustePrimer {
                 	fi
                                         estado[${ocupadas[$m]}]="En pausa"
                                         bandera[${ocupadas[$m]}]=0
-                  
 
-############################################################################
-                            #Px invasor                 
-############################################################################    
+###########################################################################
+#                            Px invasor                 
+###########################################################################    
 
                                         inicioEjecucion[$e]=$reloj
               		if [[ ${estado[$e]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
@@ -2832,19 +3141,17 @@ function algoritmoSJF_AjustePrimer {
 									#proceso.
               		then
                 		let "poreventos=1"
-                	# 	                                     # No quitar #echo -ne "kkkk ssssssssssssssssssssss En ejecución 2192\n"
+                		                                     #No quitar #echo -ne "kkkk ssssssssssssssssssssss En ejecución 2192\n"
                 	fi
                                         estado[$e]="En ejecución"
                                         bandera[$e]=1
                         fi
-                    done
+                      done
                     
-                  fi
+                fi
           done
-###################################################################################################################################################################
-###################################################################################################################################################################
-###################################################################################################################################################################
           
+#############################################################################################################################################################       
       #Si un proceso su tiempo restante es 0 finaliza
       if [[ ${restante[$i]} -le 0 && ${procesoEnParticionOcupada[$i]} -eq 1 && ${sale[$i]} -eq 0 ]]
       then
@@ -3594,9 +3901,9 @@ function algoritmoSRPT_AjustePrimer {
             then    
               echo "" >> ./informeColortemp.txt
               echo "" >> ./informetemp.txt 
-              echo -e $AMARILLO" FCFS-FNI-Primer Ajuste"$NORMAL
-              echo -e " FCFS-FNI-Primer Ajuste" > ./informetemp.txt
-              echo $AMARILLO" FCFS-FNI-Primer Ajuste"$NORMAL > ./informeColortemp.txt
+              echo -e $AMARILLO" SRPT-FNI-Primer Ajuste"$NORMAL
+              echo -e " SRPT-FNI-Primer Ajuste" > ./informetemp.txt
+              echo $AMARILLO" SRPT-FNI-Primer Ajuste"$NORMAL > ./informeColortemp.txt
               echo -ne " T: $reloj\tTamaño de las particiones:" | tee -a ./informetemp.txt
               echo -ne " T: $reloj\tTamaño de las particiones:" >> ./informeColortemp.txt
               for (( z = 1; z <= $contadorParticiones; z++ ))
@@ -5662,9 +5969,9 @@ inicializaVectores
 if [ "$algoritmoE" -eq 1 ]; then
   algoritmoFCFS_AjustePrimer
 elif [ "$algoritmoE" -eq 2 ]; then
-  algoritmoSRPT_AjustePrimer
-elif [ "$algoritmoE" -eq 3 ]; then
   algoritmoSJF_AjustePrimer
+elif [ "$algoritmoE" -eq 3 ]; then
+  algoritmoSRPT_AjustePrimer
 fi
 resultadoFinalDeLaEjecucion
 mostrarInforme
