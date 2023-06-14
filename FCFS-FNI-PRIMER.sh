@@ -267,7 +267,7 @@ cp ./FLast/FRangosAleTotal.txt ./FRangos/FRangosSubrangos.txt
 function menueleccion {
 
   clear
-  echo -e "\033[2B" "prueba"
+
   echo -e $AMARILLO"\nMENÚ INICIO"$NORMAL
   echo -e "\n1. Introducción de datos manual"
   echo -e "\n2. Fichero de datos de última ejecución (DatosLast.txt)"
@@ -275,7 +275,7 @@ function menueleccion {
   echo -e "\n4. Aleatorio manual (Indica rango)"
   echo -e "\n5. Fichero de rangos de última ejecución (DatosRangosLast.txt)"
   echo -e "\n6. Otros ficheros de rangos"
-  echo -e "\n7. Rangos aleatorios totales"
+  echo -e "\n7. Rangos aleatorios"
   echo -e "\n8. Salir"
   echo -n -e "\n--> "
   read seleccion
@@ -287,7 +287,7 @@ function menueleccion {
   echo -e "\n4. Aleatorio manual (Indica rango)" >> $informeConColor
   echo -e "\n5. Fichero de rangos de última ejecución (DatosRangosLast.txt)" >> $informeConColor
   echo -e "\n6. Otros ficheros de rangos" >> $informeConColor
-  echo -e "\n7. Rangos aleatorios totales" >> $informeConColor
+  echo -e "\n7. Rangos aleatorios" >> $informeConColor
   echo -e "\n8. Salir" >> $informeConColor
   echo -n -e "\n--> $seleccion" >> $informeConColor
 
@@ -298,7 +298,7 @@ function menueleccion {
   echo -e "\n4. Aleatorio manual (Indica rango)" >> $informeSinColor
   echo -e "\n5. Fichero de rangos de última ejecución (DatosRangosLast.txt)" >> $informeSinColor
   echo -e "\n6. Otros ficheros de rangos" >> $informeSinColor
-  echo -e "\n7. Rangos aleatorios totales" >> $informeSinColor
+  echo -e "\n7. Rangos aleatorios" >> $informeSinColor
   echo -e "\n8. Salir" >> $informeSinColor
   echo -n -e "\n--> $seleccion" >> $informeSinColor
 
@@ -1567,7 +1567,7 @@ function entradaProcesosRangoManual_op_cuatro {
 ## Funcion rangos aleatorios maximos
 ####################################################
 ######################################################
-##########################################################
+####################################################
 
 function entradaProcesosRangoManual_op_siete {
   clear
@@ -3090,6 +3090,7 @@ function algoritmoSJF_AjustePrimer {
                 		#echo -ne "kkkk ssssssssssssssssssssss En ejecución 2116\n"
                 	fi
               estado[$i]="En ejecución"
+			  #gantt[$reloj]=$i
               inicioEjecucion[$i]=$reloj
               bandera[$i]=1
               bloqueo[$i]=1
@@ -3197,8 +3198,9 @@ done
 
                 		#echo -ne "kkkk ssssssssssssssssssssss En ejecución 2244\n"
                 	#fi
-					                		let "poreventos=1"
+					let "poreventos=1"
                     estado[$e]="En ejecución"
+					#gantt[$reloj]=$e
                     inicioEjecucion[$e]=$reloj
                     bandera[$e]=1                    
                     e=`expr ${#llegada[@]} + 1`
@@ -3239,10 +3241,263 @@ done
   # Se añade el siguiente if que contiene toda la parte de impresión para ejecutarla sólo cuando 
   # haya algún cambio de estado.
   ################################################################################################################################################################################################
-  
-  #if [[ ($poreventos -eq 1) || ($reloj -eq 0) ]]
- # then 
+if [[ $poreventos -eq 0 && $optejecucion -eq 2 && $reloj -gt 0 ]]
+	then 
+		gantt[$reloj]=${gantt[$reloj-1]}
+		gantt2[$reloj]==${gantt2[$reloj-1]}
+fi
+	  
+  if [[ (($poreventos -eq 1)   && ($optejecucion -eq 2)) || $reloj -eq 0  ]]
+  then 
         for (( i=1; i <= ${#llegada[@]}; i++ ))
+          do
+
+          #Llamada a la función que comprueba si ha habido cambios
+          #Salidas por pantalla y salidas a informe
+          if [[ $i -eq 1 ]]
+            then    
+              echo "" >> ./informeColor.txt
+              echo "" >> ./informetemp.txt 
+              echo -e $AMARILLO" SJF-FNI-Primer Ajuste"$NORMAL
+              echo -e " SJF-FNI-Primer Ajuste" > ./informetemp.txt
+              echo $AMARILLO" SJF-FNI-Primer Ajuste"$NORMAL > ./informeColor.txt
+              echo -ne " T: $reloj\tTamaño de las particiones:" | tee -a ./informetemp.txt
+              echo -ne " T: $reloj\tTamaño de las particiones:" >> ./informeColor.txt
+              for (( z = 1; z <= $contadorParticiones; z++ ))
+              do  
+                echo -en " ${particiones[$z]} " | tee -a ./informetemp.txt
+                echo -en " ${particiones[$z]} " >> ./informeColor.txt
+              done
+              echo "" | tee -a ./informetemp.txt
+              echo ""  >> ./informeColor.txt
+              echo -e " Ref Tll Tej Mem Tesp Tret Trej Part Estado"  | tee -a ./informetemp.txt
+              echo -ne $NORMAL
+              #Cabecera par informe a color
+              echo -e " Ref Tll Tej Mem Tesp Tret Trej Part Estado"  >> ./informeColor.txt
+              restante[$i]=$((${tiempo[$i]}+${tiempNEsperaProceso[$i]}-${tiempoNRespuProceso[$i]})) 
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  
+              echo -ne " ${proceso[$i]}"  >> ./informetemp.txt
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  >> ./informeColor.txt
+              if [[ ${llegada[$i]} -gt 99 ]]; then #Si es mayor que 99
+                echo -ne " ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${llegada[$i]}" >> ./informetemp.txt   
+              elif [[ ${llegada[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${llegada[$i]}" >> ./informetemp.txt   
+                else echo -ne "  ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${llegada[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempo[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${tiempo[$i]}" >> ./informetemp.txt
+              elif [[ ${tiempo[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${tiempo[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${tiempo[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${memoria[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${memoria[$i]}" >> ./informetemp.txt
+                                          elif [[ ${memoria[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${memoria[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${memoria[$i]}" >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "    ${colores[$i % 6]}-" | tee -a ./informeColor.txt
+                echo -ne "    -" >> ./informetemp.txt 
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                  echo -ne "    ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 99 && ${tiempNEsperaProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                  echo -ne "   ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                  echo -ne "    ${colores[$i % 6]}- " | tee -a ./informeColor.txt
+                  echo -ne "    - " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                echo -ne "  ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]}  -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "    ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -le 99 && ${tiempoNRespuProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "   ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "   ${colores[$i % 6]}- " | tee -a ./informeColor.txt
+                echo -ne "   - " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne " ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne " ${restante[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${restante[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "   ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne "   ${restante[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -le 99 && ${restante[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                echo -ne "  ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne "  ${restante[$i]} " >> ./informetemp.txt
+              fi
+            
+              if [[ ( "${estado[$i]}" == "Fuera del sistema" || "${estado[$i]}" == "Finalizado" || "${estado[$i]}" == "En espera") ]]; then
+                echo -ne "   - "| tee -a ./informeColor.txt
+                echo -ne "   - " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                echo -ne " ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                echo -ne " ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                  echo -ne "   ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "   ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 99 && ${partConProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then 
+                  echo -ne "  ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "  ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+
+              echo -ne "${estado[$i]} " | tee -a ./informeColor.txt
+              echo -ne "${estado[$i]} " >> ./informetemp.txt   
+              echo "" | tee -a ./informeColor.txt
+              echo "" >> ./informetemp.txt  
+            
+
+            else
+            
+            
+              restante[$i]=$((${tiempo[$i]}+${tiempNEsperaProceso[$i]}-${tiempoNRespuProceso[$i]}))
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  
+              echo -ne " ${proceso[$i]}"  >> ./informetemp.txt
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  >> ./informeColor.txt
+              if [[ ${llegada[$i]} -gt 99 ]]; then #Si es menor o igual que 9
+                echo -ne " ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${llegada[$i]}" >> ./informetemp.txt   
+              elif [[ ${llegada[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${llegada[$i]}" >> ./informetemp.txt   
+                else echo -ne "  ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${llegada[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempo[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${tiempo[$i]}" >> ./informetemp.txt
+              elif [[ ${tiempo[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${tiempo[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${tiempo[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${memoria[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${memoria[$i]}" >> ./informetemp.txt
+                                elif [[ ${memoria[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${memoria[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${memoria[$i]}" >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "    ${colores[$i % 6]}-" | tee -a ./informeColor.txt
+                echo -ne "    -" >> ./informetemp.txt 
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                  echo -ne "    ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 99 && ${tiempNEsperaProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                  echo -ne "   ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                  echo -ne "    ${colores[$i % 6]}- " | tee -a ./informeColor.txt
+                  echo -ne "    - " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                echo -ne "  ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]}  -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "    ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -le 99 && ${tiempoNRespuProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "   ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "   ${colores[$i % 6]}- " | tee -a ./informeColor.txt
+                echo -ne "   - " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne " ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne " ${restante[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${restante[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne "   ${restante[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -le 99 && ${restante[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                echo -ne "  ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne "  ${restante[$i]} " >> ./informetemp.txt
+              fi
+            
+              if [[ ( "${estado[$i]}" == "Fuera del sistema" || "${estado[$i]}" == "Finalizado" || "${estado[$i]}" == "En espera") ]]; then
+                echo -ne "   - "| tee -a ./informeColor.txt
+                echo -ne "   - " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                echo -ne " ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                echo -ne " ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                  echo -ne "   ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "   ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 99 && ${partConProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then 
+                  echo -ne "  ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "  ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              echo -ne "${estado[$i]} " | tee -a ./informeColor.txt
+              echo -ne "${estado[$i]} " >> ./informetemp.txt   
+              echo "" | tee -a ./informeColor.txt
+              echo "" >> ./informetemp.txt    
+
+          fi
+
+          done # Fin del for
+
+            calcularPromediosEsperaRespuesta
+            representacionParticionesEnTabla
+			
+            representacionLineaTemporal
+			
+            let "poreventos=0"
+	
+	elif [[  $optejecucion -ne 2 ]] 
+	then
+	  
+	for (( i=1; i <= ${#llegada[@]}; i++ ))
           do
 
           #Llamada a la función que comprueba si ha habido cambios
@@ -3484,8 +3739,8 @@ done
             representacionParticionesEnTabla
             representacionLineaTemporal
             let "poreventos=0"
-
- # fi
+	
+ fi
  # let reloj=$reloj+1 	# Esta línea estaba en la función representacionLineaTemporal pero no se 
         # ejecutaba correctamente desde la función porque no se ejecutaba cuando 
         # no se producía ninguna modificación del estado si no había llegado 
@@ -3917,8 +4172,12 @@ function algoritmoSRPT_AjustePrimer {
   # Se añade el siguiente if que contiene toda la parte de impresión para ejecutarla sólo cuando 
   # haya algún cambio de estado.
   ################################################################################################################################################################################################
-  
-  if [[ ($poreventos -eq 1) || ($reloj -eq 0) ]]
+  if [[ $poreventos -eq 0 && $optejecucion -eq 2 && $reloj -gt 0 ]]
+	then 
+		gantt[$reloj]=${gantt[$reloj-1]}
+		gantt2[$reloj]==${gantt2[$reloj-1]}
+fi
+   if [[ (($poreventos -eq 1)   && ($optejecucion -eq 2)) || $reloj -eq 0 ]]
   then 
         for (( i=1; i <= ${#llegada[@]}; i++ ))
           do
@@ -4162,7 +4421,250 @@ function algoritmoSRPT_AjustePrimer {
             representacionParticionesEnTabla
             representacionLineaTemporal
             let "poreventos=0"
+	elif [[ $optejecucion -ne 2 ]] 
+	then 
+	        for (( i=1; i <= ${#llegada[@]}; i++ ))
+          do
 
+          #Llamada a la función que comprueba si ha habido cambios
+          #Salidas por pantalla y salidas a informe
+          if [[ $i -eq 1 ]]
+            then    
+              echo "" >> ./informeColor.txt
+              echo "" >> ./informetemp.txt 
+              echo -e $AMARILLO" SRPT-FNI-Primer Ajuste"$NORMAL
+              echo -e " SRPT-FNI-Primer Ajuste" > ./informetemp.txt
+              echo $AMARILLO" SRPT-FNI-Primer Ajuste"$NORMAL > ./informeColor.txt
+              echo -ne " T: $reloj\tTamaño de las particiones:" | tee -a ./informetemp.txt
+              echo -ne " T: $reloj\tTamaño de las particiones:" >> ./informeColor.txt
+              for (( z = 1; z <= $contadorParticiones; z++ ))
+              do  
+                echo -en " ${particiones[$z]} " | tee -a ./informetemp.txt
+                echo -en " ${particiones[$z]} " >> ./informeColor.txt
+              done
+              echo "" | tee -a ./informetemp.txt
+              echo ""  >> ./informeColor.txt
+              echo -e " Ref Tll Tej Mem Tesp Tret Trej Part Estado"  | tee -a ./informetemp.txt
+              echo -ne $NORMAL
+              #Cabecera par informe a color
+              echo -e " Ref Tll Tej Mem Tesp Tret Trej Part Estado"  >> ./informeColor.txt
+              restante[$i]=$((${tiempo[$i]}+${tiempNEsperaProceso[$i]}-${tiempoNRespuProceso[$i]})) 
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  
+              echo -ne " ${proceso[$i]}"  >> ./informetemp.txt
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  >> ./informeColor.txt
+              if [[ ${llegada[$i]} -gt 99 ]]; then #Si es mayor que 99
+                echo -ne " ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${llegada[$i]}" >> ./informetemp.txt   
+              elif [[ ${llegada[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${llegada[$i]}" >> ./informetemp.txt   
+                else echo -ne "  ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${llegada[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempo[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${tiempo[$i]}" >> ./informetemp.txt
+              elif [[ ${tiempo[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${tiempo[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${tiempo[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${memoria[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${memoria[$i]}" >> ./informetemp.txt
+                                          elif [[ ${memoria[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${memoria[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${memoria[$i]}" >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "    ${colores[$i % 6]}-" | tee -a ./informeColor.txt
+                echo -ne "    -" >> ./informetemp.txt 
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                  echo -ne "    ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 99 && ${tiempNEsperaProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                  echo -ne "   ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                  echo -ne "    ${colores[$i % 6]}- " | tee -a ./informeColor.txt
+                  echo -ne "    - " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                echo -ne "  ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]}  -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "    ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -le 99 && ${tiempoNRespuProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "   ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "   ${colores[$i % 6]}- " | tee -a ./informeColor.txt
+                echo -ne "   - " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne " ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne " ${restante[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${restante[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "   ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne "   ${restante[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -le 99 && ${restante[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                echo -ne "  ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne "  ${restante[$i]} " >> ./informetemp.txt
+              fi
+            
+              if [[ ( "${estado[$i]}" == "Fuera del sistema" || "${estado[$i]}" == "Finalizado" || "${estado[$i]}" == "En espera") ]]; then
+                echo -ne "   - "| tee -a ./informeColor.txt
+                echo -ne "   - " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                echo -ne " ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                echo -ne " ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                  echo -ne "   ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "   ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 99 && ${partConProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then 
+                  echo -ne "  ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "  ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+
+              echo -ne "${estado[$i]} " | tee -a ./informeColor.txt
+              echo -ne "${estado[$i]} " >> ./informetemp.txt   
+              echo "" | tee -a ./informeColor.txt
+              echo "" >> ./informetemp.txt  
+            
+
+            else
+            
+            
+              restante[$i]=$((${tiempo[$i]}+${tiempNEsperaProceso[$i]}-${tiempoNRespuProceso[$i]}))
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  
+              echo -ne " ${proceso[$i]}"  >> ./informetemp.txt
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  >> ./informeColor.txt
+              if [[ ${llegada[$i]} -gt 99 ]]; then #Si es menor o igual que 9
+                echo -ne " ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${llegada[$i]}" >> ./informetemp.txt   
+              elif [[ ${llegada[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${llegada[$i]}" >> ./informetemp.txt   
+                else echo -ne "  ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${llegada[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempo[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${tiempo[$i]}" >> ./informetemp.txt
+              elif [[ ${tiempo[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${tiempo[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${tiempo[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${memoria[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${memoria[$i]}" >> ./informetemp.txt
+                                elif [[ ${memoria[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${memoria[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${memoria[$i]}" >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "    ${colores[$i % 6]}-" | tee -a ./informeColor.txt
+                echo -ne "    -" >> ./informetemp.txt 
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                  echo -ne "    ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 99 && ${tiempNEsperaProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                  echo -ne "   ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                  echo -ne "    ${colores[$i % 6]}- " | tee -a ./informeColor.txt
+                  echo -ne "    - " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                echo -ne "  ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]}  -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "    ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -le 99 && ${tiempoNRespuProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "   ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "   ${colores[$i % 6]}- " | tee -a ./informeColor.txt
+                echo -ne "   - " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne " ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne " ${restante[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${restante[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne "   ${restante[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -le 99 && ${restante[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                echo -ne "  ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne "  ${restante[$i]} " >> ./informetemp.txt
+              fi
+            
+              if [[ ( "${estado[$i]}" == "Fuera del sistema" || "${estado[$i]}" == "Finalizado" || "${estado[$i]}" == "En espera") ]]; then
+                echo -ne "   - "| tee -a ./informeColor.txt
+                echo -ne "   - " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                echo -ne " ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                echo -ne " ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                  echo -ne "   ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "   ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 99 && ${partConProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then 
+                  echo -ne "  ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "  ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              echo -ne "${estado[$i]} " | tee -a ./informeColor.txt
+              echo -ne "${estado[$i]} " >> ./informetemp.txt   
+              echo "" | tee -a ./informeColor.txt
+              echo "" >> ./informetemp.txt    
+
+          fi
+
+          done # Fin del for
+
+            calcularPromediosEsperaRespuesta
+            representacionParticionesEnTabla
+            representacionLineaTemporal
+			let "poreventos=0"
   fi
   let reloj=$reloj+1 	# Esta línea estaba en la función representacionLineaTemporal pero no se 
         # ejecutaba correctamente desde la función porque no se ejecutaba cuando 
@@ -4574,8 +5076,12 @@ function algoritmoFCFS_AjustePrimer {
   # Se añade el siguiente if que contiene toda la parte de impresión para ejecutarla sólo cuando 
   # haya algún cambio de estado.
   ################################################################################################################################################################################################
-  
-  if [[ ($poreventos -eq 1) || ($reloj -eq 0) ]]
+  if [[ $poreventos -eq 0 && $optejecucion -eq 2 && $reloj -gt 0 ]]
+	then 
+		gantt[$reloj]=${gantt[$reloj-1]}
+		gantt2[$reloj]==${gantt2[$reloj-1]}
+fi
+  if [[ (($poreventos -eq 1)   && ($optejecucion -eq 2)) || $reloj -eq 0 ]]
   then 
         for (( i=1; i <= ${#llegada[@]}; i++ ))
           do
@@ -4819,7 +5325,250 @@ function algoritmoFCFS_AjustePrimer {
             representacionParticionesEnTabla
             representacionLineaTemporal
             let "poreventos=0"
+elif [[ $optejecucion -ne 2 ]] 
+	then 
+	 for (( i=1; i <= ${#llegada[@]}; i++ ))
+          do
 
+          #Llamada a la función que comprueba si ha habido cambios
+          #Salidas por pantalla y salidas a informe
+          if [[ $i -eq 1 ]]
+            then    
+              echo "" >> ./informeColor.txt
+              echo "" >> ./informetemp.txt 
+              echo -e $AMARILLO" FCFS-FNI-Primer Ajuste"$NORMAL
+              echo -e " FCFS-FNI-Primer Ajuste" > ./informetemp.txt
+              echo $AMARILLO" FCFS-FNI-Primer Ajuste"$NORMAL > ./informeColor.txt
+              echo -ne " T: $reloj\tTamaño de las particiones:" | tee -a ./informetemp.txt
+              echo -ne " T: $reloj\tTamaño de las particiones:" >> ./informeColor.txt
+              for (( z = 1; z <= $contadorParticiones; z++ ))
+              do  
+                echo -en " ${particiones[$z]} " | tee -a ./informetemp.txt
+                echo -en " ${particiones[$z]} " >> ./informeColor.txt
+              done
+              echo "" | tee -a ./informetemp.txt
+              echo ""  >> ./informeColor.txt
+              echo -e " Ref Tll Tej Mem Tesp Tret Trej Part Estado"  | tee -a ./informetemp.txt
+              echo -ne $NORMAL
+              #Cabecera par informe a color
+              echo -e " Ref Tll Tej Mem Tesp Tret Trej Part Estado"  >> ./informeColor.txt
+              restante[$i]=$((${tiempo[$i]}+${tiempNEsperaProceso[$i]}-${tiempoNRespuProceso[$i]})) 
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  
+              echo -ne " ${proceso[$i]}"  >> ./informetemp.txt
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  >> ./informeColor.txt
+              if [[ ${llegada[$i]} -gt 99 ]]; then #Si es mayor que 99
+                echo -ne " ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${llegada[$i]}" >> ./informetemp.txt   
+              elif [[ ${llegada[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${llegada[$i]}" >> ./informetemp.txt   
+                else echo -ne "  ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${llegada[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempo[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${tiempo[$i]}" >> ./informetemp.txt
+              elif [[ ${tiempo[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${tiempo[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${tiempo[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${memoria[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${memoria[$i]}" >> ./informetemp.txt
+                                          elif [[ ${memoria[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${memoria[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${memoria[$i]}" >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "    ${colores[$i % 6]}-" | tee -a ./informeColor.txt
+                echo -ne "    -" >> ./informetemp.txt 
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                  echo -ne "    ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 99 && ${tiempNEsperaProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                  echo -ne "   ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                  echo -ne "    ${colores[$i % 6]}- " | tee -a ./informeColor.txt
+                  echo -ne "    - " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                echo -ne "  ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]}  -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "    ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -le 99 && ${tiempoNRespuProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "   ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "   ${colores[$i % 6]}- " | tee -a ./informeColor.txt
+                echo -ne "   - " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne " ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne " ${restante[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${restante[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "   ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne "   ${restante[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -le 99 && ${restante[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                echo -ne "  ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne "  ${restante[$i]} " >> ./informetemp.txt
+              fi
+            
+              if [[ ( "${estado[$i]}" == "Fuera del sistema" || "${estado[$i]}" == "Finalizado" || "${estado[$i]}" == "En espera") ]]; then
+                echo -ne "   - "| tee -a ./informeColor.txt
+                echo -ne "   - " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                echo -ne " ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                echo -ne " ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                  echo -ne "   ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "   ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 99 && ${partConProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then 
+                  echo -ne "  ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "  ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+
+              echo -ne "${estado[$i]} " | tee -a ./informeColor.txt
+              echo -ne "${estado[$i]} " >> ./informetemp.txt   
+              echo "" | tee -a ./informeColor.txt
+              echo "" >> ./informetemp.txt  
+            
+
+            else
+            
+            
+              restante[$i]=$((${tiempo[$i]}+${tiempNEsperaProceso[$i]}-${tiempoNRespuProceso[$i]}))
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  
+              echo -ne " ${proceso[$i]}"  >> ./informetemp.txt
+              echo -ne " ${colores[$i % 6]}${proceso[$i]}"  >> ./informeColor.txt
+              if [[ ${llegada[$i]} -gt 99 ]]; then #Si es menor o igual que 9
+                echo -ne " ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${llegada[$i]}" >> ./informetemp.txt   
+              elif [[ ${llegada[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${llegada[$i]}" >> ./informetemp.txt   
+                else echo -ne "  ${colores[$i % 6]}${llegada[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${llegada[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempo[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${tiempo[$i]}" >> ./informetemp.txt
+              elif [[ ${tiempo[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${tiempo[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${tiempo[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${tiempo[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${memoria[$i]} -gt 99 ]]; then
+                echo -ne " ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne " ${memoria[$i]}" >> ./informetemp.txt
+                                elif [[ ${memoria[$i]} -le 9 ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne "   ${memoria[$i]}" >> ./informetemp.txt  
+                else echo -ne "  ${colores[$i % 6]}${memoria[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${memoria[$i]}" >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "    ${colores[$i % 6]}-" | tee -a ./informeColor.txt
+                echo -ne "    -" >> ./informetemp.txt 
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                echo -ne "  ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                  echo -ne "    ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt  
+              fi
+              if [[ ${tiempNEsperaProceso[$i]} -le 99 && ${tiempNEsperaProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempNEsperaProceso[$i]}" | tee -a ./informeColor.txt
+                  echo -ne "   ${tiempNEsperaProceso[$i]}" >> ./informetemp.txt
+              fi
+
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                  echo -ne "    ${colores[$i % 6]}- " | tee -a ./informeColor.txt
+                  echo -ne "    - " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne "  ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                echo -ne "  ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${tiempoNRespuProceso[$i]}  -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                  echo -ne "    ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "    ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${tiempoNRespuProceso[$i]} -le 99 && ${tiempoNRespuProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                  echo -ne "   ${colores[$i % 6]}${tiempoNRespuProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "   ${tiempoNRespuProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ "${estado[$i]}" == "Fuera del sistema" ]]; then
+                echo -ne "   ${colores[$i % 6]}- " | tee -a ./informeColor.txt
+                echo -ne "   - " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" ]]; then
+                echo -ne " ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne " ${restante[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${restante[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then #Si es menor o igual que 9
+                echo -ne "   ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne "   ${restante[$i]} " >> ./informetemp.txt 
+              fi
+              if [[ ${restante[$i]} -le 99 && ${restante[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" ]]; then 
+                echo -ne "  ${colores[$i % 6]}${restante[$i]} " | tee -a ./informeColor.txt
+                echo -ne "  ${restante[$i]} " >> ./informetemp.txt
+              fi
+            
+              if [[ ( "${estado[$i]}" == "Fuera del sistema" || "${estado[$i]}" == "Finalizado" || "${estado[$i]}" == "En espera") ]]; then
+                echo -ne "   - "| tee -a ./informeColor.txt
+                echo -ne "   - " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -gt 99 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                echo -ne " ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                echo -ne " ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then
+                  echo -ne "   ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "   ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              if [[ ${partConProceso[$i]} -le 99 && ${partConProceso[$i]} -gt 9 && "${estado[$i]}" != "Fuera del sistema" && "${estado[$i]}" != "Finalizado" && "${estado[$i]}" != "En espera" ]]; then 
+                  echo -ne "  ${partConProceso[$i]} " | tee -a ./informeColor.txt
+                  echo -ne "  ${partConProceso[$i]} " >> ./informetemp.txt
+              fi
+              echo -ne "${estado[$i]} " | tee -a ./informeColor.txt
+              echo -ne "${estado[$i]} " >> ./informetemp.txt   
+              echo "" | tee -a ./informeColor.txt
+              echo "" >> ./informetemp.txt    
+
+          fi
+
+          done # Fin del for
+
+            calcularPromediosEsperaRespuesta
+            representacionParticionesEnTabla
+            representacionLineaTemporal
+            let "poreventos=0"
   fi
   let reloj=$reloj+1 	# Esta línea estaba en la función representacionLineaTemporal pero no se 
         # ejecutaba correctamente desde la función porque no se ejecutaba cuando 
@@ -5413,15 +6162,15 @@ function representacionLineaTemporal {
 
   for (( s = 0 ; s <= ${#llegada[@]} ; s++ ))
   do
-    if [[ ${estado[$s]} == "En ejecución" ]] 
-      then
+  if [[ ${estado[$s]} == "En ejecución" ]] 
+    then
         gantt[$reloj]=$s
-    fi
+   fi
 
-     if [[ ${estado[$s]} == "En espera" ]] 
-      then
-        gantt2[$reloj]=$s
-    fi
+    if [[ ${estado[$s]} == "En espera" ]] 
+     then
+       gantt2[$reloj]=$s
+   fi
  done
   terminal=$(($(tput cols)))
   columnasporfila=$(($terminal))
@@ -5441,14 +6190,14 @@ function representacionLineaTemporal {
 
   for (( k = 0 ; k <= $reloj ; k++ )){
 
-    if [[ ${gantt2[$k]} -eq ${gantt2[$(($k-1))]} ]]
+    if [[ ${gantt2[$k]} = ${gantt2[$(($k-1))]} ]]
       then
         evento2=0
       else
         evento2=1
     fi
 
-    if [[ ${gantt[$k]} -eq ${gantt[$(($k-1))]} ]]
+    if [[ ${gantt[$k]} = ${gantt[$(($k-1))]} ]]
       then
         evento1=0
         echo -ne "   " | tee -a $informeConColor
@@ -5469,7 +6218,7 @@ function representacionLineaTemporal {
         caracteres=`echo ${proceso[${gantt[$k]}]} | wc -c`
         if [[ $caracteres -eq 3 ]]
           then  
-            echo -ne "${colores[${gantt[$k]} % 6]}" " ${proceso[${gantt[$k]}]}" | tee -a $informeConColor
+           echo -ne "${colores[${gantt[$k]} % 6]}${proceso[${gantt[$k]}]}" | tee -a $informeConColor
             echo -ne "${proceso[${gantt[$k]}]}" >> $informeSinColor
             caracterestotales=`expr $caracterestotales + 1`
             caracterestotales=`expr $caracterestotales + 1`
@@ -5500,10 +6249,10 @@ function representacionLineaTemporal {
               caracterestotales=0
             fi
 	    variablepropia=1
-
+      
         fi
 
-            echo -ne "${colores[${gantt[$k]} % 6]} ${proceso[${gantt[$k]}]}\e[0m" | tee -a $informeConColor                           #############################################################
+            echo -ne "${colores[${gantt[$k]} % 6]} ${proceso[${gantt[$k]}]}  \e[0m" | tee -a $informeConColor                           #############################################################
             echo -ne "${proceso[${gantt[$k]}]}" >$informeSinColor
             caracterestotales=`expr $caracterestotales + 1`
             caracterestotales=`expr $caracterestotales + 1`
@@ -5516,6 +6265,7 @@ function representacionLineaTemporal {
               echo -ne "    |" >> $informeConColor
               caracterestotales=0
             fi
+		
         fi
         if [[ ${estadoReloj[$k]} = 1 ]]
           then 
@@ -5554,7 +6304,7 @@ function representacionLineaTemporal {
   caracteresPorLinea=$(($columnasporfila - 9))
   for (( k = 0 ; k <= $reloj-1 ; k++ )){
 
-    if [[ ${gantt[$k]} -eq 99 || ${gantt[$k]} -eq 0 ]]
+    if [[ ${gantt[$k]} = 99 || ${gantt[$k]} = 0 ]]
       then
         echo -ne "\e[107m   \e[0m" | tee -a $informeConColor
         echo -ne "---" >> $informeSinColor
@@ -5568,10 +6318,11 @@ function representacionLineaTemporal {
         echo -ne "    |" >> $informeSinColor
         echo -ne "    |" >> $informeConColor
         caracterestotales=0
-    fi
+		fi
 	#echo ${gantt[$k]} 
       else
-        echo -ne "${colores2[${gantt[$k]} % 6]}   \e[0m" | tee -a $informeConColor                       #####################################################################
+        echo -ne "${colores2[${gantt[$k]} % 6]}   \e[0m" | tee -a $informeConColor                         #####################################################################
+		
         caracterestotales=`expr $caracterestotales + 1`
         caracterestotales=`expr $caracterestotales + 1`
         caracterestotales=`expr $caracterestotales + 1`
@@ -5618,8 +6369,8 @@ function representacionLineaTemporal {
       then
   if [[ $k -eq 0 ]]
     then
-     echo -ne $k | tee -a $informeConColor
-      echo -ne $k >> $informeSinColor
+     echo -ne "$k " | tee -a $informeConColor
+      echo -ne "$k " >> $informeSinColor
       caracterestotales=`expr $caracterestotales + 1`
       caracterestotales=`expr $caracterestotales + 1`
       caracterestotales=`expr $caracterestotales + 1`
@@ -5689,10 +6440,25 @@ function representacionLineaTemporal {
     fi   
 
     else # Si no es if [[ ${gantt[$k]} -eq ${gantt[$(($k-1))]} ]]
-      if [[ $k -le 9 ]]
+	   if [[ $k -eq 0 ]]
        then
-          echo -ne "$k " | tee -a $informeConColor
+	      echo -ne "$k " | tee -a $informeConColor
           echo -ne "$k " >> $informeSinColor
+          caracterestotales=`expr $caracterestotales + 1`
+          caracterestotales=`expr $caracterestotales + 1`
+          caracterestotales=`expr $caracterestotales + 1`
+          if [[ $caracteresPorLinea -lt $caracterestotales ]];then
+        f=$(( $f + 3 ))
+        echo -e "\033[2B"
+        echo -ne "    |"
+        echo -ne "    |" >> $informeSinColor
+        echo -ne "    |" >> $informeConColor
+        caracterestotales=0
+         fi
+    elif [[ $k -le 9 ]]
+       then
+          echo -ne " $k " | tee -a $informeConColor
+          echo -ne " $k " >> $informeSinColor
           caracterestotales=`expr $caracterestotales + 1`
           caracterestotales=`expr $caracterestotales + 1`
           caracterestotales=`expr $caracterestotales + 1`
@@ -5713,15 +6479,15 @@ function representacionLineaTemporal {
         if [[ $caracteresPorLinea -lt $caracterestotales ]];then
         f=$(( $f + 3 ))
         echo -e "\033[2B"
-        echo -ne "    |"
+        eco -ne "    |"
         echo -ne "    |" >> $informeSinColor
         echo -ne "    |" >> $informeConColor
         caracterestotales=0
         fi     
      else
 
-	echo -ne "$k " | tee -a $informeConColor       
-        echo -ne "$k " >> $informeSinColor 
+	echo -ne " $k " | tee -a $informeConColor       
+        echo -ne " $k " >> $informeSinColor 
         caracterestotales=`expr $caracterestotales + 1`
         caracterestotales=`expr $caracterestotales + 1` 
 	caracterestotales=`expr $caracterestotales + 1` 
@@ -5748,10 +6514,26 @@ function representacionLineaTemporal {
         caracterestotales=0
     fi
   } 
+  
 
+    
+
+if [[ $fin -eq 1 ]]
+then 
+  echo -ne "$relojq" | tee -a $informeConColor
+  echo -ne "$relojq" >> $informeSinColor	
+else if [[ $reloj -eq 0 || $reloj -gt 9 ]]
+then
   
-  echo " " $reloj
-  
+  echo -ne "$reloj  " | tee -a $informeConColor
+  echo -ne "$reloj  " >> $informeSinColor
+else
+	
+		
+		echo -ne " $reloj  " | tee -a $informeConColor
+		echo -ne " $reloj  " >> $informeSinColor
+fi
+fi
   echo -ne "|"
   #Aquí van pasando los instantes de reloj para todo el algoritmo
   #let reloj=$reloj+1
@@ -5821,6 +6603,7 @@ function representacionLineaTemporal {
     echo "Opcion incorrecta"
     break;;
 
+   
   esac
   clear
 }
