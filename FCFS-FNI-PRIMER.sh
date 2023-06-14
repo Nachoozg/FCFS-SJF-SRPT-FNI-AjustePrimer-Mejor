@@ -252,10 +252,11 @@ colores2[5]=$MORADO2
 ################################################################################################################################################################################################
 informeSinColor="./FLast/informeBN.txt"
 informeConColor="./FLast/informeCOLOR.txt"
-ficheroanteriorejecucion="./FDatos/DatosLast.txt"
-cp ./FDatos/DatosLast.txt ./FLast/DatosLast.txt
+ficheroanteriorejecucion="./FLast/DatosLast.txt"
 ficherodatosaleatorios="./FRangos/DatosRangosLast.txt"
 ficherodatosaleatorios_totales="./FRangosAleT/FRangosAleTotal.txt"
+ficherodatosaleatorios_subrangos="./FRangos/FRangosSubrangos.txt"
+cp ./FLast/FRangosAleTotal.txt ./FRangos/FRangosSubrangos.txt
 ################################################################################################################################################################################################
 ################################################################################################################################################################################################
 #             FUNCIONES
@@ -266,6 +267,7 @@ ficherodatosaleatorios_totales="./FRangosAleT/FRangosAleTotal.txt"
 function menueleccion {
 
   clear
+  echo -e "\033[2B" "prueba"
   echo -e $AMARILLO"\nMENÚ INICIO"$NORMAL
   echo -e "\n1. Introducción de datos manual"
   echo -e "\n2. Fichero de datos de última ejecución (DatosLast.txt)"
@@ -273,7 +275,7 @@ function menueleccion {
   echo -e "\n4. Aleatorio manual (Indica rango)"
   echo -e "\n5. Fichero de rangos de última ejecución (DatosRangosLast.txt)"
   echo -e "\n6. Otros ficheros de rangos"
-  echo -e "\n7. Rangos aleatorios"
+  echo -e "\n7. Rangos aleatorios totales"
   echo -e "\n8. Salir"
   echo -n -e "\n--> "
   read seleccion
@@ -285,7 +287,7 @@ function menueleccion {
   echo -e "\n4. Aleatorio manual (Indica rango)" >> $informeConColor
   echo -e "\n5. Fichero de rangos de última ejecución (DatosRangosLast.txt)" >> $informeConColor
   echo -e "\n6. Otros ficheros de rangos" >> $informeConColor
-  echo -e "\n7. Rangos aleatorios" >> $informeConColor
+  echo -e "\n7. Rangos aleatorios totales" >> $informeConColor
   echo -e "\n8. Salir" >> $informeConColor
   echo -n -e "\n--> $seleccion" >> $informeConColor
 
@@ -296,7 +298,7 @@ function menueleccion {
   echo -e "\n4. Aleatorio manual (Indica rango)" >> $informeSinColor
   echo -e "\n5. Fichero de rangos de última ejecución (DatosRangosLast.txt)" >> $informeSinColor
   echo -e "\n6. Otros ficheros de rangos" >> $informeSinColor
-  echo -e "\n7. Rangos aleatorios" >> $informeSinColor
+  echo -e "\n7. Rangos aleatorios totales" >> $informeSinColor
   echo -e "\n8. Salir" >> $informeSinColor
   echo -n -e "\n--> $seleccion" >> $informeSinColor
 
@@ -1570,13 +1572,22 @@ function entradaProcesosRangoManual_op_cuatro {
 function entradaProcesosRangoManual_op_siete {
   clear
   echo "¿Dónde quieres guardar los rangos?"
-  echo "1. Guardar los rangos en el fichero de última ejecución ($ficherodatosaleatorios_totales)"
+  echo "1. Guardar los rangos en ($ficherodatosaleatorios_totales)"
   echo "2. Guardar en otro fichero de rangos"
   read option_guardado
   if [ $option_guardado == '2' ]
     then
       echo "Introduce el nombre del fichero de rangos sin extensión (Será TXT): "
       read nuevaruta
+    fi
+  echo "¿Dónde quieres guardar los subrangos de dentro de los aleatorios totales?"
+  echo "1. Guardar los rangos de dentro de los aleatorios totales en ($ficherodatosaleatorios_subrangos)"
+  echo "2. Guardar en otro fichero de rangos"
+  read option_guardado3
+  if [ $option_guardado3 == '2' ]
+    then
+      echo "Introduce el nombre del fichero de valores sin extensión (Será TXT): "
+      read nuevaruta1
     fi
   echo "¿Dónde quieres guardar los valores?"
   echo "1. Guardar los valores en el fichero de última ejecución ($ficheroanteriorejecucion)"
@@ -1590,12 +1601,12 @@ function entradaProcesosRangoManual_op_siete {
       nuevaruta2="datos"
     fi
   clear
-  echo -ne "Número de particiones [#-#]: 0"
-  echo -ne "\nTamaño de las particiones [#-#]: 0"
-  echo -ne "\nNúmero de procesos procesos [#-#]: 0 "
-  echo -ne "\nTiempos de llegadas de los procesos [#-#]: 0 "
+  echo -ne "\nNúmero de particiones                [#-#]: 0"
+  echo -ne "\nTamaño de las particiones            [#-#]: 0"
+  echo -ne "\nNúmero de procesos procesos          [#-#]: 0 "
+  echo -ne "\nTiempos de llegadas de los procesos  [#-#]: 0 "
   echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
-  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  echo -ne "\nUnidades de memoria de los procesos  [#-#]: 0 "
   
   echo -ne "\nInformación de la particiones"
   echo -ne $AMARILLO"\nMínimo del rango del número de particiones: "$NORMAL
@@ -1629,10 +1640,10 @@ function entradaProcesosRangoManual_op_siete {
       echo "Particion $contadorParticiones ${particiones[$contadorParticiones]}" >> $ficheroanteriorejecucion
       let contadorParticiones=$contadorParticiones+1
   }
-  echo -ne "\nNúmero de procesos procesos [#-#]: 0 "
-  echo -ne "\nTiempos de llegadas de los procesos [#-#]: 0 "
+  echo -ne "\nNúmero de procesos procesos          [#-#]: 0 "
+  echo -ne "\nTiempos de llegadas de los procesos  [#-#]: 0 "
   echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
-  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  echo -ne "\nUnidades de memoria de los procesos  [#-#]: 0 "
   
 
   echo -ne "\nInformación de la particiones"
@@ -1657,9 +1668,9 @@ function entradaProcesosRangoManual_op_siete {
   cantidad_rango_procesos=$(shuf -i $cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima -n 1)
   procesitos=$cantidad_rango_procesos
   echo -ne "\nNúmero de procesos procesos [$cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima]: $procesitos"
-  echo -ne "\nTiempos de llegadas de los procesos [#-#]: 0 "
+  echo -ne "\nTiempos de llegadas de los procesos  [#-#]: 0 "
   echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
-  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  echo -ne "\nUnidades de memoria de los procesos  [#-#]: 0 "
   
   echo -ne "\nInformación de la particiones"
   echo -ne $AMARILLO"\nMínimo del rango del número de particiones:$NORMAL $cantidad_rango_minima"
@@ -1692,7 +1703,7 @@ function entradaProcesosRangoManual_op_siete {
       echo -ne "${llegada[$i]} "
   }
   echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
-  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  echo -ne "\nUnidades de memoria de los procesos  [#-#]: 0 "
   
   echo -ne "\nInformación de la particiones"
   echo -ne $AMARILLO"\nMínimo del rango del número de particiones:$NORMAL $cantidad_rango_minima"
@@ -1890,12 +1901,26 @@ function entradaProcesosRangoManual_op_siete {
     1)
       echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango" > $ficherodatosaleatorios_totales
       echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem\n" >> $ficherodatosaleatorios_totales
-      break;;
+      return;;
       
     2)
       echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango" > ./FRangos/$nuevaruta.txt
       echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem\n" >> ./FRangos/$nuevaruta.txt
+       return;;
   esac
+  
+  case $option_guardado3 in
+    1)
+      echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango" > $ficherodatosaleatorios_subrangos
+      echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem\n" >> $ficherodatosaleatorios_subrangos
+       return;;
+      
+    2)
+      echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango" > ./FRangos/$nuevaruta1.txt
+      echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem\n" >> ./FRangos/$nuevaruta1.txt
+       return;;
+  esac
+  
 
 }
 ################################################################################################################################################################################################
@@ -2934,16 +2959,17 @@ function algoritmoSJF_AjustePrimer {
   ############################################################################
   # Se ejecuta siempre
   ############################################################################
-
+ let " reloj = -1 "
   # Comienzo del algoritmo de SJF con particiones distintas y ajuste mejor
   while [[ $salida != "s" ]]; do
+ let " reloj = $reloj + 1  "
     ############################################################################
     # Control de Particiones y Estados de los Procesos
     ############################################################################
 
     for ((i=1; i <= ${#llegada[@]}; i++)); do    
       # Si el proceso no ha salido, no ocupa ninguna partición y proceso anterior ha entrado ya
-      if [[ "${sale[$i]}" -ne 1 && "${procesoEnParticionOcupada[$i]}" -ne 1 ]]; then
+      if [[ ${sale[$i]} -ne 1 && ${procesoEnParticionOcupada[$i]} -ne 1 ]]; then
         contador=0
         if [[ ${llegada[$i]} -le $reloj ]]; then       # si cambio aqui llegada no va
           # 'for' para particiones
@@ -2963,10 +2989,12 @@ function algoritmoSJF_AjustePrimer {
                         
                         diff_mem=100
                         diff=$j
+						
                         for (( dm=1; dm<=${#particiones[@]}; dm++ ))
                           do
-                            if [[ ${particionOcupada[$dm]} -eq 0 && ${particiones[$dm]} -ge ${memoria[$i]} ]]  #si la posicion esta vacia y el tamaño de la posicion es mayor o igual a la memoria actual
+                            if [[ ${particionOcupada[$dm]} -eq 0 && ${particiones[$dm]} -ge ${memoria[$i]}  ]]  #si la posicion esta vacia y el tamaño de la posicion es mayor o igual a la memoria actual
                               then
+							  
                             auxMem=`expr ${particiones[$dm]} - ${memoria[$i]}`   # resta entre el tamaño de la partición y el valor de la memoria correspondiente
                             fi
                             #if [[ $auxMem -lt $diff_mem && ${particionOcupada[$dm]} -eq 0 && ${particiones[$dm]} -ge ${memoria[$i]} ]]  #quitando estas lineas comentadas cambio de primer a mejor
@@ -3097,60 +3125,12 @@ function algoritmoSJF_AjustePrimer {
 
 #############################################################################################################################################################
 
-for ((e=1; e<=${#llegada[@]}; e++))
-          do
-            for ((ex=1; ex<=${#llegada[@]}; ex++ ))
-              do
-                if [[ ${bandera[$ex]} -eq 1 ]]
-                  then
-                    if [[ ${restante[$ex]} -lt ${restante[$e]} ]]
-                      then
-                      abortar=1                
-                    fi
-                fi
-
-              done
-                if [[ ${estado[$e]} == "En memoria" || ${estado[$e]} == "En pausa" && $semaforo -eq 0 && ${sale[$e]} -eq 0  ]] #&& $abortar -eq 0
-                  then
-                    #Semaforo de control de una unica expulsion (1 a 1), por cada Px
-                    expulsar=0
-                    for ((m=1; m<=${#particiones[@]}; m++))
-                      do
-                        
-                        if [[ $expulsar -eq 0 && ${restante[${ocupadas[$m]}]} -gt ${restante[$e]} && ${estado[${ocupadas[$m]}]} == "En ejecución" ]]
-                          then
-
-                            #Px expulsado
-
-                            expulsar=1                                      
-              		if [[ ${estado[$m]} != "En pausa" ]]
-              		then
-                		let "poreventos=1" 	# Sólo se cambia la variable "poreventos" si se ha  
-							#producido una modificación en el Estado del proceso.
-                		#echo -ne "kkkk ssssssssssssssssssssss En pausa 2182\n"
-                	fi
-                                        estado[${ocupadas[$m]}]="En pausa"
-                                        bandera[${ocupadas[$m]}]=0
 
 ###########################################################################
 #                            Px invasor                 
 ###########################################################################    
 
-                                        inicioEjecucion[$e]=$reloj
-              		if [[ ${estado[$e]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
-									#producido una modificación en el Estado del 
-									#proceso.
-              		then
-                		let "poreventos=1"
-                		                                     #No quitar #echo -ne "kkkk ssssssssssssssssssssss En ejecución 2192\n"
-                	fi
-                                        estado[$e]="En ejecución"
-                                        bandera[$e]=1
-                        fi
-                      done
-                    
-                fi
-          done
+                                    
 
 #############################################################################################################################################################       
      
@@ -3182,26 +3162,48 @@ for ((e=1; e<=${#llegada[@]}; e++))
             semaforo=1
         fi
       done
-              
+  
+tiempo_menor=1000	
+x=0	
+
+
+for ((x=1; x<=${#llegada[@]}; x++))
+          do
+     
+                if [[ (${estado[$x]} == "En memoria" || ${estado[$x]} == "En pausa")  && ${sale[$x]} -eq 0 ]] 
+                  then
+			
+				  
+					if [[ ${tiempo[$x]} -lt $tiempo_menor ]]
+					then 
+						let "tiempo_menor=${tiempo[$x]}"
+						 let "e = $x"
+						 
+					fi
+                    #Semaforo de control de una unica expulsion (1 a 1), por cada Px
+                 fi 
+done
+
       if [[ $semaforo -eq 0 ]]
           then
-            for (( h=1; h<=${#llegada[@]};h++ ))   # No hay cambio solo
-            do
-                if [[ ${estado[$h]} == "En memoria" || ${estado[$h]} == "En pausa" ]]
-                  then
-              		if [[ ${estado[$h]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
+ ####  CÓDIGO QUE ELIMINO        #  for (( h=1; h<=${#llegada[@]};h++ ))   # No hay cambio solo
+          #  do
+               # if [[ ${estado[$h]} == "En memoria" || ${estado[$h]} == "En pausa" ]]
+                #  then
+              	#	if [[ ${estado[$h]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
 									# producido una modificación en el Estado del 
 									# proceso.
-              		then
-                		let "poreventos=1"
+              	#	then
+
                 		#echo -ne "kkkk ssssssssssssssssssssss En ejecución 2244\n"
-                	fi
-                    estado[$h]="En ejecución"
-                    inicioEjecucion[$h]=$reloj
-                    bandera[$h]=1                    
-                    h=`expr ${#llegada[@]} + 1`
-                fi
-            done
+                	#fi
+					                		let "poreventos=1"
+                    estado[$e]="En ejecución"
+                    inicioEjecucion[$e]=$reloj
+                    bandera[$e]=1                    
+                    e=`expr ${#llegada[@]} + 1`
+               # fi
+         #   done
         fi
 
         #Salida 
@@ -3230,7 +3232,6 @@ for ((e=1; e<=${#llegada[@]}; e++))
           
       done
 
-
   ############################################################################
   # Impresion por cada ciclo de iteraciones
   ############################################################################
@@ -3239,8 +3240,8 @@ for ((e=1; e<=${#llegada[@]}; e++))
   # haya algún cambio de estado.
   ################################################################################################################################################################################################
   
-  if [[ ($poreventos -eq 1) || ($reloj -eq 0) ]]
-  then 
+  #if [[ ($poreventos -eq 1) || ($reloj -eq 0) ]]
+ # then 
         for (( i=1; i <= ${#llegada[@]}; i++ ))
           do
 
@@ -3484,8 +3485,8 @@ for ((e=1; e<=${#llegada[@]}; e++))
             representacionLineaTemporal
             let "poreventos=0"
 
-  fi
-  let reloj=$reloj+1 	# Esta línea estaba en la función representacionLineaTemporal pero no se 
+ # fi
+ # let reloj=$reloj+1 	# Esta línea estaba en la función representacionLineaTemporal pero no se 
         # ejecutaba correctamente desde la función porque no se ejecutaba cuando 
         # no se producía ninguna modificación del estado si no había llegado 
         # ningún proceso inicialmente.
@@ -3745,49 +3746,65 @@ function algoritmoSRPT_AjustePrimer {
 
 ###################################################################################################################################################################
 ###################################################################################################################################################################
-###################################################################################################################################################################
-
-        for ((e=1; e<=${#llegada[@]}; e++))   # Itera sobre el indice e hasta la longitud de llegada (se ejecutara una vez por cada elemento de este array)
+  f=0
+      for ((e=1; e<=${#llegada[@]}; e++))   
           do
-            for ((ex=1; ex<=${#llegada[@]}; ex++ ))   # Igual que el de arriba
+            for ((ex=1; ex<=${#llegada[@]}; ex++ ))   
               do
-                if [[ ${bandera[$ex]} -eq 1 ]]   # Si en la posicion ex el valor de bandera es 1 se ejecuta lo del if
+                if [[ ${bandera[$ex]} -eq 1 ]]   
                   then
-                    if [[ ${restante[$ex]} -lt ${restante[$e]} ]]  # Comprueba si el valor del array restante en ex es menor al restante en e y si es asi
-                                                                   # se ejecuta lo de dentro del if
+                    if [[ ${restante[$ex]} -lt ${restante[$e]} ]]  
                       then
                       abortar=1                
                     fi
                 fi
-              done
-              	# Comprueba si el valor en el array estado es igual a alguno de esos estados y ademas la variable semaforo es igual a 0, si es asi ejecuta
+              done              
                 if [[ ${estado[$e]} == "En memoria" || ${estado[$e]} == "En pausa" && $semaforo -eq 0 && ${sale[$e]} -eq 0  ]] #&& $abortar -eq 0
                   then
                     #Semaforo de control de una unica expulsion (1 a 1), por cada Px
                     expulsar=0
-                    # Itera sobre el indice m que va desde 1 hasta la longitud del array particiones
-                    for ((m=1; m<=${#particiones[@]}; m++))
-                      do
-                      	# Comprueba si el valor de expulsar es igual a 0, si el valor de el array restante en la posicion ocupadas[$m] es mayor que el
-                      	# valor en el array restante para la posicion $e y por ultimo comprueba que el estado sea "En ejecucion" 
-                        if [[ $expulsar -eq 0 && ${restante[${ocupadas[$m]}]} -gt ${restante[$e]} && ${estado[${ocupadas[$m]}]} == "En ejecución" ]]
+					
+					
+					tiempo_menor=1000	
+					x=0	
+					f=0
+					for ((x=1; x<=${#llegada[@]}; x++))
+					do
+     
+						if [[ (${estado[$x]} == "En memoria" || ${estado[$x]} == "En pausa")  && ${sale[$x]} -eq 0 ]] 
+						then
+			
+				  
+							if [[ ${restante[$x]} -lt $tiempo_menor ]]
+							then 
+								let "tiempo_menor=${restante[$x]}"
+								let "f = $x"
+						 
+							fi
+                    #Semaforo de control de una unica expulsion (1 a 1), por cada Px
+						fi 
+		            done
+
+					for ((m=1; m<=${#particiones[@]}; m++))
+                     do
+                        if [[ $expulsar -eq 0 && ${restante[${ocupadas[$m]}]} -gt ${restante[$f]} && ${estado[${ocupadas[$m]}]} == "En ejecución" ]]
                           then
                             expulsar=1                                      
               		
-              		if [[ ${estado[$m]} != "En pausa" ]]  # Si el estado es distinto a "En pausa"
+              		if [[ ${estado[$m]} != "En pausa" ]]  
               		then
                 		let "poreventos=1"
                 	fi
-                                        estado[${ocupadas[$m]}]="En pausa"  # Se asigna el valor en pausa
-                                        bandera[${ocupadas[$m]}]=0          # Asigno el valor 0 a el array bandera en la posicion ocupadas[$m]     
-                                        inicioEjecucion[$e]=$reloj         # Asigno el valor de la variable reloj al array inicioEjecucion en la posicion e
+                                        estado[${ocupadas[$m]}]="En pausa"  
+                                        bandera[${ocupadas[$m]}]=0               
+                                        inicioEjecucion[$f]=$reloj         
               		
-              		if [[ ${estado[$e]} != "En ejecución" ]]           # Si el estado es distinto a "En ejecucion"
+              		if [[ ${estado[$f]} != "En ejecución" ]]           
               		then
                 		let "poreventos=1"
                 	fi
-                                        estado[$e]="En ejecución"
-                                        bandera[$e]=1			# Asigno el valor 1 al array bandera en la posicion e
+                                        estado[$f]="En ejecución"
+                                        bandera[$f]=1			
                         fi
                       done  
                 fi
@@ -3825,26 +3842,44 @@ function algoritmoSRPT_AjustePrimer {
             semaforo=1
         fi
       done
-              
+		tiempo_menor2=1000	
+		x2=0
+		f2=0					
+		for ((x2=1; x2<=${#llegada[@]}; x2++))
+		do
+     
+			if [[ (${estado[$x2]} == "En memoria" || ${estado[$x2]} == "En pausa")  && ${sale[$x2]} -eq 0 ]] 
+			then
+			
+				  
+				if [[ ${restante[$x2]} -lt $tiempo_menor2 ]]
+				then 
+					let "tiempo_menor2=${restante[$x2]}"
+					let "f2 = $x2"
+						 
+				fi
+                    #Semaforo de control de una unica expulsion (1 a 1), por cada Px
+			fi 
+		  done   
       if [[ $semaforo -eq 0 ]]
           then
-            for (( h=1; h<=${#llegada[@]};h++ ))
-            do
-                if [[ ${estado[$h]} == "En memoria" || ${estado[$h]} == "En pausa" ]]
-                  then
-              		if [[ ${estado[$h]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
+            #for (( h=1; h<=${#llegada[@]};h++ ))
+            #do
+             #   if [[ ${estado[$h]} == "En memoria" || ${estado[$h]} == "En pausa" ]]
+             #     then
+              #		if [[ ${estado[$h]} != "En ejecución" ]] 	# Sólo se cambia la variable "poreventos" si se ha  
 									# producido una modificación en el Estado del 
 									# proceso.
-              		then
+              	#	then
                 		let "poreventos=1"
                 		#echo -ne "kkkk ssssssssssssssssssssss En ejecución 2244\n"
-                	fi
-                    estado[$h]="En ejecución"
-                    inicioEjecucion[$h]=$reloj
-                    bandera[$h]=1                    
-                    h=`expr ${#llegada[@]} + 1`
-                fi
-            done
+                	#fi
+                    estado[$f2]="En ejecución"
+                    inicioEjecucion[$f2]=$reloj
+                    bandera[$f2]=1                    
+                    #h=`expr ${#llegada[@]} + 1`
+               # fi
+            #done
         fi
 
         #Salida 
@@ -5376,18 +5411,18 @@ function representacionParticionesEnTabla {
 function representacionLineaTemporal {
   #echo "" 
 
-  for (( k = 0 ; k <= ${#llegada[@]} ; k++ )){
-    if [[ ${estado[$k]} == "En ejecución" ]] 
+  for (( s = 0 ; s <= ${#llegada[@]} ; s++ ))
+  do
+    if [[ ${estado[$s]} == "En ejecución" ]] 
       then
-        gantt[$reloj]=$k
+        gantt[$reloj]=$s
     fi
 
-     if [[ ${estado[$k]} == "En espera" ]] 
+     if [[ ${estado[$s]} == "En espera" ]] 
       then
-        gantt2[$reloj]=$k
+        gantt2[$reloj]=$s
     fi
-  }
-  
+ done
   terminal=$(($(tput cols)))
   columnasporfila=$(($terminal))
   caracteresPorLinea=$(($columnasporfila - 9))
@@ -5434,7 +5469,7 @@ function representacionLineaTemporal {
         caracteres=`echo ${proceso[${gantt[$k]}]} | wc -c`
         if [[ $caracteres -eq 3 ]]
           then  
-            echo -ne "${colores[${gantt[$k]} % 6]}${proceso[${gantt[$k]}]}" | tee -a $informeConColor
+            echo -ne "${colores[${gantt[$k]} % 6]}" " ${proceso[${gantt[$k]}]}" | tee -a $informeConColor
             echo -ne "${proceso[${gantt[$k]}]}" >> $informeSinColor
             caracterestotales=`expr $caracterestotales + 1`
             caracterestotales=`expr $caracterestotales + 1`
@@ -5468,7 +5503,7 @@ function representacionLineaTemporal {
 
         fi
 
-            echo -ne "${colores[${gantt[$k]} % 6]}${proceso[${gantt[$k]}]}\e[0m" | tee -a $informeConColor                           #############################################################
+            echo -ne "${colores[${gantt[$k]} % 6]} ${proceso[${gantt[$k]}]}\e[0m" | tee -a $informeConColor                           #############################################################
             echo -ne "${proceso[${gantt[$k]}]}" >$informeSinColor
             caracterestotales=`expr $caracterestotales + 1`
             caracterestotales=`expr $caracterestotales + 1`
@@ -5519,11 +5554,11 @@ function representacionLineaTemporal {
   caracteresPorLinea=$(($columnasporfila - 9))
   for (( k = 0 ; k <= $reloj-1 ; k++ )){
 
-    if [[ ${gantt[$k]} -eq 99 ]]
+    if [[ ${gantt[$k]} -eq 99 || ${gantt[$k]} -eq 0 ]]
       then
         echo -ne "\e[107m   \e[0m" | tee -a $informeConColor
         echo -ne "---" >> $informeSinColor
-        caracterestotales=`expr $caracterestotales + 1`
+        caracterestales=`expr $caracterestotales + 1`
         caracterestotales=`expr $caracterestotales + 1`
         caracterestotales=`expr $caracterestotales + 1`
         if [[ $caracteresPorLinea -lt $caracterestotales ]];then
@@ -5534,6 +5569,7 @@ function representacionLineaTemporal {
         echo -ne "    |" >> $informeConColor
         caracterestotales=0
     fi
+	#echo ${gantt[$k]} 
       else
         echo -ne "${colores2[${gantt[$k]} % 6]}   \e[0m" | tee -a $informeConColor                       #####################################################################
         caracterestotales=`expr $caracterestotales + 1`
@@ -5577,13 +5613,13 @@ function representacionLineaTemporal {
    echo -ne "\033[$f;1H    |"  #primera de abajo de BT - primer bucle
 
   # # # POR CADA UPDATE LO IMPRIME, AQUI ESTA EL FOR CAUSANTE. # # # 
-  for (( k = 0 ; k <= $reloj ; k++ )){	
+  for (( k = 0 ; k < $reloj ; k++ )){	
     if [[ ${gantt[$k]} -eq ${gantt[$(($k-1))]} ]]      ## A partir de aqui el numero de debajo de la linea de tiempos
       then
   if [[ $k -eq 0 ]]
     then
-     echo -ne "  $k" | tee -a $informeConColor
-      echo -ne "  $k" >> $informeSinColor
+     echo -ne $k | tee -a $informeConColor
+      echo -ne $k >> $informeSinColor
       caracterestotales=`expr $caracterestotales + 1`
       caracterestotales=`expr $caracterestotales + 1`
       caracterestotales=`expr $caracterestotales + 1`
@@ -5655,8 +5691,8 @@ function representacionLineaTemporal {
     else # Si no es if [[ ${gantt[$k]} -eq ${gantt[$(($k-1))]} ]]
       if [[ $k -le 9 ]]
        then
-          echo -ne "  $k" | tee -a $informeConColor
-          echo -ne "  $k" >> $informeSinColor
+          echo -ne "$k " | tee -a $informeConColor
+          echo -ne "$k " >> $informeSinColor
           caracterestotales=`expr $caracterestotales + 1`
           caracterestotales=`expr $caracterestotales + 1`
           caracterestotales=`expr $caracterestotales + 1`
@@ -5670,8 +5706,8 @@ function representacionLineaTemporal {
          fi
     elif [[ $k -le 99 && $k -gt 9 ]]
     then
-       echo -ne " $k" | tee -a $informeConColor       
-        echo -ne " $k" >> $informeSinColor 
+       echo -ne " $k " | tee -a $informeConColor       
+        echo -ne " $k " >> $informeSinColor 
         caracterestotales=`expr $caracterestotales + 1`
         caracterestotales=`expr $caracterestotales + 1` 
         if [[ $caracteresPorLinea -lt $caracterestotales ]];then
@@ -5684,8 +5720,8 @@ function representacionLineaTemporal {
         fi     
      else
 
-	echo -ne "$k" | tee -a $informeConColor       
-        echo -ne "$k" >> $informeSinColor 
+	echo -ne "$k " | tee -a $informeConColor       
+        echo -ne "$k " >> $informeSinColor 
         caracterestotales=`expr $caracterestotales + 1`
         caracterestotales=`expr $caracterestotales + 1` 
 	caracterestotales=`expr $caracterestotales + 1` 
@@ -5711,7 +5747,11 @@ function representacionLineaTemporal {
         echo -ne "    |" >> $informeConColor
         caracterestotales=0
     fi
-  }
+  } 
+
+  
+  echo " " $reloj
+  
   echo -ne "|"
   #Aquí van pasando los instantes de reloj para todo el algoritmo
   #let reloj=$reloj+1
