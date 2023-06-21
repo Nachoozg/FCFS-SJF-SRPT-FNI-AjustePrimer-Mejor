@@ -257,8 +257,8 @@ ficherodatosaleatorios="./FRangos/DatosRangosLast.txt"
 ficherodatosaleatorios_totales="./FRangosAleT/FRangosAleTotal.txt"
 ficherodatosaleatorios_subrangos="./FRangos/DatosRangosDefault.txt"
 ficherodatosdefault="./FDatos/DatosDefault.txt"
-cp ./FDatos/DatosDefault.txt ./FLast/DatosLast.txt
-cp ./FRangos/FRangosAleTotal.txt ./FRangos/DatosRangosDefault.txt
+cp ./FLast/DatosLast.txt ./FDatos/DatosDefault.txt
+cp ./FRangosAleT/FRangosAleTotal.txt ./FRangos/DatosRangosDefault.txt
 cp ./FRangosAleT/FRangosAleTotal.txt ./FLast/RangosAleTotal.txt
 cp ./FRangos/DatosRangosDefault.txt ./FLast/RangosSubrangos.txt
 ################################################################################################################################################################################################
@@ -1257,12 +1257,14 @@ function entradaProcesosRangoManual_op_cuatro {
       nuevaruta2="datos"
     fi
   clear
-  echo -ne "Número de particiones [#-#]: 0"
-  echo -ne "\nTamaño de las particiones [#-#]: 0"
-  echo -ne "\nNúmero de procesos procesos [#-#]: 0 "
-  echo -ne "\nTiempos de llegadas de los procesos [#-#]: 0 "
-  echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
-  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  echo -ne "|----------------------------------------------------"
+  echo -ne "\n| Número de particiones                | [#-#]: 0"
+  echo -ne "\n| Tamaño de las particiones            | [#-#]: 0"
+  echo -ne "\n| Número de procesos procesos          | [#-#]: 0 "
+  echo -ne "\n| Tiempos de llegadas de los procesos  | [#-#]: 0 "
+  echo -ne "\n| Tiempos de ejecución de los procesos | [#-#]: 0 "
+  echo -ne "\n| Unidades de memoria de los procesos  | [#-#]: 0 \n"
+  echo -ne "|----------------------------------------------------"
   
   echo -ne "\nInformación de la particiones"
   echo -ne $AMARILLO"\nMínimo del rango del número de particiones: "$NORMAL
@@ -1272,12 +1274,14 @@ function entradaProcesosRangoManual_op_cuatro {
   cantidad_particiones=$(shuf -i $cantidad_rango_minima-$cantidad_rango_maxima -n 1)
   
   clear
-  echo -ne "Número de particiones [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
-  echo -ne "\nTamaño de las particiones [#-#]: 0"
-  echo -ne "\nNúmero de procesos procesos [#-#]: 0 "
-  echo -ne "\nTiempos de llegadas de los procesos [#-#]: 0 "
-  echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
-  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  echo -ne "|----------------------------------------------------"
+  echo -ne "\n| Número de particiones                | [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
+  echo -ne "\n| Tamaño de las particiones            | [#-#]: 0"
+  echo -ne "\n| Número de procesos procesos          | [#-#]: 0 "
+  echo -ne "\n| Tiempos de llegadas de los procesos  | [#-#]: 0 "
+  echo -ne "\n| Tiempos de ejecución de los procesos | [#-#]: 0 "
+  echo -ne "\n| Unidades de memoria de los procesos  | [#-#]: 0 \n"
+  echo -ne "|----------------------------------------------------"
 
   echo -ne "\nInformación de la particiones"
   echo -ne $AMARILLO"\nMínimo del rango del número de particiones:$NORMAL $cantidad_rango_minima"
@@ -1288,18 +1292,21 @@ function entradaProcesosRangoManual_op_cuatro {
   read maximo_rango
 
   clear
-  echo -ne "Número de particiones [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
-  echo -ne "\nTamaño de las particiones [$minimo_rango-$maximo_rango]: "
+  echo -ne "|----------------------------------------------------"
+  echo -ne "\n| Número de particiones                | [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
+  echo -ne "\n| Tamaño de las particiones            | [$minimo_rango-$maximo_rango]: "
   for (( i = 0;i < $cantidad_particiones;i++ )){
       particiones[$contadorParticiones]=$(shuf -i $minimo_rango-$maximo_rango -n 1)
       echo -ne "${particiones[$contadorParticiones]} "
       echo "Particion $contadorParticiones ${particiones[$contadorParticiones]}" >> $ficheroanteriorejecucion
       let contadorParticiones=$contadorParticiones+1
   }
-  echo -ne "\nNúmero de procesos procesos [#-#]: 0 "
-  echo -ne "\nTiempos de llegadas de los procesos [#-#]: 0 "
-  echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
-  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  
+  echo -ne "\n| Número de procesos                   | [#-#]: 0 "
+  echo -ne "\n| Tiempos de llegadas de los procesos  | [#-#]: 0 "
+  echo -ne "\n| Tiempos de ejecución de los procesos | [#-#]: 0 "
+  echo -ne "\n| Unidades de memoria de los procesos  | [#-#]: 0 \n"
+  echo -ne "|----------------------------------------------------"
   
 
   echo -ne "\nInformación de la particiones"
@@ -1315,18 +1322,21 @@ function entradaProcesosRangoManual_op_cuatro {
 
   clear
   contadorParticiones=1
-  echo -ne "Número de particiones [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
-  echo -ne "\nTamaño de las particiones [$minimo_rango-$maximo_rango]: "
+  echo -ne "|----------------------------------------------------"
+  echo -ne "\n| Número de particiones                | [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
+  echo -ne "\n| Tamaño de las particiones            | [$minimo_rango-$maximo_rango]: "
   for (( i = 0;i < $cantidad_particiones;i++ )){
       echo -ne "${particiones[$contadorParticiones]} "
       let contadorParticiones=$contadorParticiones+1
   }
   cantidad_rango_procesos=$(shuf -i $cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima -n 1)
   procesitos=$cantidad_rango_procesos
-  echo -ne "\nNúmero de procesos procesos [$cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima]: $procesitos"
-  echo -ne "\nTiempos de llegadas de los procesos [#-#]: 0 "
-  echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
-  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  
+  echo -ne "\n| Número de procesos procesos          | [$cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima]: $procesitos"
+  echo -ne "\n| Tiempos de llegadas de los procesos  | [#-#]: 0 "
+  echo -ne "\n| Tiempos de ejecución de los procesos | [#-#]: 0 "
+  echo -ne "\n| Unidades de memoria de los procesos  | [#-#]: 0 \n"
+  echo -ne "|----------------------------------------------------"
   
   echo -ne "\nInformación de la particiones"
   echo -ne $AMARILLO"\nMínimo del rango del número de particiones:$NORMAL $cantidad_rango_minima"
@@ -1347,19 +1357,22 @@ function entradaProcesosRangoManual_op_cuatro {
     do
       llegada[$i]=$(shuf -i $minimo_rango_ttl-$maximo_rango_ttl -n 1)
     done
-  echo -ne "Número de particiones [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
-  echo -ne "\nTamaño de las particiones [$minimo_rango-$maximo_rango]: "
+  echo -ne "|----------------------------------------------------"
+  echo -ne "\n| Número de particiones                  | [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
+  echo -ne "\n| Tamaño de las particiones              | [$minimo_rango-$maximo_rango]: "
   for (( i = 0;i < $cantidad_particiones;i++ )){
       echo -ne "${particiones[$contadorParticiones]} "
       let contadorParticiones=$contadorParticiones+1
   }
-  echo -ne "\nNúmero de procesos procesos [$cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima]: $procesitos"
-  echo -ne "\nTiempos de llegadas de los procesos [$minimo_rango_ttl-$maximo_rango_ttl]: "
+  
+  echo -ne "\n| Número de procesos                     | [$cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima]: $procesitos"
+  echo -ne "\n| Tiempos de llegadas de los procesos    | [$minimo_rango_ttl-$maximo_rango_ttl]: "
   for (( i = 1;i <= $procesitos;i++ )){
       echo -ne "${llegada[$i]} "
   }
-  echo -ne "\nTiempos de ejecución de los procesos [#-#]: 0 "
-  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  echo -ne "\n| Tiempos de ejecución de los procesos   | [#-#]: 0 "
+  echo -ne "\n| Unidades de memoria de los procesos    | [#-#]: 0 \n"
+  echo -ne "|----------------------------------------------------"
   
   echo -ne "\nInformación de la particiones"
   echo -ne $AMARILLO"\nMínimo del rango del número de particiones:$NORMAL $cantidad_rango_minima"
@@ -1378,14 +1391,14 @@ function entradaProcesosRangoManual_op_cuatro {
 
   clear
   contadorParticiones=1
-  
-  echo -ne "Número de particiones [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
-  echo -ne "\nTamaño de las particiones [$minimo_rango-$maximo_rango]: "
+  echo -ne "|----------------------------------------------------"
+  echo -ne "\n| Número de particiones                 | [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
+  echo -ne "\n| Tamaño de las particiones             | [$minimo_rango-$maximo_rango]: "
   for (( i = 0;i < $cantidad_particiones;i++ )){
       echo -ne "${particiones[$contadorParticiones]} "
       let contadorParticiones=$contadorParticiones+1
   }
-  echo -ne "\nNúmero de procesos procesos [$cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima]: $procesitos"
+  echo -ne "\n| Número de procesos procesos           | [$cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima]: $procesitos"
  for (( i=1;i<=$procesitos;i++))
     do
       tiempo[$i]=$(shuf -i $minimo_rango_eje-$maximo_rango_eje -n 1)
@@ -1395,15 +1408,16 @@ function entradaProcesosRangoManual_op_cuatro {
       done
     done
 
-  echo -ne "\nTiempos de llegadas de los procesos [$minimo_rango_ttl-$maximo_rango_ttl]: "
+  echo -ne "\n| Tiempos de llegadas de los procesos   | [$minimo_rango_ttl-$maximo_rango_ttl]: "
   for (( i = 1;i <= $procesitos;i++ )){
       echo -ne "${llegada[$i]} "
   }
-  echo -ne "\nTiempos de ejecución de los procesos [$minimo_rango_eje-$maximo_rango_eje]: "
+  echo -ne "\n| Tiempos de ejecución de los procesos  | [$minimo_rango_eje-$maximo_rango_eje]: "
   for (( i = 1;i <= $procesitos;i++ )){
       echo -ne "${tiempo[$i]} "
   }
-  echo -ne "\nUnidades de memoria de los procesos [#-#]: 0 "
+  echo -ne "\n| Unidades de memoria de los procesos   | [#-#]: 0 \n"
+  echo -ne "|----------------------------------------------------"
   
   echo -ne "\nInformación de la particiones"
   echo -ne $AMARILLO"\nMínimo del rango del número de particiones:$NORMAL $cantidad_rango_minima"
@@ -1469,8 +1483,9 @@ function entradaProcesosRangoManual_op_cuatro {
   clear
   contadorParticiones=1
   echo "" > ./FDatos/$nuevaruta2.txt
-  echo -ne "Número de particiones [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
-  echo -ne "\nTamaño de las particiones [$minimo_rango-$maximo_rango]: "
+  echo -ne "|----------------------------------------------------"
+  echo -ne "\n| Número de particiones                | [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"
+  echo -ne "\n| Tamaño de las particiones            | [$minimo_rango-$maximo_rango]: "
   for (( i = 0;i < $cantidad_particiones;i++ )){
       echo -ne "${particiones[$contadorParticiones]} "
       # Particion 1 30
@@ -1479,19 +1494,20 @@ function entradaProcesosRangoManual_op_cuatro {
   } 
 
   # Llegada 4 Ejecución 30 Memoria 8
-  echo -ne "\nNúmero de procesos procesos [$cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima]: $procesitos"
-  echo -ne "\nTiempos de llegadas de los procesos [$minimo_rango_ttl-$maximo_rango_ttl]: "
+  echo -ne "\n| Número de procesos                   | [$cantidad_rango_procesos_minima-$cantidad_rango_procesos_maxima]: $procesitos"
+  echo -ne "\n| Tiempos de llegadas de los procesos  |[$minimo_rango_ttl-$maximo_rango_ttl]: "
   for (( i = 0;i <= $procesitos;i++ )){
       echo -ne "${llegada[$i]} "
   }
-  echo -ne "\nTiempos de ejecución de los procesos [$minimo_rango_eje-$maximo_rango_eje]: "
+  echo -ne "\n| Tiempos de ejecución de los procesos |[$minimo_rango_eje-$maximo_rango_eje]: "
   for (( i = 0;i <= $procesitos;i++ )){
       echo -ne "${tiempo[$i]} "
   }
-  echo -ne "\nUnidades de memoria de los procesos [$minimo_rango_mem-$maximo_rango_mem]: "
+  echo -ne "\n| Unidades de memoria de los procesos  |[$minimo_rango_mem-$maximo_rango_mem]: "
   for (( i = 0;i <= $procesitos;i++ )){
       echo -ne "${memoria[$i]} "
   }
+  echo -ne "|----------------------------------------------------"
   
   echo -ne "\nInformación de la particiones"
   echo -ne $AMARILLO"\nMínimo del rango del número de particiones:$NORMAL $cantidad_rango_minima"
@@ -1625,6 +1641,7 @@ function entradaProcesosRangoManual_op_siete {
 
   # Comprobación del número mínimo de particiones
   if [ $cantidad_rango_minima -lt 1 ]; then
+    echo $ROJO"Error, debe ser mayor a 0, pongo el valor automaticamente a 1"$NORMAL
     cantidad_rango_minima=1
   fi
 
@@ -1633,6 +1650,7 @@ function entradaProcesosRangoManual_op_siete {
 
   # Comprobación del número máximo de particiones
   if [ $cantidad_rango_maxima -lt 1 ]; then
+    echo $ROJO"Error, debe ser mayor a 0, pongo el valor automaticamente a 1"$NORMAL
     cantidad_rango_maxima=1
   fi
 
@@ -1640,8 +1658,8 @@ function entradaProcesosRangoManual_op_siete {
 
   clear
 
-  echo -ne "|-------------------------------------------------------"
-  echo -ne "\n| Número de particiones                | [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"	
+  	echo -ne "|-------------------------------------------------------"
+  	echo -ne "\n| Número de particiones                | [$cantidad_rango_minima-$cantidad_rango_maxima]: $cantidad_particiones"	
 	echo -ne "\n| Tamaño de las particiones            | [#-#]: 0"
 	echo -ne "\n| Número de procesos                   | [#-#]: 0 "
 	echo -ne "\n| Tiempos de llegadas de los procesos  | [#-#]: 0 "
@@ -1666,6 +1684,7 @@ function entradaProcesosRangoManual_op_siete {
 
 	# Comprobación del tamaño mínimo de las particiones
 	if [ $tamanio_rango_minimo -lt 1 ]; then
+	  echo $ROJO"Error, debe ser mayor a 0, pongo el valor automaticamente a 1"$NORMAL
 	  tamanio_rango_minimo=1
 	fi
 
@@ -1674,6 +1693,7 @@ function entradaProcesosRangoManual_op_siete {
 
 	# Comprobación del tamaño máximo de las particiones
 	if [ $tamanio_rango_maximo -lt 1 ]; then
+	  echo $ROJO"Error, debe ser mayor a 0, pongo el valor automaticamente a 1"$NORMAL
 	  tamanio_rango_maximo=1
 	fi
 
@@ -1710,6 +1730,7 @@ function entradaProcesosRangoManual_op_siete {
 
 	# Comprobación del número mínimo de procesos
 	if [ $cantidad_procesos_minima -lt 1 ]; then
+	  echo $ROJO"Error, debe ser mayor a 0, pongo el valor automaticamente a 1"$NORMAL
 	  cantidad_procesos_minima=1
 	fi
 
@@ -1718,6 +1739,7 @@ function entradaProcesosRangoManual_op_siete {
 
 	# Comprobación del número máximo de procesos
 	if [ $cantidad_procesos_maxima -lt 1 ]; then
+	  echo $ROJO"Error, debe ser mayor a 0, pongo el valor automaticamente a 1"$NORMAL
 	  cantidad_procesos_maxima=1
 	fi
 
@@ -1759,6 +1781,7 @@ function entradaProcesosRangoManual_op_siete {
 
 	# Comprobación del tiempo mínimo de llegada
 	if [ $tiempo_llegada_minimo -lt 0 ]; then
+	  echo $ROJO"Error, el tiempo de llegada no puede ser negativo"$NORMAL 
 	  tiempo_llegada_minimo=0
 	fi
 
@@ -1766,7 +1789,8 @@ function entradaProcesosRangoManual_op_siete {
 	read tiempo_llegada_maximo
 
 	# Comprobación del tiempo máximo de llegada
-	if [ $tiempo_llegada_maximo -lt 0 ]; then
+	if [ $tiempo_llegada_maximo -lt 0 ]; then 
+	  echo $ROJO"Error, el tiempo de llegada no puede ser negativo"$NORMAL
 	  tiempo_llegada_maximo=0
 	fi
 
@@ -1817,6 +1841,7 @@ function entradaProcesosRangoManual_op_siete {
 
 	# Comprobación del tiempo mínimo de ejecución
 	if [ $tiempo_ejecucion_minimo -lt 1 ]; then
+	  echo $ROJO"Error, debe ser mayor a 0, pongo el valor automaticamente a 1"$NORMAL
 	  tiempo_ejecucion_minimo=1
 	fi
 
@@ -1825,6 +1850,7 @@ function entradaProcesosRangoManual_op_siete {
 
 	# Comprobación del tiempo máximo de ejecución
 	if [ $tiempo_ejecucion_maximo -lt 1 ]; then
+	  echo $ROJO"Error, debe ser mayor a 0, pongo el valor automaticamente a 1"$NORMAL
 	  tiempo_ejecucion_maximo=1
 	fi
 
@@ -1882,6 +1908,7 @@ function entradaProcesosRangoManual_op_siete {
 
 	# Comprobación de la memoria mínima de los procesos
 	if [ $memoria_proceso_minima -lt 1 ]; then
+	  echo $ROJO"Error, debe ser mayor a 0, pongo el valor automaticamente a 1"$NORMAL
 	  memoria_proceso_minima=1
 	fi
 
@@ -1890,6 +1917,7 @@ function entradaProcesosRangoManual_op_siete {
 
 	# Comprobación de la memoria máxima de los procesos
 	if [ $memoria_proceso_maxima -lt 1 ]; then
+	  echo $ROJO"Error, debe ser mayor a 0, pongo el valor automaticamente a 1"$NORMAL
 	  memoria_proceso_maxima=1
 	fi
 
@@ -1985,28 +2013,35 @@ function entradaProcesosRangoManual_op_siete {
 function entradaParticionesRangoFichero {
   clear
 
-    echo -ne "\nFormato"$NORMAL
-    echo -ne "\nParticion minima X maxima X um_minima X um_maxima X"
-    echo -ne "\nProcesos minima X maxima X ttl_minima X ttl_maxima X eje_minima X eje_maxima X mem_minima X mem_maxima X"
-    echo -ne "\n\nFICHEROS:\n"$NORMAL
-    ls -l ./FRangos/
-    echo -ne "\n"
-    echo -ne $AMARILLO"\n\nIntroduce la ruta del fichero, introduce el nombre y sin extensión (Será TXT): "$NORMAL
-    read FicheroParaLectura
+    
+    
+
+    echo -e "\n\nFICHEROS:\n$NORMAL"
+    files=("./FRangos"/*)
+    for i in "${!files[@]}"; do
+    echo -e "$i) ${files[$i]}"
+    done
+    echo -e "\n"
+    echo -e "$AMARILLO\n\nIntroduce el número correspondiente al fichero: $NORMAL"
+    read -r numeroFichero
+    FicheroParaLectura="${files[$numeroFichero]}"
+
+
+
 
     #Cogemos los datos del fichero
-    cantidad_rango_minima=$(cat ./FRangos/$FicheroParaLectura.txt | grep "Particion" | cut -f 3 -d " ")
-    cantidad_rango_maxima=$(cat ./FRangos/$FicheroParaLectura.txt | grep "Particion" | cut -f 5 -d " ")
-    minimo_rango=$(cat ./FRangos/$FicheroParaLectura.txt | grep "Particion" | cut -f 7 -d " ")
-    maximo_rango=$(cat ./FRangos/$FicheroParaLectura.txt | grep "Particion" | cut -f 9 -d " ")
-    cantidad_rango_procesos_minima=$(cat ./FRangos/$FicheroParaLectura.txt | grep "Procesos" | cut -f 3 -d " ")
-    cantidad_rango_procesos_maxima=$(cat ./FRangos/$FicheroParaLectura.txt | grep "Procesos" | cut -f 5 -d " ")
-    minimo_rango_ttl=$(cat ./FRangos/$FicheroParaLectura.txt | grep "Procesos" | cut -f 7 -d " ")
-    maximo_rango_ttl=$(cat ./FRangos/$FicheroParaLectura.txt | grep "Procesos" | cut -f 9 -d " ")
-    minimo_rango_eje=$(cat ./FRangos/$FicheroParaLectura.txt | grep "Procesos" | cut -f 11 -d " ")
-    maximo_rango_eje=$(cat ./FRangos/$FicheroParaLectura.txt | grep "Procesos" | cut -f 13 -d " ")
-    minimo_rango_mem=$(cat ./FRangos/$FicheroParaLectura.txt | grep "Procesos" | cut -f 15 -d " ")
-    maximo_rango_mem=$(cat ./FRangos/$FicheroParaLectura.txt | grep "Procesos" | cut -f 17 -d " ")
+    cantidad_rango_minima=$(cat $FicheroParaLectura | grep "Particion" | cut -f 3 -d " ")
+    cantidad_rango_maxima=$(cat $FicheroParaLectura | grep "Particion" | cut -f 5 -d " ")
+    minimo_rango=$(cat $FicheroParaLectura | grep "Particion" | cut -f 7 -d " ")
+    maximo_rango=$(cat $FicheroParaLectura | grep "Particion" | cut -f 9 -d " ")
+    cantidad_rango_procesos_minima=$(cat $FicheroParaLectura | grep "Procesos" | cut -f 3 -d " ")
+    cantidad_rango_procesos_maxima=$(cat $FicheroParaLectura | grep "Procesos" | cut -f 5 -d " ")
+    minimo_rango_ttl=$(cat $FicheroParaLectura | grep "Procesos" | cut -f 7 -d " ")
+    maximo_rango_ttl=$(cat $FicheroParaLectura | grep "Procesos" | cut -f 9 -d " ")
+    minimo_rango_eje=$(cat $FicheroParaLectura | grep "Procesos" | cut -f 11 -d " ")
+    maximo_rango_eje=$(cat $FicheroParaLectura | grep "Procesos" | cut -f 13 -d " ")
+    minimo_rango_mem=$(cat $FicheroParaLectura | grep "Procesos" | cut -f 15 -d " ")
+    maximo_rango_mem=$(cat $FicheroParaLectura | grep "Procesos" | cut -f 17 -d " ")
 
     echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango"
     echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem"
@@ -2332,25 +2367,32 @@ function entradaParticionesFichero {
   echo -ne "\nParticion 2 10"
   echo -ne "\nLlegada 4 Ejecución 30 Memoria 8"
   echo -ne "\nLlegada 6 Ejecución 27 Memoria 8"
-  echo -ne "\n\nFICHEROS:\n"$NORMAL
-    ls -l ./FDatos/ | cut -f 9 -d " "
-    echo -ne "\n"
-  echo -ne $AMARILLO"\n\nIntroduce la ruta del fichero a analizar sin extensión: "$NORMAL
-  read FicheroParaLectura
-  
-  lineaspart=(`cat ./FDatos/$FicheroParaLectura.txt | grep "Particion" | wc -l`)
-  for (( i = 0;i < $lineaspart;i++ )){
-      a=(`cat ./FDatos/$FicheroParaLectura.txt | grep "Particion" | cut -f 2 -d " "`)
-      contadorParticiones=${a[$i]}
-      nparti=(`cat ./FDatos/$FicheroParaLectura.txt | grep "Particion" | cut -f 3 -d " "`)
-      echo -ne "\n"
-      particiones[$contadorParticiones]=${nparti[$i]}
-      echo "Partición $contadorParticiones ${particiones[$contadorParticiones]}" 
-      echo "Particion $contadorParticiones ${particiones[$contadorParticiones]}" >> $ficheroanteriorejecucion   
-  }
-  echo 
-  echo -ne $ROJO"\nPulsa ENTER para continuar "$NORMAL
-  read enterContinuar
+  echo -e "\n\nFICHEROS:\n$NORMAL"
+files=($(ls -l ./FDatos/ | awk '{print $9}'))
+for i in "${!files[@]}"; do
+    echo -e "$i. ${files[$i]}"
+done
+
+echo -e "\n"
+echo -e "$AMARILLO\n\nIntroduce el número correspondiente al fichero a analizar (sin extensión): $NORMAL"
+read -r numeroFichero
+FicheroParaLectura="${files[$numeroFichero]}"
+
+lineaspart=($(cat "./FDatos/$FicheroParaLectura" | grep "Particion" | wc -l))
+for (( i = 0; i < "$lineaspart"; i++ )); do
+    a=($(cat "./FDatos/$FicheroParaLectura" | grep "Particion" | awk '{print $2}'))
+    contadorParticiones="${a[$i]}"
+    nparti=($(cat "./FDatos/$FicheroParaLectura" | grep "Particion" | awk '{print $3}'))
+    echo -e "\n"
+    particiones["$contadorParticiones"]="${nparti[$i]}"
+    echo "Partición $contadorParticiones ${particiones[$contadorParticiones]}"
+    echo "Particion $contadorParticiones ${particiones[$contadorParticiones]}" >> "$ficheroanteriorejecucion"
+done
+
+echo 
+echo -e "$ROJO\nPulsa ENTER para continuar $NORMAL"
+read -r enterContinuar
+
  
 }
 ################################################################################################################################################################################################
