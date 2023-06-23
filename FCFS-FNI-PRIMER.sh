@@ -352,7 +352,7 @@ function menueleccion {
       break;;
 
       '7')
-      entradaProcesosRangoManual_op_siete               ## rangos MAX
+      entradaProcesosRangoManual_op_siete
       tiempoejecucionalgormitmo
       break;;
       
@@ -1573,11 +1573,12 @@ function entradaProcesosRangoManual_op_cuatro {
     1)
       echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango" > $ficherodatosaleatorios
       echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem\n" >> $ficherodatosaleatorios
-      break;;
+      return;;
       
     2)
       echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango" > ./FRangos/$nuevaruta.txt
       echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem\n" >> ./FRangos/$nuevaruta.txt
+      return;;
   esac
 
 }
@@ -1593,7 +1594,7 @@ function entradaProcesosRangoManual_op_siete {
   clear
 
   echo "¿Dónde quieres guardar los rangos?"
-  echo "1. Guardar los rangos en ($ficherodatosaleatorios_totales)"
+  echo "1. Guardar los rangos en ($ficherodatosaleatorios)"
   echo "2. Guardar en otro fichero de rangos"
   read option_guardado
 
@@ -1980,27 +1981,28 @@ function entradaProcesosRangoManual_op_siete {
 ##################
   #guardado
 ##################
+
   case $option_guardado in
     1)
       echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango" > $ficherodatosaleatorios_totales
-      echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem\n" >> $ficherodatosaleatorios_totales
+      echo -ne "\nProcesos minima $cantidad_procesos_minima maxima $cantidad_procesos_maxima ttl_mínima $tiempo_llegada_minimo ttl_maxima $tiempo_llegada_maximo eje_minima $tiempo_ejecucion_minimo eje_maxima $tiempo_ejecucion_maximo mem_minima $memoria_proceso_minima mem_maxima $memoria_proceso_maxima\n" >> $ficherodatosaleatorios_totales
       return;;
       
     2)
       echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango" > ./FRangos/$nuevaruta.txt
-      echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem\n" >> ./FRangos/$nuevaruta.txt
+      echo -ne "\nProcesos minima $cantidad_procesos_minima maxima $cantidad_procesos_maxima ttl_mínima $tiempo_llegada_minimo ttl_maxima $tiempo_llegada_maximo eje_minima $tiempo_ejecucion_minimo eje_maxima $tiempo_ejecucion_maximo mem_minima $memoria_proceso_minima mem_maxima $memoria_proceso_maxima\n" >> ./FRangos/$nuevaruta.txt
        return;;
   esac
   
   case $option_guardado3 in
     1)
       echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango" > $ficherodatosaleatorios_subrangos
-      echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem\n" >> $ficherodatosaleatorios_subrangos
+      echo -ne "\nProcesos minima $cantidad_procesos_minima maxima $cantidad_procesos_maxima ttl_mínima $tiempo_llegada_minimo ttl_maxima $tiempo_llegada_maximo eje_minima $tiempo_ejecucion_minimo eje_maxima $tiempo_ejecucion_maximo mem_minima $memoria_proceso_minima mem_maxima $memoria_proceso_maxima\n" >> $ficherodatosaleatorios_subrangos
        return;;
       
     2)
       echo -ne "\nParticion minima $cantidad_rango_minima maxima $cantidad_rango_maxima um_minima $minimo_rango um_maxima $maximo_rango" > ./FRangos/$nuevaruta1.txt
-      echo -ne "\nProcesos minima $cantidad_rango_procesos_minima maxima $cantidad_rango_procesos_maxima ttl_mínima $minimo_rango_ttl ttl_maxima $maximo_rango_ttl eje_minima $minimo_rango_eje eje_maxima $maximo_rango_eje mem_minima $minimo_rango_mem mem_maxima $maximo_rango_mem\n" >> ./FRangos/$nuevaruta1.txt
+      echo -ne "\nProcesos minima $cantidad_procesos_minima maxima $cantidad_procesos_maxima ttl_mínima $tiempo_llegada_minimo ttl_maxima $tiempo_llegada_maximo eje_minima $tiempo_ejecucion_minimo eje_maxima $tiempo_ejecucion_maximo mem_minima $memoria_proceso_minima mem_maxima $memoria_proceso_maxima\n" >> ./FRangos/$nuevaruta1.txt
        return;;
   esac
   
@@ -2370,11 +2372,11 @@ function entradaParticionesFichero {
   echo -e "\n\nFICHEROS:\n$NORMAL"
 files=($(ls -l ./FDatos/ | awk '{print $9}'))
 for i in "${!files[@]}"; do
-    echo -e "$i. ${files[$i]}"
+    echo -e "$i) ${files[$i]}"
 done
 
 echo -e "\n"
-echo -e "$AMARILLO\n\nIntroduce el número correspondiente al fichero a analizar (sin extensión): $NORMAL"
+echo -e "$AMARILLO\n\nIntroduce el número correspondiente al fichero a analizar: $NORMAL"
 read -r numeroFichero
 FicheroParaLectura="${files[$numeroFichero]}"
 
@@ -5000,19 +5002,7 @@ function algoritmoFCFS_AjustePrimer {
      
               
         semaforo=0
-        
-        
-      
-        ##############################################################################################################################
-        ##############################################################################################################################
-        ##############################################################################################################################
-        ############################                                                                      ############################ 
-        ############################    SRPT Expropiacion ante un Px que tiene menor tiempo de            ############################
-        ############################      ejecución que el que esta ejecutandose (AHORA FCFS)             ############################
-        ############################                                                                      ############################ 
-        ##############################################################################################################################
-        ##############################################################################################################################
-        ##############################################################################################################################   
+  
 
         ##############################################################################################################################
         ##############################################################################################################################
@@ -5861,8 +5851,8 @@ function representacionParticionesEnTabla {
                 let espacios=$representacionparticion-$representacionproceso
                 for (( k = 0 ; k < $espacios ; k++ ))
                   do #Espacios
-                  echo -ne "\e[107m   \e[0m" >> ./informeColor.txt
-                  echo -ne "\e[107m   \e[0m" 
+                  echo -ne $NORMAL"███" >> ./informeColor.txt
+                  echo -ne $NORMAL"███" 
                   echo -n "---" >> ./informetemp.txt
                   cuentacolumnas=$(($cuentacolumnas + 1))
                   if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
@@ -5883,8 +5873,8 @@ function representacionParticionesEnTabla {
         let espacios=${particiones[$j]}
         for (( k = 0 ; k < $espacios ; k++ ))
         do #Espacios
-          echo -ne "\e[107m   \e[0m" >> ./informeColor.txt
-          echo -ne "\e[107m   \e[0m" 
+          echo -ne $NORMAL"███" >> ./informeColor.txt
+          echo -ne $NORMAL"███" 
           echo -ne "---" >> ./informetemp.txt
           cuentacolumnas=$(($cuentacolumnas + 1))
           if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
@@ -6355,7 +6345,7 @@ let "saltolineaTiempo=0"
       
         fi
 
-            echo -ne "${colores[${gantt[$k]} % 6]}${proceso[${gantt[$k]}]}\e[0m" | tee -a $informeConColor                           #############################################################
+            echo -ne "${colores[${gantt[$k]} % 6]}${proceso[${gantt[$k]}]}\e[0m" | tee -a $informeConColor  ################################################### 
             echo -ne "${proceso[${gantt[$k]}]}" >$informeSinColor
             caracterestotales=`expr $caracterestotales + 1`
             caracterestotales=`expr $caracterestotales + 1`
@@ -6418,7 +6408,7 @@ let "saltolineaTiempo=0"
 
     if [[ ${gantt[$k]} = 99 || ${gantt[$k]} = 0 ]]
       then
-        echo -ne "\e[107m   \e[0m" | tee -a $informeConColor
+        echo -ne $NORMAL"███" | tee -a $informeConColor
         echo -ne "---" >> $informeSinColor
         caracterestales=`expr $caracterestotales + 1`
         caracterestotales=`expr $caracterestotales + 1`
@@ -6434,7 +6424,7 @@ let "saltolineaTiempo=0"
 		fi
 	#echo ${gantt[$k]} 
       else
-        echo -ne "${colores2[${gantt[$k]} % 6]}   \e[0m" | tee -a $informeConColor                         #####################################################################
+        echo -ne "${colores2[${gantt[$k]} % 6]}   \e[0m" | tee -a $informeConColor               #####################################################################
 		
         caracterestotales=`expr $caracterestotales + 1`
         caracterestotales=`expr $caracterestotales + 1`
