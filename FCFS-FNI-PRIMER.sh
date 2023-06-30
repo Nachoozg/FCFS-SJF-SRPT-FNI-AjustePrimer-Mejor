@@ -1629,208 +1629,210 @@ function entradaProcesosRangoManual_op_siete {
     fi
  
   clear
- 
-  #Comprobacion de errores
-  if [ $cantidad_rango_minima -lt 1 ]; then
-   cantidad_rango_minima1=1
-  else
-   cantidad_rango_minima1=cantidad_rango_minima
-  fi
+  
+  while [ $cantidad_particiones_max -le $cantidad_particiones_min ]
+     do
+       cantidad_particiones_min=$((RANDOM % ($cantidad_rango_maxima - $cantidad_rango_minima + 1) + $cantidad_rango_minima))
+       cantidad_particiones_max=$((RANDOM % ($cantidad_rango_maxima - $cantidad_rango_minima + 1) + $cantidad_rango_minima))
+     done
+  
+  while [ $particiones_max -le $particiones_min ]
+     do
+       particiones_min=$((RANDOM % ($maximo_rango - $minimo_rango + 1) + $minimo_rango))
+       particiones_max=$((RANDOM % ($maximo_rango - $minimo_rango + 1) + $minimo_rango))
+     done
+     
+  while [ $cantidad_rango_procesos_max -le $cantidad_rango_procesos_min ]
+     do
+       cantidad_rango_procesos_min=$((RANDOM % ($cantidad_rango_procesos_maxima - $cantidad_rango_procesos_minima + 1) + $cantidad_rango_procesos_minima))
+       cantidad_rango_procesos_max=$((RANDOM % ($cantidad_rango_procesos_maxima - $cantidad_rango_procesos_minima + 1) + $cantidad_rango_procesos_minima))
+     done
+     
+  while [ $llegada_max -le $llegada_min ]
+     do
+       llegada_min=$((RANDOM % ($maximo_rango_ttl - $minimo_rango_ttl + 1) + $minimo_rango_ttl))
+       llegada_max=$((RANDOM % ($maximo_rango_ttl - $minimo_rango_ttl + 1) + $minimo_rango_ttl))
+     done
 
-  #if [ $cantidad_rango_maxima -lt 1 ]; then
-   #cantidad_particiones_max=1
-  #fi
-
-  if [ $minimo_rango -lt 1 ]; then
-   minimo_rango1=1
-  else
-   minimo_rango1=minimo_rango
-  fi
-
-  #if [ $maximo_rango -lt 1 ]; then
-   #particiones_max=1
-  #fi
-
-  if [ $cantidad_rango_procesos_minima -lt 1 ]; then
-   cantidad_rango_procesos_minima1=1
-  else
-   cantidad_rango_procesos_minima1=cantidad_rango_procesos_minima
-  fi
-
-  #if [ $cantidad_rango_procesos_maxima -lt 1 ]; then
-   #cantidad_rango_procesos_max=1
-  #fi
-
-  if [ $minimo_rango_ttl -lt 0 ]; then
-   minimo_rango_ttl1=0
-  else
-   minimo_rango_ttl1=minimo_rango_ttl
-  fi
-  
-  #if [ $maximo_rango_ttl -lt 0 ]; then
-   #llegada_max=0
-  #fi
-  
-  if [ $minimo_rango_eje -lt 1 ]; then
-   minimo_rango_eje1=1
-  else 
-   minimo_rango_eje1=minimo_rango_eje
-  fi
-  
-  #if [ $maximo_rango_eje -lt 1 ]; then
-   #tiempo_max=1
-  #fi
-  
-  if [ $minimo_rango_mem -lt 1 ]; then
-   minimo_rango_mem1=1
-  else
-   minimo_rango_mem1=minimo_rango_mem
-  fi
-  
-  #if [ $maximo_rango_mem -lt 1 ]; then
-   #memoria_max=1
-  #fi
- 
-  
-  #cantidad_particiones_min=$(shuf -i $cantidad_rango_minima1-$cantidad_rango_maxima -n 1)
-  cantidad_particiones_max=$(shuf -i $cantidad_rango_minima1-$cantidad_rango_maxima -n 1)
-  
-  #particiones_min=$(shuf -i $minimo_rango1-$maximo_rango -n 1)
-  particiones_max=$(shuf -i $minimo_rango1-$maximo_rango -n 1)
-  
-  #cantidad_rango_procesos_min=$(shuf -i $cantidad_rango_procesos_minima1-$cantidad_rango_procesos_maxima -n 1)
-  cantidad_rango_procesos_max=$(shuf -i $cantidad_rango_procesos_minima1-$cantidad_rango_procesos_maxima -n 1)
-  
-  #llegada_min=$(shuf -i $minimo_rango_ttl1-$maximo_rango_ttl -n 1)
-  llegada_max=$(shuf -i $minimo_rango_ttl1-$maximo_rango_ttl -n 1)
-  
-  #tiempo_min=$(shuf -i $minimo_rango_eje1-$maximo_rango_eje -n 1)
-  tiempo_max=$(shuf -i $minimo_rango_eje1-$maximo_rango_eje -n 1)
-  
-  #memoria_min=$(shuf -i $minimo_rango_mem1-$maximo_rango_mem -n 1)
-  memoria_max=$(shuf -i $minimo_rango_mem1-$maximo_rango_mem -n 1)
-  
-  
-
+  while [ $tiempo_max -le $tiempo_min ]
+     do
+       tiempo_min=$((RANDOM % ($maximo_rango_eje - $minimo_rango_eje + 1) + $minimo_rango_eje))
+       tiempo_max=$((RANDOM % ($maximo_rango_eje - $minimo_rango_eje + 1) + $minimo_rango_eje))
+     done
+     
+  while [ $memoria_max -le $memoria_min ]
+     do
+       memoria_min=$((RANDOM % ($maximo_rango_mem - $minimo_rango_mem + 1) + $minimo_rango_mem))
+       memoria_max=$((RANDOM % ($maximo_rango_mem - $minimo_rango_mem + 1) + $minimo_rango_mem))
+     done
+     
   
   
   contadorParticiones=1
   echo "" > ./FDatos/$nuevaruta2.txt 
  
+  
   printf "\n\n"
     printf " ┌────────────────────┬─────────────┬────────────┬────────────┐\n"
     printf " │       Texto        │    AleT     │   Rangos   │   Datos    │\n"
     printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
-    printf " │   NºParticiones    │   %-*s  │    %-*s │     %-*s │\n" 8 "$cantidad_rango_minima|$cantidad_rango_maxima" 7 "$cantidad_rango_minima1|$cantidad_particiones_max" 8 "─"
+    printf " │   NºParticiones    │   %-*s  │   %-*s  │     %-*s │\n" 8 "$cantidad_rango_minima|$cantidad_rango_maxima" 7 "$cantidad_particiones_min|$cantidad_particiones_max" 8 "─"
     printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
-    printf " │ Tamaño Particiones │   %-*s  │    %-*s │    %-*s  │\n" 8 "$minimo_rango|$maximo_rango" 7 "$minimo_rango1|$particiones_max" 8 " ─"
+    printf " │ Tamaño Particiones │   %-*s  │   %-*s  │    %-*s  │\n" 8 "$minimo_rango|$maximo_rango" 7 "$particiones_min|$particiones_max" 8 " ─"
     printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
-    printf " │ Número de procesos │   %-*s  │    %-*s │     %-*s │\n" 8 "$cantidad_rango_procesos_minima|$cantidad_rango_procesos_maxima" 7 "$cantidad_rango_procesos_minima1|$cantidad_rango_procesos_max" 8 "─"
+    printf " │ Número de procesos │   %-*s  │   %-*s  │     %-*s │\n" 8 "$cantidad_rango_procesos_minima|$cantidad_rango_procesos_maxima" 7 "$cantidad_rango_procesos_min|$cantidad_rango_procesos_max" 8 "─"
     printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
-    printf " │ Tiempos de llegada │   %-*s  │    %-*s │     %-*s │\n" 8 "$minimo_rango_ttl|$maximo_rango_ttl" 7 "$minimo_rango_ttl1|$llegada_max" 8 "─"
+    printf " │ Tiempos de llegada │   %-*s  │   %-*s  │     %-*s │\n" 8 "$minimo_rango_ttl|$maximo_rango_ttl" 7 "$llegada_min|$llegada_max" 8 "─"
     printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
-    printf " │Tiempos de ejecución│   %-*s  │    %-*s │     %-*s │\n" 8 "$minimo_rango_eje|$maximo_rango_eje" 7 "$minimo_rango_eje1|$tiempo_max" 8 "─"
+    printf " │Tiempos de ejecución│   %-*s  │   %-*s  │     %-*s │\n" 8 "$minimo_rango_eje|$maximo_rango_eje" 7 "$tiempo_min|$tiempo_max" 8 "─"
     printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
-    printf " │Unidades de memoria │   %-*s  │    %-*s │     %-*s │\n" 8 "$minimo_rango_mem|$maximo_rango_mem" 7 "$minimo_rango_mem1|$memoria_max" 8 "─"
+    printf " │Unidades de memoria │   %-*s  │   %-*s  │     %-*s │\n" 8 "$minimo_rango_mem|$maximo_rango_mem" 7 "$memoria_min|$memoria_max" 8 "─"
     printf " └────────────────────┴─────────────┴────────────┴────────────┘\n"
     printf "\n\n"
   
   echo -e "$ROJO\nPulsa ENTER para continuar $NORMAL"
   read -r enterContinuar
   
-  
+  #
+  #
+  #
+  #Comprobacion de errores
+  #
+  #
+  #
+  if [ $cantidad_particiones_min -lt 1 ]; then
+     cantidad_particiones_min=1
+     #cpartmin="$AMARILLO Se ha modificado el valor de la cantidad de particiones mínima porque tenía un valor no posible "
+     cambionumerss=true
+  fi
 
-  #Comprobar cual es mayor y menor entre los rangos mayor y menor
-  # if [ $cantidad_particiones_min -lt $cantidad_particiones_max ]; then
-#      menor_cantidad=cantidad_particiones_min
-#      mayor_cantidad=cantidad_particiones_max
-#   else
-#      menor_cantidad=cantidad_particiones_max
-#      mayor_cantidad=cantidad_particiones_min
-#   fi
+  if [ $cantidad_particiones_max -lt 1 ]; then
+     cantidad_particiones_max=1
+     #cpartmax="$AMARILLO Se ha modificado el valor de la cantidad de particiones máxima porque tenía un valor no posible "
+     cambionumerss=true
+  fi
   
-#   echo "A $menor_cantidad"
-#   echo "A $mayor_cantidad"
-  
-#   if [ $particiones_min -lt $particiones_max ]; then
-#      menor_cantidad_particiones=particiones_min
-#      mayor_cantidad_particiones=particiones_max
-#   else 
-#      menor_cantidad_particiones=particiones_max
-#      mayor_cantidad_particiones=particiones_min
-#   fi
-  
-#   echo "A $menor_cantidad_particiones"
-#   echo "A $mayor_cantidad_particiones"
-  
-#   if [ $cantidad_rango_procesos_min -lt $cantidad_rango_procesos_max ]; then
-#      menor_cantidad_rango_procesos=cantidad_rango_procesos_min
-#      mayor_cantidad_rango_procesos=cantidad_rango_procesos_max
-#   else 
-#      menor_cantidad_rango_procesos=cantidad_rango_procesos_max
-#      mayor_cantidad_rango_procesos=cantidad_rango_procesos_min
-#   fi
-  
-#   echo "A $menor_cantidad_rango_procesos"
-#   echo "A $mayor_cantidad_rango_procesos"
-  
-#   if [ $llegada_min -lt $llegada_max ]; then
-#      menor_llegada=llegada_min
-#      mayor_llegada=llegada_max
-#   else
-#      menor_llegada=llegada_max
-#      mayor_llegada=llegada_min
-#   fi
-  
-#   echo "A $menor_llegada"
-#   echo "A $mayor_llegada"
-  
-#   if [ $tiempo_min -lt $tiempo_max ]; then
-#      menor_ejecucion=tiempo_min
-#      mayor_ejecucion=tiempo_max
-#   else
-#      menor_ejecucion=tiempo_max
-#      mayor_ejecucion=tiempo_min
-#   fi
-  
-#   echo "A $menor_ejecucion"
-#   echo "A $mayor_ejecucion"
-  
-#   if [ $memoria_min -lt $memoria_max ]; then
-#      menor_memoria=memoria_min
-#      mayor_memoria=memoria_max
-#   else 
-#      menor_memoria=memoria_max
-#      mayor_memoria=memoria_min
-#   fi
-  
-#   echo "A $menor_memoria"
-#   echo "A $mayor_memoria"
+  if [ $particiones_min -lt 1 ]; then
+     particiones_min=1
+     #ptmin="$AMARILLO Se ha modificado el valor del tamaño de las particiones mínimo porque tenía un valor no posible "
+     cambionumerss=true
+  fi
 
+  if [ $particiones_max -lt 1 ]; then
+     particiones_max=1
+     #ptmax="$AMARILLO Se ha modificado el valor del tamaño de las particiones máximo porque tenía un valor no posible "
+     cambionumerss=true
+  fi
   
-  cantidad_particiones=$(shuf -i $cantidad_rango_minima1-$cantidad_particiones_max -n 1)
+  if [ $cantidad_rango_procesos_min -lt 1 ]; then
+     cantidad_rango_procesos_min=1
+     #nprocmin="$AMARILLO Se ha modificado el valor del número de procesos mínimo porque tenía un valor no posible "
+     cambionumerss=true
+  fi
+
+  if [ $cantidad_rango_procesos_max -lt 1 ]; then
+     cantidad_rango_procesos_max=1
+     #nprocmax="$AMARILLO Se ha modificado el valor del número de procesos máximo porque tenía un valor no posible "
+     cambionumerss=true
+  fi
+  
+  if [ $llegada_min -lt 0 ]; then
+     llegada_min=0
+     #llgmin="$AMARILLO Se ha modificado el valor de los tiempos de llegada mínimos porque tenían un valor no posible "
+     cambionumerss=true
+  fi
+
+  if [ $llegada_max -lt 0 ]; then
+     llegada_max=0
+     #llgmax="Se ha modificado el valor de los tiempos de llegada máximos porque tenían un valor no posible "
+     cambionumerss=true
+  fi
+  
+  if [ $tiempo_min -lt 1 ]; then
+     tiempo_min=1
+     #ejecmin="Se ha modificado el valor de los tiempos de ejecución mínimos porque tenían un valor no posible "
+     cambionumerss=true
+  fi
+
+  if [ $tiempo_max -lt 1 ]; then
+     tiempo_max=1
+     #ejecmax="Se ha modificado el valor de los tiempos de ejecución máximos porque tenían un valor no posible "
+     cambionumerss=true
+  fi
+  
+  if [ $memoria_min -lt 1 ]; then
+     memoria_min=1
+     #memomin="Se ha modificado el valor de las unidades de memoria mínimas porque tenían un valor no posible "
+     cambionumerss=true
+  fi
+
+  if [ $memoria_max -lt 1 ]; then
+     memoria_max=1
+     #memomax="Se ha modificado el valor de las unidades de memoria máximas porque tenían un valor no posible "
+     cambionumerss=true
+  fi
+  
+   printf "\n\n"
+    printf " ┌────────────────────┬─────────────┬────────────┬────────────┐\n"
+    printf " │       Texto        │    AleT     │   Rangos   │   Datos    │\n"
+    printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
+    printf " │   NºParticiones    │   %-*s  │   %-*s  │     %-*s │\n" 8 "$cantidad_rango_minima|$cantidad_rango_maxima" 7 "$cantidad_particiones_min|$cantidad_particiones_max" 8 "─"
+    printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
+    printf " │ Tamaño Particiones │   %-*s  │   %-*s  │    %-*s  │\n" 8 "$minimo_rango|$maximo_rango" 7 "$particiones_min|$particiones_max" 8 " ─"
+    printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
+    printf " │ Número de procesos │   %-*s  │   %-*s  │     %-*s │\n" 8 "$cantidad_rango_procesos_minima|$cantidad_rango_procesos_maxima" 7 "$cantidad_rango_procesos_min|$cantidad_rango_procesos_max" 8 "─"
+    printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
+    printf " │ Tiempos de llegada │   %-*s  │   %-*s  │     %-*s │\n" 8 "$minimo_rango_ttl|$maximo_rango_ttl" 7 "$llegada_min|$llegada_max" 8 "─"
+    printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
+    printf " │Tiempos de ejecución│   %-*s  │   %-*s  │     %-*s │\n" 8 "$minimo_rango_eje|$maximo_rango_eje" 7 "$tiempo_min|$tiempo_max" 8 "─"
+    printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
+    printf " │Unidades de memoria │   %-*s  │   %-*s  │     %-*s │\n" 8 "$minimo_rango_mem|$maximo_rango_mem" 7 "$memoria_min|$memoria_max" 8 "─"
+    printf " └────────────────────┴─────────────┴────────────┴────────────┘\n"
+    printf "\n\n"
+  
+  if [ $cambionumerss = true ]; then
+  	echo $AMARILLO"Se han cambiado todos los valores que no eran posibles para la correcta ejecución"$NORMAL
+  fi
+  
+  #echo -ne $AMARILLO"$cpartmin\n"$NORMAL
+  #echo -ne $AMARILLO"$cpartmax\n"$NORMAL
+  #echo -ne $AMARILLO"$ptmin\n"$NORMAL
+  #echo -ne $AMARILLO"$ptmax\n"$NORMAL
+  #echo -ne $AMARILLO"$nprocmin\n"$NORMAL
+  #echo -ne $AMARILLO"$nprocmax\n"$NORMAL
+  #echo -ne $AMARILLO"$llgmin\n"$NORMAL
+  #echo -ne $AMARILLO"$llgmax\n"$NORMAL
+  #echo -ne $AMARILLO"$ejecmin\n"$NORMAL
+  #echo -ne $AMARILLO"$ejecmax\n"$NORMAL
+  #echo -ne $AMARILLO"$memomin\n"$NORMAL
+  #echo -ne $AMARILLO"$memomax\n"$NORMAL
+  
+  echo -e "$ROJO\nPulsa ENTER para continuar $NORMAL"
+  read -r enterContinuar
+  
+  cantidad_particiones=$(shuf -i $cantidad_particiones_min-$cantidad_particiones_max -n 1)
   for (( i = 0;i < $cantidad_particiones;i++ )){
-      particiones[$contadorParticiones]=$(shuf -i $minimo_rango1-$particiones_max -n 1)
+      particiones[$contadorParticiones]=$(shuf -i $particiones_min-$particiones_max -n 1)
       echo "Particion $contadorParticiones ${particiones[$contadorParticiones]}" >> $ficheroanteriorejecucion
       let contadorParticiones=$contadorParticiones+1
   }
   
   contadorParticiones=1
 
-  cantidad_rango_procesos=$(shuf -i $cantidad_rango_procesos_minima1-$cantidad_rango_procesos_max -n 1)
+  cantidad_rango_procesos=$(shuf -i $cantidad_rango_procesos_min-$cantidad_rango_procesos_max -n 1)
   procesitos=$cantidad_rango_procesos
 
   contadorParticiones=1
   for (( i=1;i<=$procesitos;i++))
     do
-      llegada[$i]=$(shuf -i $minimo_rango_ttl1-$llegada_max -n 1)
+      llegada[$i]=$(shuf -i $llegada_min-$llegada_max -n 1)
     done
   for (( i=1;i<=$procesitos;i++))
     do
-      tiempo[$i]=$(shuf -i $minimo_rango_eje1-$tiempo_max -n 1)
+      tiempo[$i]=$(shuf -i $tiempo_min-$tiempo_max -n 1)
     until [ ${tiempo[$i]} -ge 0 ];
       do
-        tiempo[$i]=$(shuf -i $minimo_rango_eje1-$tiempo_max -n 1)
+        tiempo[$i]=$(shuf -i $tiempo_min-$tiempo_max -n 1)
       done
     done
 
@@ -1847,7 +1849,7 @@ function entradaProcesosRangoManual_op_siete {
     fi 
     # bloque para introduccion del resto de datos del proceso
 
-    memoria[$p]=$(shuf -i $minimo_rango_mem1-$memoria_max -n 1)
+    memoria[$p]=$(shuf -i $memoria_min-$memoria_max -n 1)
     
      #Seleccionamos la particion mayor
       memMax=0
@@ -1862,7 +1864,7 @@ function entradaProcesosRangoManual_op_siete {
     
     while [ ${memoria[$p]} -le 0 -o ${memoria[$p]} -gt ${particiones[$aux]} ]
       do
-        memoria[$p]=$(shuf -i $minimo_rango_mem1-$memoria_max -n 1)
+        memoria[$p]=$(shuf -i $memoria_min-$memoria_max -n 1)
       done
     
 
@@ -1902,17 +1904,17 @@ function entradaProcesosRangoManual_op_siete {
     printf " ┌────────────────────┬─────────────┬────────────┬────────────┐\n"
     printf " │       Texto        │    AleT     │   Rangos   │   Datos    │\n"
     printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
-    printf " │   NºParticiones    │   %-*s  │    %-*s │     %-*s │\n" 8 "$cantidad_rango_minima|$cantidad_rango_maxima" 7 "$cantidad_rango_minima1|$cantidad_particiones_max" 6 "$cantidad_particiones"
+    printf " │   NºParticiones    │   %-*s  │    %-*s │    %-*s  │\n" 8 "$cantidad_rango_minima|$cantidad_rango_maxima" 7 "$cantidad_particiones_min|$cantidad_particiones_max" 6 " $cantidad_particiones"
     printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
-    printf " │ Tamaño Particiones │   %-*s  │    %-*s │    %-*s  │\n" 8 "$minimo_rango|$maximo_rango" 7 "$minimo_rango1|$particiones_max" 6 "$particiones_datos" 
+    printf " │ Tamaño Particiones │   %-*s  │    %-*s │   %-*s   │\n" 8 "$minimo_rango|$maximo_rango" 7 "$particiones_min|$particiones_max" 8 "  ─" 
     printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
-    printf " │ Número de procesos │   %-*s  │    %-*s │     %-*s │\n" 8 "$cantidad_rango_procesos_minima|$cantidad_rango_procesos_maxima" 7 "$cantidad_rango_procesos_minima1|$cantidad_rango_procesos_max" 6 "$procesitos"
+    printf " │ Número de procesos │   %-*s  │    %-*s │    %-*s  │\n" 8 "$cantidad_rango_procesos_minima|$cantidad_rango_procesos_maxima" 7 "$cantidad_rango_procesos_min|$cantidad_rango_procesos_max" 6 " $procesitos"
     printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
-    printf " │ Tiempos de llegada │   %-*s  │    %-*s │     %-*s │\n" 8 "$minimo_rango_ttl|$maximo_rango_ttl" 7 "$minimo_rango_ttl1|$llegada_max" 6 "$llegadaa"
+    printf " │ Tiempos de llegada │   %-*s  │    %-*s │    %-*s  │\n" 8 "$minimo_rango_ttl|$maximo_rango_ttl" 7 "$llegada_min|$llegada_max" 8 " ─"
     printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
-    printf " │Tiempos de ejecución│   %-*s  │    %-*s │     %-*s │\n" 8 "$minimo_rango_eje|$maximo_rango_eje" 7 "$minimo_rango_eje1|$tiempo_max" 6 "$eejecucion"
+    printf " │Tiempos de ejecución│   %-*s  │    %-*s │    %-*s  │\n" 8 "$minimo_rango_eje|$maximo_rango_eje" 7 "$tiempo_min|$tiempo_max" 8 " ─"
     printf " ├────────────────────┼─────────────┼────────────┼────────────┤\n"
-    printf " │Unidades de memoria │   %-*s  │    %-*s │     %-*s │\n" 8 "$minimo_rango_mem|$maximo_rango_mem" 7 "$minimo_rango_mem1|$memoria_max" 6 "$meemoria"
+    printf " │Unidades de memoria │   %-*s  │    %-*s │    %-*s  │\n" 8 "$minimo_rango_mem|$maximo_rango_mem" 7 "$memoria_min|$memoria_max" 8 " ─"
     printf " └────────────────────┴─────────────┴────────────┴────────────┘\n"
     printf "\n\n"
   
@@ -1971,13 +1973,13 @@ function entradaProcesosRangoManual_op_siete {
 ##################
   case $option_guardado3 in
     1)
-      echo -ne "\nParticion minima $cantidad_rango_minima1 maxima $cantidad_particiones_max um_minima $minimo_rango1 um_maxima $particiones_max" > $ficherosubrangos_totales
-      echo -ne "\nProcesos minima $cantidad_rango_procesos_minima1 maxima $cantidad_rango_procesos_max ttl_mínima $minimo_rango_ttl1 ttl_maxima $llegada_max eje_minima $minimo_rango_eje1 eje_maxima $tiempo_max mem_minima $minimo_rango_mem1 mem_maxima $memoria_max\n" >> $ficherosubrangos_totales
+      echo -ne "\nParticion minima $cantidad_particiones_min maxima $cantidad_particiones_max um_minima $particiones_min um_maxima $particiones_max" > $ficherosubrangos_totales
+      echo -ne "\nProcesos minima $cantidad_rango_procesos_min maxima $cantidad_rango_procesos_max ttl_mínima $llegada_min ttl_maxima $llegada_max eje_minima $tiempo_min eje_maxima $tiempo_max mem_minima $memoria_min mem_maxima $memoria_max\n" >> $ficherosubrangos_totales
       return;;
       
     2)
-      echo -ne "\nParticion minima $cantidad_rango_minima1 maxima $cantidad_particiones_max um_minima $minimo_rango1 um_maxima $particiones_max" > ./FRangos/$nuevaruta.txt
-      echo -ne "\nProcesos minima $cantidad_rango_procesos_minima1 maxima $cantidad_rango_procesos_max ttl_mínima $minimo_rango_ttl1 ttl_maxima $llegada_max eje_minima $minimo_rango_eje1 eje_maxima $tiempo_max mem_minima $minimo_rango_mem1 mem_maxima $memoria_max\n" >> ./FRangos/$nuevaruta.txt
+      echo -ne "\nParticion minima $cantidad_particiones_min maxima $cantidad_particiones_max um_minima $particiones_min um_maxima $particiones_max" > ./FRangos/$nuevaruta.txt
+      echo -ne "\nProcesos minima $cantidad_rango_procesos_min maxima $cantidad_rango_procesos_max ttl_mínima $llegada_min ttl_maxima $llegada_max eje_minima $tiempo_min eje_maxima $tiempo_max mem_minima $memoria_min mem_maxima $memoria_max\n" >> ./FRangos/$nuevaruta.txt
       return;;
   esac
 
@@ -5754,7 +5756,7 @@ function representacionParticionesEnTabla {
                 for (( k = 0 ; k < $espacios ; k++ ))
                   do #Espacios
                   echo -ne "   " >> ./informeColor.txt
-                  echo -ne "   " 
+                  echo -ne "   "  #Arriba
                   echo -n "   " >> ./informetemp.txt
                   cuentacolumnas=$(($cuentacolumnas + 1))
                   if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
@@ -5792,7 +5794,7 @@ function representacionParticionesEnTabla {
   ################UN ESPACIO DE MÁS################
   if [[ $nseparadores -lt $separadores ]];then
   echo -ne " " >> ./informeColor.txt
-  echo -ne " "
+  echo -ne " "                        #Delante de los P01 en la barra BM
   echo -ne " " >> ./informetemp.txt
   nseparadores=$(($nseparadores + 1))
   fi
@@ -5808,14 +5810,14 @@ function representacionParticionesEnTabla {
 
   done
 
-  echo -ne "|" | tee -a ./informeColor.txt
+  echo -ne "|" | tee -a ./informeColor.txt      #Barra arriba de la M
   echo -ne "|" >> ./informetemp.txt
 
   #################################################################
   ##LÍNEA DE COLORES
   #################################################################
  
-  caracterestotales=$(($cuatro + $separadores)) #5¿?
+  caracterestotales=$(($cinco + $separadores)) #5¿?
   terminal=$(($(tput cols)))
   numerodelineas=$(($caracterestotales/$terminal))
   columnasporfila=$(($terminal/3))
@@ -5828,7 +5830,7 @@ function representacionParticionesEnTabla {
     caracterestotales=$((($caracterestotales + (${particiones[$j]} * 3 ) )))
   done
 
-  echo "" | tee -a $informeConColor
+  echo "" | tee -a $informeConColor   #Linea arriba de M
   echo "" >$informeSinColor
   echo -ne $NORMAL"\033[$b;1H" 
   echo -ne $NORMAL" BM |" | tee -a ./informeColor.txt
@@ -5846,7 +5848,7 @@ function representacionParticionesEnTabla {
                 for (( k = 0 ; k < $representacionproceso ; k++ ))
                   do
                     echo -ne "${colores2[$i % 6]}   \e[0m" >> ./informeColor.txt
-                    echo -ne "${colores2[$i % 6]}   \e[0m"
+                    echo -ne "${colores2[$i % 6]}   \e[0m" #Barras de colores
                     echo -n "***" >> ./informetemp.txt
                     cuentacolumnas=$(($cuentacolumnas + 1))
                     if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
@@ -5963,15 +5965,19 @@ function representacionParticionesEnTabla {
                 let representacionparticion=${particiones[$j]}
                 let representacionproceso=${memoria[$i]}
 
-
+	#####Guardo la suma de tiempo de llegada y ejecución
+	          sumaza=$((suma_espera + suma_respuesta))
+		  	          
                   if [[ ${partConProceso[$i]} -eq 1 ]];then
                     let sumabm=0
-                    echo -ne " $sumabm" >> ./informeColor.txt
-                    echo -ne " $sumabm" ## deja el numero pegado pero no aparece la barra
-                    echo -ne " $sumabm" >> ./informetemp.txt
-                    cuentacolumnas=$(($cuentacolumnas + 1))
-                    cuentacolumnas=$(($cuentacolumnas + 1))
-                    cuentacolumnas=$(($cuentacolumnas + 1))
+                    if [ $sumaza -ge 0 ] && [ $sumaza -le 99 ]; then
+		            echo -ne "  $sumabm" >> ./informeColor.txt
+		            echo -ne "  $sumabm" ## deja el numero pegado pero no aparece la barra
+		            echo -ne "  $sumabm" >> ./informetemp.txt
+		            cuentacolumnas=$(($cuentacolumnas + 1))
+		            cuentacolumnas=$(($cuentacolumnas + 1))
+		            cuentacolumnas=$(($cuentacolumnas + 1))
+                    fi
                     
                     if [[ $columnasporfila2 -lt $cuentacolumnas ]];then
                       c=$(( $c + 3 ))
@@ -6042,7 +6048,7 @@ function representacionParticionesEnTabla {
                     done     
 
                     echo -ne " $((${memoria[$i]}+$sumabm))" >> ./informeColor.txt
-                    echo -ne " $((${memoria[$i]}+$sumabm))" 
+                    echo -ne " $((${memoria[$i]}+$sumabm))"       ##Segundo numero en la barra
                     echo -n " $((${memoria[$i]}+$sumabm))" >> ./informetemp.txt
 		    cuentacolumnas=$(($cuentacolumnas + 1))
 
@@ -6091,7 +6097,7 @@ function representacionParticionesEnTabla {
                     
                     done     
                     echo -ne "$((${memoria[$i]}+$sumabm))" >> ./informeColor.txt
-                    echo -ne "$((${memoria[$i]}+$sumabm))" 
+                    echo -ne "$((${memoria[$i]}+$sumabm))"                       ##Segundo numero en la barra
                     echo -n "$((${memoria[$i]}+$sumabm))" >> ./informetemp.txt 
 		                cuentacolumnas=$(($cuentacolumnas + 1))
                     cuentacolumnas=$(($cuentacolumnas + 1))
@@ -6153,7 +6159,7 @@ function representacionParticionesEnTabla {
         let sumabm=`expr $sumabm + ${particiones[$j-1]}`
         if [[ $sumabm -le 9 ]];then 
           echo -ne "  $sumabm" >> ./informeColor.txt
-          echo -ne "  $sumabm"
+          echo -ne "  $sumabm"                           ##Primer numero de la barra
           echo -ne "  $sumabm" >> ./informetemp.txt
           cuentacolumnas=$(($cuentacolumnas + 1))
           cuentacolumnas=$(($cuentacolumnas + 1))
@@ -6170,7 +6176,7 @@ function representacionParticionesEnTabla {
          
         else
           echo -ne " $sumabm" >> ./informeColor.txt
-          echo -ne " $sumabm"
+          echo -ne " $sumabm"                        ##Primer numero de la barra
           echo -ne " $sumabm" >> ./informetemp.txt
           cuentacolumnas=$(($cuentacolumnas + 1))
           cuentacolumnas=$(($cuentacolumnas + 1))
@@ -6188,7 +6194,7 @@ function representacionParticionesEnTabla {
     else
       let sumabm=0
       echo -ne "  $sumabm" >> ./informeColor.txt
-      echo -ne "  $sumabm" 
+      echo -ne "  $sumabm"                        #El 0 de la barra
       echo -ne "  $sumabm" >> ./informetemp.txt
       cuentacolumnas=$(($cuentacolumnas + 1))
       cuentacolumnas=$(($cuentacolumnas + 1))
@@ -6403,7 +6409,7 @@ let "saltolineaTiempo=0"
     #PRUEBAPRUEBAPRUEBAPRUEBAPRUEBA
 	if [[ $saltolineaProcesos -eq 1  ]]
 	then 
-		echo " |"
+		echo "       |"
 	else
 		echo -ne "|"   ## primero de la T
 	fi
@@ -6493,7 +6499,7 @@ let "saltolineaTiempo=0"
       if [[ $caracteresPorLinea -lt $caracterestotales ]];then
         f=$(( $f + 3 ))
         echo -e "\033[2B"
-        echo -ne " "
+        echo -ne "     "
         echo -ne "    |" >> $informeSinColor
         echo -ne "    |" >> $informeConColor
 		let "saltolineaTiempo=1"
@@ -6506,7 +6512,7 @@ let "saltolineaTiempo=0"
 	     if [[ $caracteresPorLinea -lt $caracterestotales ]];then
         f=$(( $f + 3 ))
         echo -e "\033[2B"
-        echo -ne " "
+        echo -ne "     "
         echo -ne "    |" >> $informeSinColor
         echo -ne "    |" >> $informeConColor
 		let "saltolineaTiempo=1"
