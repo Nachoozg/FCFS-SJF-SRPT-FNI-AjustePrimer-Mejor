@@ -246,8 +246,8 @@ colores2[5]=$MORADO2
 ################################################################################################################################################################################################
 # Ficheros de salida.
 ################################################################################################################################################################################################
-informeSinColor="./FLast/informeBN.txt"
-informeConColor="./FLast/informeCOLOR.txt"
+informeSinColor="./Informes/informeBN.txt"
+informeConColor="./Informes/informeCOLOR.txt"
 ficheroanteriorejecucion="./FLast/DatosLast.txt"
 ficherodatosaleatorios="./FRangos/DatosRangosLast.txt"
 ficherodatosaleatorios_totales="./FRangosAleT/FRangosAleTotal.txt"
@@ -1599,31 +1599,63 @@ function entradaProcesosRangoManual_op_siete {
     while [ $cantidad_particiones_max -le $cantidad_particiones_min ]; do
         cantidad_particiones_min=$((RANDOM % ($cantidad_rango_maxima - $cantidad_rango_minima + 1) + $cantidad_rango_minima))
         cantidad_particiones_max=$((RANDOM % ($cantidad_rango_maxima - $cantidad_rango_minima + 1) + $cantidad_rango_minima))
+        
+
+    if [ $cantidad_particiones_min -le 0 ] && [ $cantidad_particiones_max -le 0 ]; then
+        cantidad_particiones_min=$((RANDOM % ($cantidad_rango_maxima - $cantidad_rango_minima + 1) + $cantidad_rango_minima))
+        cantidad_particiones_max=$((RANDOM % ($cantidad_rango_maxima - $cantidad_rango_minima + 1) + $cantidad_rango_minima))
+    fi
     done
+
 
     while [ $particiones_max -le $particiones_min ]; do
         particiones_min=$((RANDOM % ($maximo_rango - $minimo_rango + 1) + $minimo_rango))
         particiones_max=$((RANDOM % ($maximo_rango - $minimo_rango + 1) + $minimo_rango))
+        
+    if [ $particiones_min -le 0 ] && [ $particiones_max -le 0 ]; then
+        particiones_min=$((RANDOM % ($maximo_rango - $minimo_rango + 1) + $minimo_rango))
+        particiones_max=$((RANDOM % ($maximo_rango - $minimo_rango + 1) + $minimo_rango))
+    fi
     done
 
     while [ $cantidad_rango_procesos_max -le $cantidad_rango_procesos_min ]; do
         cantidad_rango_procesos_min=$((RANDOM % ($cantidad_rango_procesos_maxima - $cantidad_rango_procesos_minima + 1) + $cantidad_rango_procesos_minima))
         cantidad_rango_procesos_max=$((RANDOM % ($cantidad_rango_procesos_maxima - $cantidad_rango_procesos_minima + 1) + $cantidad_rango_procesos_minima))
+    
+    if [ $cantidad_rango_procesos_min -le 0 ] && [ $cantidad_rango_procesos_max -le 0 ]; then
+        cantidad_rango_procesos_min=$((RANDOM % ($cantidad_rango_procesos_maxima - $cantidad_rango_procesos_minima + 1) + $cantidad_rango_procesos_minima))
+        cantidad_rango_procesos_max=$((RANDOM % ($cantidad_rango_procesos_maxima - $cantidad_rango_procesos_minima + 1) + $cantidad_rango_procesos_minima))
+    fi
     done
 
     while [ $llegada_max -le $llegada_min ]; do
         llegada_min=$((RANDOM % ($maximo_rango_ttl - $minimo_rango_ttl + 1) + $minimo_rango_ttl))
         llegada_max=$((RANDOM % ($maximo_rango_ttl - $minimo_rango_ttl + 1) + $minimo_rango_ttl))
+    
+    if [ $llegada_min -le 0 ] && [ $llegada_max -le 0 ]; then
+        llegada_min=$((RANDOM % ($maximo_rango_ttl - $minimo_rango_ttl + 1) + $minimo_rango_ttl))
+        llegada_max=$((RANDOM % ($maximo_rango_ttl - $minimo_rango_ttl + 1) + $minimo_rango_ttl))
+    fi
     done
 
     while [ $tiempo_max -le $tiempo_min ]; do
         tiempo_min=$((RANDOM % ($maximo_rango_eje - $minimo_rango_eje + 1) + $minimo_rango_eje))
         tiempo_max=$((RANDOM % ($maximo_rango_eje - $minimo_rango_eje + 1) + $minimo_rango_eje))
+    
+    if [ $tiempo_min -le 0 ] && [ $tiempo_max -le 0 ]; then
+        tiempo_min=$((RANDOM % ($maximo_rango_eje - $minimo_rango_eje + 1) + $minimo_rango_eje))
+        tiempo_max=$((RANDOM % ($maximo_rango_eje - $minimo_rango_eje + 1) + $minimo_rango_eje))
+    fi
     done
 
     while [ $memoria_max -le $memoria_min ]; do
         memoria_min=$((RANDOM % ($maximo_rango_mem - $minimo_rango_mem + 1) + $minimo_rango_mem))
         memoria_max=$((RANDOM % ($maximo_rango_mem - $minimo_rango_mem + 1) + $minimo_rango_mem))
+    
+    if [ $memoria_min -le 0 ] && [ $memoria_max -le 0 ]; then
+        memoria_min=$((RANDOM % ($maximo_rango_mem - $minimo_rango_mem + 1) + $minimo_rango_mem))
+        memoria_max=$((RANDOM % ($maximo_rango_mem - $minimo_rango_mem + 1) + $minimo_rango_mem))
+    fi
     done
 
     contadorParticiones=1
@@ -1659,73 +1691,61 @@ function entradaProcesosRangoManual_op_siete {
     #
     if [ $cantidad_particiones_min -lt 1 ]; then
         cantidad_particiones_min=1
-        #cpartmin="$AMARILLO Se ha modificado el valor de la cantidad de particiones mínima porque tenía un valor no posible "
         cambionumerss=true
     fi
 
     if [ $cantidad_particiones_max -lt 1 ]; then
         cantidad_particiones_max=1
-        #cpartmax="$AMARILLO Se ha modificado el valor de la cantidad de particiones máxima porque tenía un valor no posible "
         cambionumerss=true
     fi
 
     if [ $particiones_min -lt 1 ]; then
         particiones_min=1
-        #ptmin="$AMARILLO Se ha modificado el valor del tamaño de las particiones mínimo porque tenía un valor no posible "
         cambionumerss=true
     fi
 
     if [ $particiones_max -lt 1 ]; then
         particiones_max=1
-        #ptmax="$AMARILLO Se ha modificado el valor del tamaño de las particiones máximo porque tenía un valor no posible "
         cambionumerss=true
     fi
 
     if [ $cantidad_rango_procesos_min -lt 1 ]; then
         cantidad_rango_procesos_min=1
-        #nprocmin="$AMARILLO Se ha modificado el valor del número de procesos mínimo porque tenía un valor no posible "
         cambionumerss=true
     fi
 
     if [ $cantidad_rango_procesos_max -lt 1 ]; then
         cantidad_rango_procesos_max=1
-        #nprocmax="$AMARILLO Se ha modificado el valor del número de procesos máximo porque tenía un valor no posible "
         cambionumerss=true
     fi
 
     if [ $llegada_min -lt 0 ]; then
         llegada_min=0
-        #llgmin="$AMARILLO Se ha modificado el valor de los tiempos de llegada mínimos porque tenían un valor no posible "
         cambionumerss=true
     fi
 
     if [ $llegada_max -lt 0 ]; then
         llegada_max=0
-        #llgmax="Se ha modificado el valor de los tiempos de llegada máximos porque tenían un valor no posible "
         cambionumerss=true
     fi
 
     if [ $tiempo_min -lt 1 ]; then
         tiempo_min=1
-        #ejecmin="Se ha modificado el valor de los tiempos de ejecución mínimos porque tenían un valor no posible "
         cambionumerss=true
     fi
 
     if [ $tiempo_max -lt 1 ]; then
         tiempo_max=1
-        #ejecmax="Se ha modificado el valor de los tiempos de ejecución máximos porque tenían un valor no posible "
         cambionumerss=true
     fi
 
     if [ $memoria_min -lt 1 ]; then
         memoria_min=1
-        #memomin="Se ha modificado el valor de las unidades de memoria mínimas porque tenían un valor no posible "
         cambionumerss=true
     fi
 
     if [ $memoria_max -lt 1 ]; then
-        memoria_max=1
-        #memomax="Se ha modificado el valor de las unidades de memoria máximas porque tenían un valor no posible "
+        memoria_max=1        
         cambionumerss=true
     fi
 
@@ -5453,10 +5473,8 @@ function algoritmoFCFS_AjustePrimer {
 
 function representacionParticionesEnTabla {
     
-    #Creo una variable global con el valor de la suma de los tiempos de ejecucion y llegada para saber el numero de espacios que debo dejar delante de 
-    #los números
-
-    # Declaro una variable para almacenar la suma
+    
+     # Declaro una variable para almacenar la suma
     sumaParaEspacios=0
 
     for ((i = 1; i <= ${#proceso[@]}; i++)); do
@@ -5483,11 +5501,14 @@ function representacionParticionesEnTabla {
 	elif ((sumaParaEspacios >= 100000000 && sumaParaEspacios <= 99999999)); then
 	    maxCaracteres=10
     	fi
-
-    local terminal=`tput cols`
     
+
+    
+    local terminal=`tput cols`
+
     echo ""
 
+    
 
     # GENERACIÓN STRING DE PROCESOS
     local bandaProcesos=("    |")
@@ -5629,41 +5650,14 @@ function representacionParticionesEnTabla {
         fi
     done
     # Añadir final de banda
-    memoriaespecial="0"
-    for (( i = 1; i <= ${#partConProceso[@]}; i++))
-    do
-    if [[ ${estado[$i]} = "En ejecución" ]]
-      then
-        let memoriaespecial=$memoriaespecial+${memoria[$i]}
-        #echo -ne "$memoriaespecial"
-        #bandaMemoria[n]+="| M: $memoriaespecial"
-        #bandaMemoriaColor[n]+="| M: $memoriaespecial"
-    fi
-    done
-  
     if [[ $(($numCaracteres + 5 + $maxCaracteres + 1)) -gt $terminal ]]; then # El texto no cabe en la terminal
         n=$(($n + 1)) # Se pasa a la siguiente línea
         bandaMemoria[n]="     "
         bandaMemoriaColor[n]="     "
         numCaracteres=5
     fi
-    
-    if [[ $memoriaespecial -eq 0 ]]
-    then
-      bandaMemoria[n]+="| M: 00"
-      bandaMemoriaColor[n]+="| M: 00"
-    else
-      if [[ ${#memoriaespecial} -eq 1 ]]; then
-        bandaMemoria[n]+="| M: 0${memoriaespecial}"
-        bandaMemoriaColor[n]+="| M: 0${memoriaespecial}"
-      else
-        bandaMemoria[n]+="| M: ${memoriaespecial}"
-        bandaMemoriaColor[n]+="| M: ${memoriaespecial}"
-     fi
-    fi
-
-    #bandaMemoria[n]+=`printf "| M: %-$(($maxCaracteres))d" 0` # TODO: CAMBIAR NÚMERO DE MEMORIA
-    #bandaMemoriaColor[n]+=`printf "| M: %-$(($maxCaracteres))d" 0` # TODO: CAMBIAR NÚMERO DE MEMORIA
+    bandaMemoria[n]+=`printf "| M: %-$(($maxCaracteres))d" 0` # TODO: CAMBIAR NÚMERO DE MEMORIA
+    bandaMemoriaColor[n]+=`printf "| M: %-$(($maxCaracteres))d" 0` # TODO: CAMBIAR NÚMERO DE MEMORIA
 
 
     # GENERACIÓN STRING DE POSICIÓN DE MEMORIA
@@ -5735,6 +5729,8 @@ function representacionParticionesEnTabla {
 
     # IMPRIMIR BANDAS
     for (( i = 0; i < ${#bandaProcesos[@]}; i++ )); do
+        echo "${bandaParticiones[$i]}" >> ./informetemp.txt
+        echo -e "${bandaParticionesColor[$i]}" | tee -a ./informeColor.txt
         echo "${bandaProcesos[$i]}" >> ./informetemp.txt
         echo -e "${bandaProcesosColor[$i]}" | tee -a ./informeColor.txt
         echo "${bandaMemoria[$i]}" >> ./informetemp.txt
@@ -5751,7 +5747,7 @@ function representacionParticionesEnTabla {
 
 function representacionLineaTemporal {
     
-    
+    sumaParaEspacios=0
     for ((i = 1; i <= ${#proceso[@]}; i++)); do
 	# Sumar los valores de tiempo de llegada y ejecución
 	sumaParaEspacios=$((sumaParaEspacios + ${llegada[$i]} + ${tiempo[$i]}))
@@ -5826,9 +5822,10 @@ function representacionLineaTemporal {
                 bandaProcesosColor[n]="     "
                 numCaracteres=5
             fi
-            bandaProcesos[n]+=`printf "%$(($maxCaracteres))s" $p`
-            bandaProcesosColor[n]+=`printf "${colores[${gantt[$k]} % 6]}%$(($maxCaracteres))s\033[0m" $p`
+            bandaProcesos[n]+=`printf "%-$(($maxCaracteres))s" $p`
+            bandaProcesosColor[n]+=`printf "${colores[${gantt[$k]} % 6]}%-$(($maxCaracteres))s\033[0m" $p`
             numCaracteres=$(($numCaracteres + $maxCaracteres))
+
         fi
     done
     # Añadir final de banda
@@ -5981,19 +5978,22 @@ function representacionLineaTemporal {
     2) # Ejecución manual.
         if [[ $evento1 -eq 1 ]]; then
             echo -ne $ROJO"\n\n Pulsa ENTER para continuar "$NORMAL
-            cat informeColor.txt >> informeColorSRPT.txt
+            cat informeColor.txt >> informeColorSRPT.txt                           ##SIUU
+            cat informeColorSRPT.txt >> ./Informes/informeeBN.txt
             cat informetemp.txt > $informeSinColor
             read enterContinuar
         else
             if [[ $evento2 -eq 1 ]]; then
                 echo -ne $ROJO"\n\n Pulsa ENTER para continuar "$NORMAL
                 cat informeColor.txt >> informeColorSRPT.txt
+                cat informeColorSRPT.txt >> ./Informes/informeeBN.txt
                 cat informetemp.txt > $informeSinColor
                 read enterContinuar
             else
                 if [[ $evento3 -eq 1 ]]; then
                     echo -ne $ROJO"\n\n Pulsa ENTER para continuar "$NORMAL
                     cat informeColor.txt >> informeColorSRPT.txt
+                    cat informeColorSRPT.txt >> ./Informes/informeeBN.txt
                     cat informetemp.txt > $informeSinColor
                     read enterContinuar
                 fi
